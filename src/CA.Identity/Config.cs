@@ -21,11 +21,11 @@ namespace CA.Identity
             {
                 new ApiResource("api", "Api Service")
                 {
-                    Scopes = { "api.read", "api.write" }
+                    Scopes = { "api" }
                 },
                 new ApiResource("authorization", "Authorization Service")
                 {
-                    Scopes = { "authorization.read", "authorization.write" }
+                    Scopes = { "authorization" }
                 }
             };
 
@@ -33,12 +33,10 @@ namespace CA.Identity
             new ApiScope[]
             {
                 // API scopes
-                new ApiScope(name: "api.read", displayName: "Reads data from api service."),
-                new ApiScope(name: "api.write", displayName: "Writes data to the api service."),
+                new ApiScope(name: "api", displayName: "Reads data from api service."),
 
                 // authorization API scopes
-                new ApiScope(name: "authorization.read", displayName: "Reads data from authorization service."),
-                new ApiScope(name: "authorization.write", displayName: "Writes data to the authorization service.")
+                new ApiScope(name: "authorization", displayName: "Reads data from authorization service."),
             };
 
         public static IEnumerable<Client> Clients() =>
@@ -48,19 +46,19 @@ namespace CA.Identity
                 {
                     ClientId = "angular",
                     ClientName = "Angular Web App",
-                    ClientUri = "https://localhost:44427",
+                    ClientUri = "https://localhost:44480",
                     AllowedGrantTypes = GrantTypes.CodeAndClientCredentials,
                     RequireConsent = false,
                     RequirePkce = true,
-                    AllowOfflineAccess = true,
+                    // AllowOfflineAccess = true,
                     AllowAccessTokensViaBrowser = false,
 
-                    RedirectUris = { "https://localhost:44427/signin-oidc" },
-                    PostLogoutRedirectUris = { "https://localhost:44427/signout-callback-oidc" },
+                    RedirectUris = { "https://localhost:44480/signin-oidc" },
+                    PostLogoutRedirectUris = { "https://localhost:44480/signout-callback-oidc" },
 
                     ClientSecrets =
                     {
-                        new Secret("b4ced783-dea4-4dd9-84eb-12a2f876bb51".Sha256())
+                        new Secret("secret".Sha256())
                     },
 
                     AllowedScopes =
@@ -68,10 +66,8 @@ namespace CA.Identity
                         IdentityServerConstants.StandardScopes.OpenId,
                         IdentityServerConstants.StandardScopes.Profile,
                         IdentityServerConstants.StandardScopes.Email,
-                        "api.read",
-                        "api.write",
-                        "authorization.read",
-                        "authorization.write"
+                        "api",
+                        "authorization"
                     }
                 }
             };

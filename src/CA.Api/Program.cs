@@ -5,7 +5,7 @@ Log.Logger = LoggingHelper.CASerilogConfiguration("Api").CreateLogger();
 
 try
 {
-    Log.Information("Starting up");
+    Log.Information("Starting up Api");
     var builder = WebApplication.CreateBuilder(args);
     builder.Host.UseSerilog();
 
@@ -19,7 +19,7 @@ try
         .UseHttpsRedirection()
         .UseCASerilog();
 
-    app.MapGet("/", () => "Home Page");
+    app.MapGet("/", () => Results.Ok(new[] { new { id = 1, name = "Name 1" }, new { id = 2, name = "Name 2" } }));
 
     app.Run();
 }

@@ -1,12 +1,8 @@
 ﻿using CA.Common.Exceptions;
 using CA.Common.Services;
 using MediatR;
+using Microsoft.Extensions.Logging;
 using SMD.Security.Authorization.Client;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CA.MediatR.Behaviors
 {
@@ -15,11 +11,13 @@ namespace CA.MediatR.Behaviors
     {
         private readonly IPolicyOperations _policyOperations;
         private readonly ICurrentUserService _currentUserService;
+        private readonly ILogger _logger;
 
-        public AuthorizationBehavior(IPolicyOperations policyOperations, ICurrentUserService currentUserService)
+        public AuthorizationBehavior(IPolicyOperations policyOperations, ICurrentUserService currentUserService, ILogger logger)
         {
             _policyOperations = policyOperations;
             _currentUserService = currentUserService;
+            _logger = logger;
         }
 
         public async Task<TResponse> Handle(TRequest request, CancellationToken cancellationToken, RequestHandlerDelegate<TResponse> next)
@@ -39,6 +37,7 @@ namespace CA.MediatR.Behaviors
                     {
                         if(! await _policyOperations.HasPermissionAsync(_currentUserService.GetUser(), permission))
                         {
+                            _logger.LogWarning("----- Permission Authorization Failed {Permission}", permission);
                             throw new ForbiddenAccessException();
                         }
                     }
