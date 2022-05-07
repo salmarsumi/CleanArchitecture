@@ -6,7 +6,7 @@ namespace CA.Identity
 {
     public static class HostingExtensions
     {
-        public static WebApplicationBuilder ConfigureServices(this WebApplicationBuilder builder)
+        public static WebApplicationBuilder ConfigureBuilder(this WebApplicationBuilder builder)
         {
             builder.Host.UseSerilog();
 

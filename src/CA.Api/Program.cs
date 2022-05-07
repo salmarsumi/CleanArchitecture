@@ -1,3 +1,4 @@
+using CA.Api;
 using CA.Common.Logging;
 using Serilog;
 
@@ -7,19 +8,14 @@ try
 {
     Log.Information("Starting up Api");
     var builder = WebApplication.CreateBuilder(args);
-    builder.Host.UseSerilog();
 
-    // Add services to the container.
+    // Configure Services
+    builder.ConfigureBuilder();
 
     var app = builder.Build();
 
     // Configure the HTTP request pipeline.
-
-    app
-        .UseHttpsRedirection()
-        .UseCASerilog();
-
-    app.MapGet("/", () => Results.Ok(new[] { new { id = 1, name = "Name 1" }, new { id = 2, name = "Name 2" } }));
+    app.ConfigurePipeline();
 
     app.Run();
 }

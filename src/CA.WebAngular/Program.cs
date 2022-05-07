@@ -8,10 +8,9 @@ try
 {
     Log.Information("Starting up WebAngular");
     var builder = WebApplication.CreateBuilder(args);
-    builder.Host.UseSerilog();
 
     // Add services to the container.
-    builder.ConfigureServices();
+    builder.ConfigureBuilder();
 
     var app = builder.Build();
 

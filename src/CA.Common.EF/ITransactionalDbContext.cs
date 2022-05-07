@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore.Storage;
 
-namespace CA.MediatR
+namespace CA.Common.EF
 {
     public interface ITransactionalDbContext
     {
@@ -10,6 +10,6 @@ namespace CA.MediatR
         IDbContextTransaction GetCurrentTransaction();
         Task<IDbContextTransaction> BeginTransactionAsync();
         Task CommitTranasctionAsync(IDbContextTransaction transaction);
-        void RollbackTransaction();
+        Task RollbackTransaction();
     }
 }

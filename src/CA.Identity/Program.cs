@@ -10,7 +10,7 @@ try
     var builder = WebApplication.CreateBuilder(args);
     
     // Configure Services
-    builder.ConfigureServices();
+    builder.ConfigureBuilder();
     var app = builder.Build();
 
     // Configure the HTTP request pipeline.

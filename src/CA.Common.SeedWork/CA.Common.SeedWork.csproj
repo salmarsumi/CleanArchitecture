@@ -6,9 +6,4 @@
     <Nullable>disable</Nullable>
   </PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\CA.Api.Application\CA.Api.Application.csproj" />
-    <ProjectReference Include="..\CA.Common.EF\CA.Common.EF.csproj" />
-  </ItemGroup>
-
 </Project>

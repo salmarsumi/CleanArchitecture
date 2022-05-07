@@ -11,7 +11,13 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\CA.Api.Application\CA.Api.Application.csproj" />
+    <ProjectReference Include="..\CA.Api.Infrastructure\CA.Api.Infrastructure.csproj" />
     <ProjectReference Include="..\CA.Common\CA.Common.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Application\" />
   </ItemGroup>
 
 </Project>

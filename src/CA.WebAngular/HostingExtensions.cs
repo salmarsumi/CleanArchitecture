@@ -4,14 +4,17 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Authorization;
+using Serilog;
 using System.IdentityModel.Tokens.Jwt;
 
 namespace CA.WebAngular
 {
     public static class HostingExtensions
     {
-        public static WebApplicationBuilder ConfigureServices(this WebApplicationBuilder builder)
+        public static WebApplicationBuilder ConfigureBuilder(this WebApplicationBuilder builder)
         {
+            builder.Host.UseSerilog();
+
             // YARP
             builder.Services.AddReverseProxy()
                 .LoadFromConfig(builder.Configuration.GetSection("ReverseProxy"));
@@ -69,7 +72,7 @@ namespace CA.WebAngular
                 })
                 .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, options =>
                 {
-                    options.Cookie.Name = "__Host-bff";
+                    options.Cookie.Name = "__Host-CA-bff";
                     options.Cookie.SameSite = SameSiteMode.Strict;
                 })
                 .AddOpenIdConnect(OpenIdConnectDefaults.AuthenticationScheme, options =>

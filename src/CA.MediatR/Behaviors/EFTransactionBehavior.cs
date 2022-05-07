@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using CA.Common.EF;
+using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
