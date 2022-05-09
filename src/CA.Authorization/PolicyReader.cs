@@ -1,11 +1,12 @@
-﻿using SMD.Security.Authorization.PolicyRuntime;
+﻿using CA.Common.Permissions;
+using SMD.Security.Authorization.PolicyRuntime;
 using SMD.Security.Authorization.Store;
 
 namespace CA.Authorization
 {
     public class PolicyReader : IPolicyReader
     {
-        private readonly Policy _policy = new(
+        private static readonly Policy _policy = new(
             new Role[]
             {
                 new() 
@@ -18,12 +19,17 @@ namespace CA.Authorization
             { 
                 new() 
                 {
-                    Name = "ViewWeather",
+                    Name = AppPermissions.ViewWeather,
                     Roles = new[] { "Admin" }
                 },
                 new()
                 {
-                    Name = "CreateWeather",
+                    Name = AppPermissions.CreateWeather,
+                    Roles = new[] { "Admin" }
+                },
+                new()
+                {
+                    Name = AppPermissions.DeleteWeather,
                     Roles = new[] { "Admin" }
                 }
             });

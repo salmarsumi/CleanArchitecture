@@ -8,14 +8,33 @@ import { HttpClient } from '@angular/common/http';
 export class FetchDataComponent {
   public forecasts: WeatherForecast[] = [];
 
-  constructor(http: HttpClient, @Inject('BASE_URL') baseUrl: string) {
-    http.get<WeatherForecast[]>(baseUrl + 'api').subscribe(result => {
+  constructor(private http: HttpClient) {
+    this.loadAll();
+  }
+
+  addNew() {
+    this.http.post('/api/weather', {}).subscribe(result => {
+      this.loadAll();
+
+    }, error => console.error(error));
+  }
+
+  loadAll() {
+    this.http.get<WeatherForecast[]>('/api/weather').subscribe(result => {
       this.forecasts = result;
+
+    }, error => console.error(error));
+  }
+
+  delete(id: number) {
+    this.http.delete(`/api/weather/${id}`).subscribe(result => {
+      this.loadAll();
     }, error => console.error(error));
   }
 }
 
 interface WeatherForecast {
+  id: number;
   date: string;
   temperatureC: number;
   temperatureF: number;

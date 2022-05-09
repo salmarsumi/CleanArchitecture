@@ -21,11 +21,13 @@ namespace CA.Identity
             {
                 new ApiResource("api", "Api Service")
                 {
-                    Scopes = { "api" }
+                    Scopes = { "api.full" },
+                    UserClaims = { "name", "email" }
                 },
-                new ApiResource("authorization", "Authorization Service")
+                new ApiResource("authz", "Authorization Service")
                 {
-                    Scopes = { "authorization" }
+                    Scopes = { "authz.full" },
+                    UserClaims = { "name", "email" }
                 }
             };
 
@@ -33,10 +35,10 @@ namespace CA.Identity
             new ApiScope[]
             {
                 // API scopes
-                new ApiScope(name: "api", displayName: "Reads data from api service."),
+                new ApiScope(name: "api.full", displayName: "Reads data from api service."),
 
                 // authorization API scopes
-                new ApiScope(name: "authorization", displayName: "Reads data from authorization service."),
+                new ApiScope(name: "authz.full", displayName: "Reads data from authorization service."),
             };
 
         public static IEnumerable<Client> Clients() =>
@@ -66,8 +68,8 @@ namespace CA.Identity
                         IdentityServerConstants.StandardScopes.OpenId,
                         IdentityServerConstants.StandardScopes.Profile,
                         IdentityServerConstants.StandardScopes.Email,
-                        "api",
-                        "authorization"
+                        "api.full",
+                        "authz.full"
                     }
                 }
             };

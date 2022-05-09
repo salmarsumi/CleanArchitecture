@@ -15,6 +15,7 @@ namespace CA.Identity
             builder.Services.AddIdentityServer()
                 .AddInMemoryClients(Config.Clients())
                 .AddInMemoryIdentityResources(Config.Resources())
+                .AddInMemoryApiResources(Config.Apis())
                 .AddInMemoryApiScopes(Config.Scopes())
                 .AddTestUsers(TestUsers.Users);
 

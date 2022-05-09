@@ -1,14 +1,20 @@
 ﻿using CA.Api.Application.Interfaces;
+using CA.Common.Permissions;
 using CA.MediatR;
 using MediatR;
 
 namespace CA.Api.Application.WeatherForcast.Commands.Create
 {
-    public class CreateWeatherForcastCommand : IRequest<int>, ITransactionalRequest
+    public class CreateWeatherForcastCommand : IRequest<int>, ITransactionalRequest, IAuthorizedRequest
     {
         public DateTime Date { get; set; }
         public int TemperatureC { get; set; }
         public string Summary { get; set; }
+
+        public IEnumerable<string> GetRequiredPermissions()
+        {
+            return new[] { AppPermissions.CreateWeather };
+        }
     }
 
     public class CreateWeatherForcastCommandHandler : IRequestHandler<CreateWeatherForcastCommand, int>

@@ -9,7 +9,7 @@ namespace CA.Api.Endpoints
     {
         public static WebApplication MapWeatherForcastEndpoints(this WebApplication app)
         {
-            app.MapGet("/weather", async (ISender mediator) =>
+            app.MapGet("/weather", async (ISender mediator, HttpContext context) =>
             {
                 var result = await mediator.Send(new GetAllWeatherForcastQuery());
 

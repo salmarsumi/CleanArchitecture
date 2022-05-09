@@ -1,5 +1,6 @@
 ﻿using CA.Authorization.Endpoints;
 using CA.Common.Logging;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Serilog;
@@ -51,7 +52,7 @@ namespace CA.Authorization
                     options.Authority = "https://localhost:7127";
                     options.TokenValidationParameters.ValidateAudience = true;
                     options.RequireHttpsMetadata = false;
-                    options.Audience = "authorization";
+                    options.Audience = "authz";
                 });
 
             return builder;

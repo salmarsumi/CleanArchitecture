@@ -14,22 +14,22 @@ namespace CA.Common.Services
 
         public ClaimsPrincipal GetUser()
         {
-            return _httpContextAccessor.HttpContext!.User;
+            return _httpContextAccessor.HttpContext.User;
         }
 
         public string GetUserId()
         {
-            return _httpContextAccessor.HttpContext?.User?.FindFirst("sub")?.Value ?? "not found";
+            return _httpContextAccessor.HttpContext.User.FindFirst("sub")?.Value ?? "not found";
         }
 
         public string GetUsername()
         {
-            return _httpContextAccessor.HttpContext!.User!.Identity!.Name ?? "Not Authenticated";
+            return _httpContextAccessor.HttpContext.User.Identity.Name ?? "Not Authenticated";
         }
 
         public bool IsAuthenticated()
         {
-            return _httpContextAccessor.HttpContext!.User!.Identity!.IsAuthenticated;
+            return _httpContextAccessor.HttpContext.User.Identity.IsAuthenticated;
         }
     }
 }

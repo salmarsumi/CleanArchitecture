@@ -106,18 +106,17 @@ namespace CA.WebAngular
                     options.ClientSecret = "secret";
                     options.ResponseType = "code";
 
-                    options.Scope.Clear();
                     options.Scope.Add("openid");
+                    options.Scope.Add("email");
                     options.Scope.Add("profile");
-                    options.Scope.Add("api");
-                    options.Scope.Add("authorization");
+                    options.Scope.Add("api.full");
+                    options.Scope.Add("authz.full");
+
+                    options.RequireHttpsMetadata = false;
 
                     options.UsePkce = true;
                     options.GetClaimsFromUserInfoEndpoint = true;
                     options.SaveTokens = true;
-
-                    options.TokenValidationParameters.NameClaimType = "name";
-                    options.TokenValidationParameters.RoleClaimType = "role";
                 });
 
             return builder;

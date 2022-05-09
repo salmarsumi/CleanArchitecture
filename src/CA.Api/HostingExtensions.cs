@@ -64,7 +64,7 @@ namespace CA.Api
                 .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
                 {
                     options.Authority = "https://localhost:7127";
-                    options.TokenValidationParameters.ValidateAudience = true;
+                    options.TokenValidationParameters.ValidTypes = new[] { "at+jwt" };
                     options.RequireHttpsMetadata = false;
                     options.Audience = "api";
                 });
