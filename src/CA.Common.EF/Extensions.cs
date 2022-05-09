@@ -1,10 +1,8 @@
 ﻿using CA.Common.SeedWork;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 
 namespace CA.Common.EF
 {
@@ -59,6 +57,43 @@ namespace CA.Common.EF
                 .ToList();
             entries.ForEach(e => e.State = EntityState.Unchanged);
             assign(entity, localEntities);
+        }
+
+        /// <summary>
+        /// Extension method to run migrations on the application host
+        /// </summary>
+        /// <typeparam name="TContext"></typeparam>
+        /// <param name="host"></param>
+        /// <param name="seeder"></param>
+        /// <returns></returns>
+        public static IHost MigrateDbContext<TContext>(this IHost host, Action<TContext, IServiceProvider> seeder)
+            where TContext : DbContext
+        {
+            using (var scope = host.Services.CreateScope())
+            {
+                var services = scope.ServiceProvider;
+                var logger = services.GetRequiredService<ILogger<TContext>>();
+                var context = services.GetService<TContext>();
+
+                try
+                {
+                    logger.LogInformation($"Migrating database associated with context {typeof(TContext).Name}");
+
+                    logger.LogInformation($"Database migration started with context {typeof(TContext).Name}");
+
+                    context.Database.Migrate();
+
+                    seeder(context, services);
+
+                    logger.LogInformation($"Migrated database associated with context {typeof(TContext).Name}");
+                }
+                catch (Exception ex)
+                {
+                    logger.LogError(ex, $"An error occured while migrating the database used on context {typeof(TContext).Name}");
+                }
+            }
+
+            return host;
         }
     }
 }

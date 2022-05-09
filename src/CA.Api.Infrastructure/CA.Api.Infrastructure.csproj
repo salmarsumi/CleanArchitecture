@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="6.0.4" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\CA.Api.Application\CA.Api.Application.csproj" />
     <ProjectReference Include="..\CA.Common.EF\CA.Common.EF.csproj" />
   </ItemGroup>

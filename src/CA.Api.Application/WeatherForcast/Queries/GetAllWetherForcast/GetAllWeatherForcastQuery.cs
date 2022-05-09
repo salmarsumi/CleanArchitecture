@@ -2,7 +2,7 @@
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace CA.Api.Application.WeatherForcast.Queries.GetAllWetherForcast
+namespace CA.Api.Application.WeatherForcast.Queries
 {
     public class GetAllWeatherForcastQuery : IRequest<IEnumerable<WeatherForecastDto>>
     {
