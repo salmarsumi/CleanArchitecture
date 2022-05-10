@@ -38,11 +38,9 @@ namespace CA.Common.Logging
                 // Attach additional properties to the request completion event
                 options.EnrichDiagnosticContext = (diagnosticContext, httpContext) =>
                 {
-                    const string requestIdHeader = "Request-Id";
-
-                    if (httpContext.Request.Headers.ContainsKey(requestIdHeader))
+                    if (httpContext.Request.Headers.ContainsKey(Constants.CORRELATION_HEADER))
                     {
-                        diagnosticContext.Set("CorrelationId", httpContext.Request.Headers[requestIdHeader].First());
+                        diagnosticContext.Set("CorrelationId", httpContext.Request.Headers[Constants.CORRELATION_HEADER].First());
                     }
 
                     // Attach additional properties to the request completion event

@@ -1,4 +1,5 @@
-﻿using CA.Common.Logging;
+﻿using CA.Common;
+using CA.Common.Logging;
 using CA.WebAngular.Endpoints;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -12,9 +13,7 @@ namespace CA.WebAngular
 {
     public static class HostingExtensions
     {
-        private const string TOKEN_NAME = "access_token";
         private const string AUTHORIZATION_HEADR = "Authorization";
-        private const string CORRELATION_HEADER = "Request-Id";
 
         public static WebApplicationBuilder ConfigureBuilder(this WebApplicationBuilder builder)
         {
@@ -22,19 +21,14 @@ namespace CA.WebAngular
 
             // YARP
             builder.Services.AddReverseProxy()
+                //.ConfigureHttpClient((_, handler) => handler.ActivityHeadersPropagator = null)
                 .LoadFromConfig(builder.Configuration.GetSection("ReverseProxy"))
                 .AddTransforms(builderContext =>
                 {
                     builderContext.AddRequestTransform(async transforContext =>
                     {
-                        // Correlation header
-                        if (transforContext.HttpContext.Request.Headers.ContainsKey(CORRELATION_HEADER))
-                        {
-                            transforContext.ProxyRequest.Headers.Add(CORRELATION_HEADER, transforContext.HttpContext.Request.Headers[CORRELATION_HEADER][0]);
-                        }
-
                         // Access token
-                        var token = await transforContext.HttpContext.GetTokenAsync(TOKEN_NAME);
+                        var token = await transforContext.HttpContext.GetTokenAsync(Constants.TOKEN_NAME);
                         if (token is not null)
                         {
                             transforContext.ProxyRequest.Headers.Add(AUTHORIZATION_HEADR, $"Bearer {token}");
@@ -64,6 +58,11 @@ namespace CA.WebAngular
                 .UseAuthorization()
                 .Use(async (context, next) =>
                 {
+                    if (!context.Response.Headers.ContainsKey(Constants.CORRELATION_HEADER))
+                    {
+                        context.Response.Headers.Add(Constants.CORRELATION_HEADER, context.Request.Headers[Constants.CORRELATION_HEADER].First());
+                    }
+
                     if (context.User.Identity.IsAuthenticated)
                     {
                         await next();

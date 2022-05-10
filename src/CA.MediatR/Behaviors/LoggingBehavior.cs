@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using CA.Common;
+using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 
@@ -18,16 +19,15 @@ namespace CA.MediatR.Behaviors
             _logger = logger;
         }
 
-        public Task<TResponse> Handle(TRequest request, CancellationToken cancellationToken, RequestHandlerDelegate<TResponse> next)
+        public async Task<TResponse> Handle(TRequest request, CancellationToken cancellationToken, RequestHandlerDelegate<TResponse> next)
         {
-            const string requestIdHeader = "Request-Id";
             var correlationId = string.Empty;
             var userId = string.Empty;
             var username = string.Empty;
 
-            if (_httpContextAccessor.HttpContext.Request.Headers.ContainsKey(requestIdHeader))
+            if (_httpContextAccessor.HttpContext.Request.Headers.ContainsKey(Constants.CORRELATION_HEADER))
             {
-                correlationId = _httpContextAccessor.HttpContext.Request.Headers[requestIdHeader].First();
+                correlationId = _httpContextAccessor.HttpContext.Request.Headers[Constants.CORRELATION_HEADER].First();
             }
 
             userId = _httpContextAccessor.HttpContext.User.HasClaim(x => x.Type == "sub") ? _httpContextAccessor.HttpContext.User.FindFirst("sub")!.Value : "User id not found";
@@ -46,7 +46,7 @@ namespace CA.MediatR.Behaviors
                 // check if a safe copy is needed before logging the request
                 request is ISecuritySensitive<TRequest> sensitive ? sensitive.GetSafeCopy() : request);
 
-                return next();
+                return await next();
             }
         }
     }

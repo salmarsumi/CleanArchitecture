@@ -5,7 +5,6 @@ namespace CA.Common.Logging
     public class CorrelationIdMiddleware
     {
         private readonly RequestDelegate _next;
-        private const string REQUESTIDHEADER = "Request-Id";
 
         public CorrelationIdMiddleware(RequestDelegate next)
         {
@@ -14,14 +13,9 @@ namespace CA.Common.Logging
 
         public async Task InvokeAsync(HttpContext context)
         {
-            if (!context.Request.Headers.ContainsKey(REQUESTIDHEADER))
+            if (!context.Request.Headers.ContainsKey(Constants.CORRELATION_HEADER))
             {
-                context.Request.Headers.Add(REQUESTIDHEADER, Guid.NewGuid().ToString());
-            }
-
-            if (!context.Response.Headers.ContainsKey(REQUESTIDHEADER))
-            {
-                context.Response.Headers.Add(REQUESTIDHEADER, context.Request.Headers[REQUESTIDHEADER]);
+                context.Request.Headers.Add(Constants.CORRELATION_HEADER, Guid.NewGuid().ToString());
             }
 
             // Call the next delegate/middleware in the pipeline
