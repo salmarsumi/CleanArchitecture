@@ -1,5 +1,6 @@
 using CA.Authorization;
 using CA.Common.Logging;
+using CA.Common.Middleware;
 using Serilog;
 
 Log.Logger = LoggingHelper.CASerilogConfiguration("Authorization").CreateLogger();
@@ -13,7 +14,7 @@ try
     builder.ConfigureBuilder();
 
     var app = builder.Build();
-
+    app.UseExceptionHandler(ExceptionHandler.Handler);
     // Configure the HTTP request pipeline.
     app.ConfigurePipeline();
 

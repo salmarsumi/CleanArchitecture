@@ -1,5 +1,6 @@
 using CA.Api;
 using CA.Common.Logging;
+using CA.Common.Middleware;
 using Serilog;
 
 Log.Logger = LoggingHelper.CASerilogConfiguration("Api").CreateLogger();
@@ -13,11 +14,7 @@ try
     builder.ConfigureBuilder();
 
     var app = builder.Build();
-    
-    // Migrate the databse
-    // for production this should be optional and only triggered on command arguments
-    // the migration should not happen on every run
-    // app.MigrateDbContext<ApiDbContext>((_, __) => { });
+    app.UseExceptionHandler(ExceptionHandler.Handler);
 
     // Configure the HTTP request pipeline.
     app.ConfigurePipeline();

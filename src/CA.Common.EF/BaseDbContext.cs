@@ -1,4 +1,5 @@
-﻿using CA.Common.SeedWork;
+﻿using CA.Common.Exceptions;
+using CA.Common.SeedWork;
 using CA.Common.Services;
 using Microsoft.EntityFrameworkCore;
 
@@ -18,14 +19,30 @@ namespace CA.Common.EF
         {
             Audit();
             Concurrency();
-            return base.SaveChanges();
+
+            try
+            {
+                return base.SaveChanges();
+            }
+            catch (DbUpdateConcurrencyException ex)
+            {
+                throw new ConcurrencyException(ex.Message, ex);
+            }
         }
 
         public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {
             Audit();
             Concurrency();
-            return base.SaveChangesAsync(cancellationToken);
+
+            try
+            {
+                return base.SaveChangesAsync(cancellationToken);
+            }
+            catch (DbUpdateConcurrencyException ex)
+            {
+                throw new ConcurrencyException(ex.Message, ex);
+            }
         }
 
         private void Audit()
