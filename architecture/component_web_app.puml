@@ -1,0 +1,41 @@
+@startuml
+
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
+
+HIDE_STEREOTYPE()
+
+title Component diagram for Weather Forecast System - Web Application
+
+Person(user, "User", "The end user of the system.")
+
+Container(spa, "Single-Page App", "Typescript, Angular", "Provides all the WFS functionality to users via their web browser")
+Container(api, "API Application", "C#, ASP.NET Core Minimal Api", "Provides WFS functionality via API")
+Container(authz, "Authorization Service", "ASP.NET Core Minimal Api", "Provides permission authorizations to the API service")
+
+System_Ext(identity, "Duende IdentityServer", "User Auhentication and Token Issuer")
+
+Container_Boundary(web_app, "Web Application") {
+    Component(auth_mid, "Force Authentication Middleware", "ASP.NET Core Middleware", "Verify all requests are on behalf of an authenticated user.")
+    Component(auth, "OpenId Connect Middleware", "ASP.NET Core Middleware", "Provide OpenID Connect and OAuth 2.0 services.")
+    Component(yarp, "YARP Reverse Proxy", "Nuget Package", "Proxy all traffic from the SPA to the API application.")
+    Component(account_ep, "Account Endpoints", "ASP.NET Core Minimal Api", "Provide session and account endpoints")
+}
+
+Rel_Neighbor(user, auth_mid, "Uses", "HTTPS")
+Rel_L(user, spa, "Uses")
+Rel(user, identity, "Authenticate", "HTTPS")
+Rel_Neighbor(auth, identity, "Request Token")
+Rel_U(auth_mid, spa, "Delivers", "On all other paths")
+Rel(spa, auth_mid, "Uses", "JSON/HTTPS")
+Rel(auth_mid, yarp, "/api")
+Rel_Neighbor(auth_mid, account_ep, "/account")
+Rel(auth_mid, auth, "Unauthenticated")
+Rel(yarp, api, "Proxy", "OAuth JSON/HTTPS")
+Rel_R(api, authz, "Authorize", "OAuth JSON/HTTPS")
+Rel_U(api, identity, "Validate Token", "HTTPS")
+Rel_U(authz, identity, "Validate Token", "HTTPS")
+
+Lay_L(auth, yarp)
+Lay_L(user, spa)
+
+@enduml

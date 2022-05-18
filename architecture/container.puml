@@ -1,0 +1,30 @@
+@startuml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+HIDE_STEREOTYPE()
+
+title Container diagram for Weather Forecast System
+
+Person(user, "User", "The end user of the system.")
+
+System_Boundary(weather_system, "Weather Forecast System") {
+    Container(web_app, "Web Application", "C#, ASP.NET Core Minimal Api, YARP Reverse Proxy", "Delivers the static content, the WFS SPA, and proxy SPA requests back to the api application.")
+    Container(spa, "Single-Page App", "Typescript, Angular", "Provides all the WFS functionality to users via their web browser")
+    Container(api, "API Application", "C#, ASP.NET Core Minimal Api", "Provides WFS functionality via API")
+    Container(authz, "Authorization Service", "ASP.NET Core Minimal Api", "Provides permission authorizations to the API service")
+}
+
+System_Ext(identity, "Duende IdentityServer", "User Auhentication and Token Issuer")
+
+Rel(user, spa, "Uses", "HTTPS")
+Rel_L(user, web_app, "Authenticate", "OpenID Connect/HTTPS")
+Rel_L(web_app, spa, "Delivers")
+Rel(spa, web_app, "Uses", "async JSON/HTTPS")
+Rel_R(web_app, api, "Proxy", "OAuth JSON/HTTPS")
+Rel(api, authz, "Authorize", "OAuth JSON/HTTPS")
+Rel(api, identity, "Validate Token", "HTTPS")
+Rel_R(authz, identity, "Validate Token", "HTTPS")
+Rel(user, identity, "Authenticate", "HTTPS")
+Rel(web_app, identity, "Request Token")
+
+@enduml

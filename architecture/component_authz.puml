@@ -1,0 +1,17 @@
+@startuml
+
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
+
+HIDE_STEREOTYPE()
+
+title Component diagram for Weather Forecast System - Authorization Service
+
+Container(api, "API Application", "C#, ASP.NET Core Minimal Api", "Provides WFS functionality via API")
+
+System_Ext(identity, "Duende IdentityServer", "User Auhentication and Token Issuer")
+
+Container_Boundary(api, "Authorization Service") {
+    
+}
+
+@enduml

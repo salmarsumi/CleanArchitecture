@@ -37,7 +37,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CA.Api.Application", "src\C
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Authz", "Authz", "{87D2BC2E-4B99-4A4C-A9E6-E48793F930E3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CA.Authorization", "src\CA.Authorization\CA.Authorization.csproj", "{FAF410DD-8C9C-42A0-AF68-1A45AFCF779F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CA.Authorization", "src\CA.Authorization\CA.Authorization.csproj", "{FAF410DD-8C9C-42A0-AF68-1A45AFCF779F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

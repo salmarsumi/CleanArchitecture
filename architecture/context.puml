@@ -1,0 +1,17 @@
+@startuml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
+
+HIDE_STEREOTYPE()
+
+title System Context diagram for Weather Forecast System
+
+Person(user, "User", "The end user of the system.")
+
+System(weather_system, "Weather Forecast System", "Allow users to manage weather forecast data.")
+System_Ext(identity, "Duende IdentityServer", "User Auhentication and Token Issuer")
+
+Rel(user, weather_system, "Uses")
+Rel(user, identity, "Request Tokens")
+Rel_Neighbor(weather_system, identity, "Validates tokens")
+
+@enduml
