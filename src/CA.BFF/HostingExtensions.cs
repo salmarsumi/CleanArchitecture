@@ -58,6 +58,7 @@ namespace CA.WebAngular
                 .UseAuthorization()
                 .Use(async (context, next) =>
                 {
+                    // write the correlation id into the response if its found
                     if (!context.Response.Headers.ContainsKey(Constants.CORRELATION_HEADER))
                     {
                         context.Response.Headers.Add(Constants.CORRELATION_HEADER, context.Request.Headers[Constants.CORRELATION_HEADER].First());
@@ -96,6 +97,8 @@ namespace CA.WebAngular
                 {
                     options.Cookie.Name = "__Host-CA-bff";
                     options.Cookie.SameSite = SameSiteMode.Strict;
+                    options.ExpireTimeSpan = TimeSpan.FromHours(1);
+                    options.SlidingExpiration = false;
                 })
                 .AddOpenIdConnect(OpenIdConnectDefaults.AuthenticationScheme, options =>
                 {
