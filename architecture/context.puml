@@ -11,7 +11,7 @@ System(weather_system, "Weather Forecast System", "Allow users to manage weather
 System_Ext(identity, "Duende IdentityServer", "User Auhentication and Token Issuer")
 
 Rel(user, weather_system, "Uses")
-Rel(user, identity, "Request Tokens")
+Rel(weather_system, identity, "Request Tokens")
 Rel_Neighbor(weather_system, identity, "Validates tokens")
 
 @enduml
