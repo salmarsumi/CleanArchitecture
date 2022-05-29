@@ -1,7 +1,9 @@
 ﻿using CA.Api.Application.WeatherForcast.Commands.Create;
 using CA.Api.Application.WeatherForcast.Commands.Delete;
 using CA.Api.Application.WeatherForcast.Queries;
+using CA.Common.Permissions;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CA.Api.Endpoints
 {
@@ -9,14 +11,14 @@ namespace CA.Api.Endpoints
     {
         public static WebApplication MapWeatherForcastEndpoints(this WebApplication app)
         {
-            app.MapGet("/weather", async (ISender mediator, HttpContext context) =>
+            app.MapGet("/weather", [Authorize(nameof(AppPermissions.ViewWeather))] async (ISender mediator, HttpContext context) =>
             {
                 var result = await mediator.Send(new GetAllWeatherForcastQuery());
 
                 return Results.Ok(result);
             }).RequireAuthorization();
 
-            app.MapPost("/weather", async (ISender mediator) =>
+            app.MapPost("/weather", [Authorize(nameof(AppPermissions.CreateWeather))] async (ISender mediator) =>
             {
                 var id = await mediator.Send(new CreateWeatherForcastCommand
                 {
@@ -28,7 +30,7 @@ namespace CA.Api.Endpoints
                 return Results.Created("/", id);
             }).RequireAuthorization();
 
-            app.MapDelete("/weather/{id}", async (int id, ISender mediator) =>
+            app.MapDelete("/weather/{id}", [Authorize(nameof(AppPermissions.DeleteWeather))] async (int id, ISender mediator) =>
             {
                 await mediator.Send(new DeleteWeatherForcastCommand { Id = id });
 

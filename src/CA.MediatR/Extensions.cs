@@ -17,7 +17,6 @@ namespace CA.MediatR
         {
             services.AddMediatR(typeof(T).Assembly);
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(LoggingBehavior<,>));
-            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(AuthorizationBehavior<,>));
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidatorBehavior<,>));
             if (isTransactional)
             {
