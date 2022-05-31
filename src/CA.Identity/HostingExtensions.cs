@@ -12,7 +12,11 @@ namespace CA.Identity
 
             builder.Services.AddRazorPages();
 
-            builder.Services.AddIdentityServer()
+            builder.Services.AddIdentityServer(options =>
+            {
+                options.Authentication.CookieLifetime = TimeSpan.FromMinutes(60);
+                options.Authentication.CookieSlidingExpiration = false;
+            })
                 .AddInMemoryClients(Config.Clients())
                 .AddInMemoryIdentityResources(Config.Resources())
                 .AddInMemoryApiResources(Config.Apis())

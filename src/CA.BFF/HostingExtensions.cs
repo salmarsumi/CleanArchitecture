@@ -97,7 +97,7 @@ namespace CA.WebAngular
                 {
                     options.Cookie.Name = "__Host-CA-bff";
                     options.Cookie.SameSite = SameSiteMode.Strict;
-                    options.ExpireTimeSpan = TimeSpan.FromHours(1);
+                    options.ExpireTimeSpan = TimeSpan.FromMinutes(60);
                     options.SlidingExpiration = false;
                 })
                 .AddOpenIdConnect(OpenIdConnectDefaults.AuthenticationScheme, options =>
