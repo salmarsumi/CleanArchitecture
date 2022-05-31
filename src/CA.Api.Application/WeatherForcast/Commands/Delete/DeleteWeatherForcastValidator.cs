@@ -1,12 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using FluentValidation;
 
 namespace CA.Api.Application.WeatherForcast.Commands.Delete
 {
-    internal class DeleteWeatherForcastValidator
+    public class DeleteWeatherForcastValidator : AbstractValidator<DeleteWeatherForcastCommand>
     {
+        public DeleteWeatherForcastValidator()
+        {
+            RuleFor(command => command.Id).NotEmpty();
+        }
     }
 }
