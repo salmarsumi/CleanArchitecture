@@ -6,12 +6,21 @@ HIDE_STEREOTYPE()
 
 title Component diagram for Weather Forecast System - Authorization Service
 
-Container(api, "API Application", "C#, ASP.NET Core Minimal Api", "Provides WFS functionality via API")
+Container(api_app, "API Application", "C#, ASP.NET Core Minimal Api", "Provides WFS functionality via API")
 
 System_Ext(identity, "Duende IdentityServer", "User Auhentication and Token Issuer")
 
 Container_Boundary(api, "Authorization Service") {
-    
+    Component(log, "Logging Middleware", "Serilog Logging", "Structured logging for all requests using Serilog.")
+    Component(auth, "JWT Bearer Authentication Middleware", "ASP.NET Core Middleware", "performs authentication by extracting and validating a JWT token from the Authorization request header.")
+    Component(policy_ep, "Policy Endpoints", "ASP.NET Core Minimal Api", "Provide policy validation endpoints.")
+    Component(policy_ops, "Policy Operations Component", "", "User permission evaluation operations")
 }
+
+Rel(api_app, log, "Authorize", "JSON/HTTPS")
+Rel_L(log, auth, " ")
+Rel_U(auth, identity, "Validate Token", "HTTPS")
+Rel(auth, policy_ep, "/policy")
+Rel_L(policy_ep, policy_ops, "Uses")
 
 @enduml
