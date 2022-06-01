@@ -9,13 +9,6 @@ export class SessionTimeoutInterceptor implements HttpInterceptor {
   ) { }
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-
-    //if (!req.headers.has('X-XSRF-TOKEN')) {
-    //  const xsrf = this.cookieServices.getCookie('XSRF-TOKEN');
-    //  req = req.clone({
-    //    headers: req.headers.set('X-XSRF-TOKEN', xsrf)
-    //  });
-    //}
     
     return next.handle(req).pipe(
       tap(event => {

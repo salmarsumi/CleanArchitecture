@@ -1,6 +1,7 @@
 ﻿using CA.Common;
 using CA.Common.Logging;
 using CA.WebAngular.Endpoints;
+using Microsoft.AspNetCore.Antiforgery;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
@@ -21,7 +22,6 @@ namespace CA.WebAngular
 
             // YARP
             builder.Services.AddReverseProxy()
-                //.ConfigureHttpClient((_, handler) => handler.ActivityHeadersPropagator = null)
                 .LoadFromConfig(builder.Configuration.GetSection("ReverseProxy"))
                 .AddTransforms(builderContext =>
                 {
@@ -35,6 +35,12 @@ namespace CA.WebAngular
                         }
                     });
                 });
+
+            // Antiforgery
+            builder.Services.AddAntiforgery(options =>
+             {
+                 options.HeaderName = Constants.CSRF_HEADER;
+             });
 
             // Authentication
             builder.ConfigureAuthentication();
@@ -64,8 +70,32 @@ namespace CA.WebAngular
                         context.Response.Headers.Add(Constants.CORRELATION_HEADER, context.Request.Headers[Constants.CORRELATION_HEADER].First());
                     }
 
+                    // Antiforgery
+                    IAntiforgery antiforgery = app.Services.GetRequiredService<IAntiforgery>();
+                    if (!context.Request.Headers.ContainsKey(Constants.CSRF_HEADER))
+                    {
+                        // The request token can be sent as a JavaScript-readable cookie, 
+                        // and Angular uses it the token as a header in every request.
+                        var tokens = antiforgery.GetAndStoreTokens(context);
+                        context.Response.Cookies.Append(Constants.CSRF_COOKIE_NAME, tokens.RequestToken,
+                            new CookieOptions()
+                            {
+                                HttpOnly = false,
+                                SameSite = SameSiteMode.Strict,
+                                Secure = true
+                            });
+                    }
+                    
+
                     if (context.User.Identity.IsAuthenticated)
                     {
+                        var path = context.Request.Path.Value;
+                        if (path.StartsWith("/api", StringComparison.OrdinalIgnoreCase) ||
+                            path.StartsWith("/account/session", StringComparison.OrdinalIgnoreCase))
+                        {
+                            await antiforgery.ValidateRequestAsync(context);
+                        }
+
                         await next();
                     }
                     else

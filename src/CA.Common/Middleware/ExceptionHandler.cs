@@ -33,9 +33,7 @@ namespace CA.Common.Middleware
 
                         using (var scope = logger.BeginScope("{CorrelationId}", correlationId))
                         {
-                            logger.LogError(new EventId(exceptionHandlerPathFeature.Error.HResult),
-                                exceptionHandlerPathFeature.Error,
-                                exceptionHandlerPathFeature.Error.Message);
+                            logger.LogError(exceptionHandlerPathFeature.Error, exceptionHandlerPathFeature.Error.Message);
                         }
 
                         JsonErrorResponse result;
@@ -80,8 +78,7 @@ namespace CA.Common.Middleware
                             result.DeveloperMessage = exceptionHandlerPathFeature.Error.ToString();
                         }
 
-                        context.Response.ContentType = "application/json";
-                        await context.Response.WriteAsync(JsonSerializer.Serialize(result));
+                        await context.Response.WriteAsJsonAsync(result);
                     }
 
                 });
