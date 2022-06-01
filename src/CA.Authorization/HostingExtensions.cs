@@ -1,6 +1,5 @@
 ﻿using CA.Authorization.Endpoints;
 using CA.Common.Logging;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Serilog;
