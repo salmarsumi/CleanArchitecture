@@ -1,0 +1,22 @@
+@startuml
+autonumber
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
+
+HIDE_STEREOTYPE()
+
+title Weather Forecast System Authorization Flow
+
+participant User
+participant "Web Application BFF" as BFF
+participant "Api Application" as Api
+participant "Authorization Service" as Authz
+
+User -> BFF : Request data with session
+BFF -> Api : Request data with AccessToken
+Api -> Authz : Request user policies
+Authz -> Api : Return user policies
+Api -> Api : Evaluate policies
+Api -> BFF : Return requested data
+BFF -> User : Return requested data
+
+@enduml

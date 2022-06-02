@@ -1,0 +1,28 @@
+@startuml
+autonumber
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
+
+HIDE_STEREOTYPE()
+
+title Weather Forecast System Authentication Flow
+
+participant User
+participant "Web Application BFF" as BFF
+participant "IdentityServer" as Identity
+participant "Api Application" as Api
+
+User -> BFF : Request Api access
+BFF -> BFF : Generate Code Verifier and Code Challenge
+BFF -> User: Provide the User with the redirect url
+User -> Identity: Authorization Code + Code Challenge to /authorize
+Identity -> User : Redirect to login
+User -> Identity : Authenticate
+Identity -> BFF : Authorization Code
+BFF -> Identity : Authorization Code + Code Verifier to /token
+Identity -> Identity : Validate Code Verifier and Challenge
+Identity -> BFF : Access Token
+BFF -> User : Return encrypted session cookie
+User -> BFF : Request data with session
+BFF -> Api : Request data with AccessToken
+
+@enduml
