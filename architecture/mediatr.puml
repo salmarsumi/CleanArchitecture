@@ -6,7 +6,8 @@ HIDE_STEREOTYPE()
 title Code diagram for MediatR Pipeline
 
 Boundary(mediatr, "MediatR") {
-    Boundary(behaviors, "Behaviors") {
+
+    namespace Behaviors {
              class EFTransactionBehavior {
             -_httpContextAccessor
             -_logger
@@ -24,7 +25,7 @@ Boundary(mediatr, "MediatR") {
         }
     }
     
-    Boundary(interfaces, "Interfaces") {
+    namespace Interfaces {
         interface ISecuritySensitive {
             GetSafeCopy()
         }
@@ -40,8 +41,8 @@ Boundary(mediatr, "MediatR") {
     }
 }
 
-Lay_L(IRquestHandler, IRequest)
-Lay_U(IRequest, ITransactionalRequest)
-Lay_U(Extensions, IRequest)
+Lay_L(Interfaces.IRquestHandler, Interfaces.IRequest)
+Lay_U(Interfaces.IRequest, Interfaces.ITransactionalRequest)
+Lay_U(Extensions, Interfaces.IRequest)
 
 @enduml
