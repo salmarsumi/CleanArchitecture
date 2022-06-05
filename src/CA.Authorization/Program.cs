@@ -14,7 +14,6 @@ try
     builder.ConfigureBuilder();
 
     var app = builder.Build();
-    app.UseExceptionHandler(ExceptionHandler.Handler);
     // Configure the HTTP request pipeline.
     app.ConfigurePipeline();
 

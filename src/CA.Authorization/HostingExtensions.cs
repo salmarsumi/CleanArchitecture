@@ -1,5 +1,6 @@
 ﻿using CA.Authorization.Endpoints;
 using CA.Common.Logging;
+using CA.Common.Middleware;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Serilog;
@@ -28,6 +29,8 @@ namespace CA.Authorization
 
         public static WebApplication ConfigurePipeline(this WebApplication app)
         {
+            app.UseExceptionHandler(ExceptionHandler.Handler);
+
             app
                 .UseHttpsRedirection()
                 .UseCASerilog();

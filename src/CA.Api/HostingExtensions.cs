@@ -4,6 +4,7 @@ using CA.Api.Endpoints;
 using CA.Api.Infrastructure.Data;
 using CA.Common.EF;
 using CA.Common.Logging;
+using CA.Common.Middleware;
 using CA.Common.Services;
 using CA.MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -44,6 +45,8 @@ namespace CA.Api
 
         public static WebApplication ConfigurePipeline(this WebApplication app)
         {
+            app.UseExceptionHandler(ExceptionHandler.Handler);
+
             app
                 .UseHttpsRedirection()
                 .UseCASerilog();
