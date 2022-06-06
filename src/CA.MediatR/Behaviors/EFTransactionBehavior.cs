@@ -32,7 +32,7 @@ namespace CA.MediatR.Behaviors
             if (request is ITransactionalRequest)
             {
                 var response = default(TResponse);
-                var typeName = request.GetGenericTypeName();
+                var typeName = request.GetTypeName();
 
                 // get a dbcontext instance through dependency container and not
                 // injected through the constructor as it will not be required for

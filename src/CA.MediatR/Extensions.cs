@@ -31,7 +31,7 @@ namespace CA.MediatR
             return services;
         }
 
-        internal static string GetGenericTypeName(this object @object)
+        internal static string GetTypeName(this object @object)
         {
             return @object.GetType().Name;
         }

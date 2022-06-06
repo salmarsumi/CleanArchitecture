@@ -18,7 +18,7 @@ namespace CA.MediatR.Behaviors
 
         public async Task<TResponse> Handle(TRequest request, CancellationToken cancellationToken, RequestHandlerDelegate<TResponse> next)
         {
-            var typeName = request.GetGenericTypeName();
+            var typeName = request?.GetTypeName();
 
             _logger.LogInformation("----- Validating request {CommandType}", typeName);
 

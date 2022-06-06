@@ -42,7 +42,7 @@ namespace CA.MediatR.Behaviors
             {
                 _logger.LogInformation(
                 "----- Handling Request {RequestName}: ({@Command})",
-                request.GetGenericTypeName(),
+                request.GetTypeName(),
                 // check if a safe copy is needed before logging the request
                 request is ISecuritySensitive<TRequest> sensitive ? sensitive.GetSafeCopy() : request);
 
