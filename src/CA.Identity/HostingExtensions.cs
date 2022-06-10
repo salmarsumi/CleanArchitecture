@@ -16,6 +16,7 @@ namespace CA.Identity
             {
                 options.Authentication.CookieLifetime = TimeSpan.FromMinutes(60);
                 options.Authentication.CookieSlidingExpiration = false;
+                options.Authentication.CookieSameSiteMode = SameSiteMode.Strict;
             })
                 .AddInMemoryClients(Config.Clients())
                 .AddInMemoryIdentityResources(Config.Resources())

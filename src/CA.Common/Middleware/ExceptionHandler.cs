@@ -1,5 +1,6 @@
 ﻿using CA.Common.Exceptions;
 using FluentValidation;
+using Microsoft.AspNetCore.Antiforgery;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Hosting;
@@ -62,6 +63,13 @@ namespace CA.Common.Middleware
                                     ExceptionType = "Concurrency"
                                 };
                                 context.Response.StatusCode = (int)HttpStatusCode.Conflict;
+                                break;
+                            case AntiforgeryValidationException:
+                                result = new JsonErrorResponse
+                                {
+                                    ExceptionType = "Validation"
+                                };
+                                context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
                                 break;
                             default:
                                 result = new JsonErrorResponse

@@ -1,5 +1,6 @@
 ﻿using CA.Common;
 using CA.Common.Logging;
+using CA.Common.Middleware;
 using CA.WebAngular.Endpoints;
 using Microsoft.AspNetCore.Antiforgery;
 using Microsoft.AspNetCore.Authentication;
@@ -53,6 +54,8 @@ namespace CA.WebAngular
 
         public static WebApplication ConfigurePipeline(this WebApplication app)
         {
+            app.UseExceptionHandler(ExceptionHandler.Handler);
+
             app
                 .UseHttpsRedirection()
                 .UseStaticFiles()
@@ -72,10 +75,10 @@ namespace CA.WebAngular
 
                     // Antiforgery
                     IAntiforgery antiforgery = app.Services.GetRequiredService<IAntiforgery>();
-                    if (!context.Request.Headers.ContainsKey(Constants.CSRF_HEADER))
+                    if (string.Equals(context.Request.Path.Value, "/account/postlogin", StringComparison.OrdinalIgnoreCase))
                     {
                         // The request token can be sent as a JavaScript-readable cookie, 
-                        // and Angular uses it the token as a header in every request.
+                        // and Angular uses the token as a header in every request.
                         var tokens = antiforgery.GetAndStoreTokens(context);
                         context.Response.Cookies.Append(Constants.CSRF_COOKIE_NAME, tokens.RequestToken,
                             new CookieOptions()
@@ -86,9 +89,10 @@ namespace CA.WebAngular
                             });
                     }
                     
-
+                    // Force authentication
                     if (context.User.Identity.IsAuthenticated)
                     {
+                        // Validate Antigorgery token
                         var path = context.Request.Path.Value;
                         if (path.StartsWith("/api", StringComparison.OrdinalIgnoreCase) ||
                             path.StartsWith("/account/session", StringComparison.OrdinalIgnoreCase))
@@ -129,6 +133,7 @@ namespace CA.WebAngular
                     options.Cookie.SameSite = SameSiteMode.Strict;
                     options.ExpireTimeSpan = TimeSpan.FromMinutes(60);
                     options.SlidingExpiration = false;
+                    options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
                 })
                 .AddOpenIdConnect(OpenIdConnectDefaults.AuthenticationScheme, options =>
                 {
