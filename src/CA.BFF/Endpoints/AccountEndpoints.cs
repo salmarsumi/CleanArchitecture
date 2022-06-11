@@ -1,4 +1,6 @@
-﻿using System.Security.Claims;
+﻿using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+using System.Security.Claims;
 
 namespace CA.WebAngular.Endpoints
 {
@@ -19,6 +21,13 @@ namespace CA.WebAngular.Endpoints
             });
 
             app.MapGet("/account/postlogin", () => Results.LocalRedirect("/"));
+
+            app.MapPost("/account/logout", () => 
+                Results.SignOut(authenticationSchemes: new List<string> 
+                { 
+                    CookieAuthenticationDefaults.AuthenticationScheme, 
+                    OpenIdConnectDefaults.AuthenticationScheme 
+                }));
 
             return app;
         }

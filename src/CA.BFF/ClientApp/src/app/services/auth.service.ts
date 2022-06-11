@@ -5,20 +5,24 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class AuthService {
+  private isLoggedIn = false
 
-  isLoggedIn = false;
   user = null;
 
   constructor(private http: HttpClient) { }
 
   async getSession() {
     const session = await this.http.get<any>('/account/session').toPromise();
-    if (session?.user) {
+    if (session?.username) {
       this.isLoggedIn = true;
-      this.user = session.user;
+      this.user = session.username;
     } else {
       this.isLoggedIn = false;
       this.user = null;
     }
+  }
+
+  isAuthenticated() {
+    return this.isLoggedIn;
   }
 }

@@ -41,6 +41,7 @@ namespace CA.WebAngular
             builder.Services.AddAntiforgery(options =>
              {
                  options.HeaderName = Constants.CSRF_HEADER;
+                 options.FormFieldName = Constants.CSRF_FORM_FIELD;
              });
 
             // Authentication
@@ -95,7 +96,8 @@ namespace CA.WebAngular
                         // Validate Antigorgery token
                         var path = context.Request.Path.Value;
                         if (path.StartsWith("/api", StringComparison.OrdinalIgnoreCase) ||
-                            path.StartsWith("/account/session", StringComparison.OrdinalIgnoreCase))
+                            path.StartsWith("/account/session", StringComparison.OrdinalIgnoreCase) ||
+                            path.StartsWith("/account/logout", StringComparison.OrdinalIgnoreCase))
                         {
                             await antiforgery.ValidateRequestAsync(context);
                         }
@@ -154,6 +156,8 @@ namespace CA.WebAngular
                     options.UsePkce = true;
                     options.GetClaimsFromUserInfoEndpoint = true;
                     options.SaveTokens = true;
+
+                    options.TokenValidationParameters.NameClaimType = "name";
                 });
 
             return builder;
