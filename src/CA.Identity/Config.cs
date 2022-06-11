@@ -5,8 +5,6 @@ namespace CA.Identity
 {
     public static class Config
     {
-        private const string ANGULAR_CLIENT = "angular_client";
-
         // Identity resources are data like user ID, name, or email address of a user
         public static IEnumerable<IdentityResource> Resources() =>
             new List<IdentityResource>
@@ -41,22 +39,21 @@ namespace CA.Identity
                 new ApiScope(name: "authz.full", displayName: "Reads data from authorization service."),
             };
 
-        public static IEnumerable<Client> Clients() =>
+        public static IEnumerable<Client> Clients(string clientUri) =>
             new Client[]
             {
                 new Client
                 {
                     ClientId = "angular",
                     ClientName = "Angular Web App",
-                    ClientUri = "https://localhost:44480",
+                    ClientUri = clientUri,
                     AllowedGrantTypes = GrantTypes.CodeAndClientCredentials,
                     RequireConsent = false,
                     RequirePkce = true,
-                    // AllowOfflineAccess = true,
                     AllowAccessTokensViaBrowser = false,
 
-                    RedirectUris = { "https://localhost:44480/signin-oidc" },
-                    PostLogoutRedirectUris = { "https://localhost:44480/signout-callback-oidc" },
+                    RedirectUris = { $"{clientUri}/signin-oidc" },
+                    PostLogoutRedirectUris = { $"{clientUri}/signout-callback-oidc" },
 
                     ClientSecrets =
                     {

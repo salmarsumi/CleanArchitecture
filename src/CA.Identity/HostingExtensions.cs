@@ -18,7 +18,7 @@ namespace CA.Identity
                 options.Authentication.CookieSlidingExpiration = false;
                 options.Authentication.CookieSameSiteMode = SameSiteMode.Strict;
             })
-                .AddInMemoryClients(Config.Clients())
+                .AddInMemoryClients(Config.Clients(builder.Configuration["ClientUri"]))
                 .AddInMemoryIdentityResources(Config.Resources())
                 .AddInMemoryApiResources(Config.Apis())
                 .AddInMemoryApiScopes(Config.Scopes())

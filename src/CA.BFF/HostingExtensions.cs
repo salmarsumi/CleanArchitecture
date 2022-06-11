@@ -137,7 +137,7 @@ namespace CA.WebAngular
                 })
                 .AddOpenIdConnect(OpenIdConnectDefaults.AuthenticationScheme, options =>
                 {
-                    options.Authority = "https://localhost:7127";
+                    options.Authority = builder.Configuration["TokenAuthority"];
 
                     options.ClientId = "angular";
                     options.ClientSecret = "secret";
