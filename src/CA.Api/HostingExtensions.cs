@@ -2,6 +2,7 @@
 using CA.Api.Application.WeatherForcast.Commands.Create;
 using CA.Api.Endpoints;
 using CA.Api.Infrastructure.Data;
+using CA.Common.Authorization.AspNetCore;
 using CA.Common.EF;
 using CA.Common.Logging;
 using CA.Common.Middleware;
@@ -12,7 +13,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Serilog;
-using SMD.Security.Authorization.AspNetCore;
 using System.IdentityModel.Tokens.Jwt;
 
 namespace CA.Api
@@ -36,9 +36,9 @@ namespace CA.Api
             
             // Permissions
             builder.Services
-                .AddRemotePolicyServices(builder.Configuration, "Policy")
+                .AddRemotePolicyServices()
                 .AddAuthorizationPermissionPolicies()
-                .AddRemotePolicyHttpClient();
+                .AddRemotePolicyHttpClient(builder.Configuration["AuthorizationService"]);
 
             return builder; 
         }

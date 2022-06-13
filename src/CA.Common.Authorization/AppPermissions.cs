@@ -1,4 +1,4 @@
-﻿namespace CA.Common.Permissions
+﻿namespace CA.Common.Authorization
 {
     public class AppPermissions
     {

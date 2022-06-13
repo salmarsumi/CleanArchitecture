@@ -1,8 +1,7 @@
-﻿using CA.Common.Permissions;
-using SMD.Security.Authorization.PolicyRuntime;
-using SMD.Security.Authorization.Store;
+﻿using CA.Common.Authorization;
+using CA.Common.Authorization.PolicyRuntime;
 
-namespace CA.Authorization
+namespace CA.Authorization.PolicyStore
 {
     public class PolicyReader : IPolicyReader
     {

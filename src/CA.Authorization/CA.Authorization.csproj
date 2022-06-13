@@ -12,11 +12,11 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.4" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.15.1" />
-    <PackageReference Include="SMD.Security.Authorization" Version="2.0.7" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.17.0" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\CA.Common.Authorization\CA.Common.Authorization.csproj" />
     <ProjectReference Include="..\CA.Common\CA.Common.csproj" />
   </ItemGroup>
 

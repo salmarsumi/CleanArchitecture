@@ -53,6 +53,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docker", "Docker", "{4202EF
 		docker\docker-compose.yml = docker\docker-compose.yml
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CA.Common.Authorization", "src\CA.Common.Authorization\CA.Common.Authorization.csproj", "{D9F83982-E9A2-4268-B541-24780CA4ADD3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -107,6 +109,10 @@ Global
 		{2B0140F9-16FB-4B4E-9B24-86CCD443B571}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2B0140F9-16FB-4B4E-9B24-86CCD443B571}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2B0140F9-16FB-4B4E-9B24-86CCD443B571}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D9F83982-E9A2-4268-B541-24780CA4ADD3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D9F83982-E9A2-4268-B541-24780CA4ADD3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D9F83982-E9A2-4268-B541-24780CA4ADD3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D9F83982-E9A2-4268-B541-24780CA4ADD3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -132,6 +138,7 @@ Global
 		{1D5ECB4B-FD71-4B5C-8114-08B16EB91098} = {FE139E03-F474-488D-8985-6522ADF6D405}
 		{067029F1-A638-4068-9962-BD13D0A171A3} = {567BD833-3603-4BB9-9B5C-0C0CC957AD31}
 		{2B0140F9-16FB-4B4E-9B24-86CCD443B571} = {1D5ECB4B-FD71-4B5C-8114-08B16EB91098}
+		{D9F83982-E9A2-4268-B541-24780CA4ADD3} = {5714FB82-EB71-4018-A105-43C316D4E74C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {7F681EAC-5657-40B1-A631-BC50EF5787CA}

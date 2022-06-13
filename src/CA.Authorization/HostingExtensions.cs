@@ -1,11 +1,13 @@
 ﻿using CA.Authorization.Endpoints;
+using CA.Authorization.PolicyStore;
+using CA.Common.Authorization.AspNetCore;
+using CA.Common.Authorization.Client;
+using CA.Common.Authorization.PolicyRuntime;
 using CA.Common.Logging;
 using CA.Common.Middleware;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Serilog;
-using SMD.Security.Authorization.AspNetCore;
-using SMD.Security.Authorization.Store;
 using System.IdentityModel.Tokens.Jwt;
 
 namespace CA.Authorization
@@ -17,7 +19,7 @@ namespace CA.Authorization
             builder.Host.UseSerilog();
 
             // Permissions
-            builder.Services.AddLocalPolicyServices();
+            builder.AddLocalPolicyServices();
 
             builder
                 .ConfigureAuthentication() // Authentication
@@ -84,6 +86,20 @@ namespace CA.Authorization
                         .RequireAuthenticatedUser()
                         .Build();
                 });
+
+            return builder;
+        }
+
+        public static WebApplicationBuilder AddLocalPolicyServices(this WebApplicationBuilder builder)
+        {
+            builder.Services.AddScoped<IPolicyOperations, PolicyOperations>();
+            builder.Services.AddScoped<IPolicyReader, PolicyReader>();
+            builder.Services.AddScoped<Policy>(provider =>
+            {
+                var policyReader = provider.GetRequiredService<IPolicyReader>();
+                Policy policy = policyReader.ReadPolicyAsync().GetAwaiter().GetResult();
+                return policy;
+            });
 
             return builder;
         }

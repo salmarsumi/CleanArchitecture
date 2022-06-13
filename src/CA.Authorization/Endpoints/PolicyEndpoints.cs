@@ -1,4 +1,4 @@
-﻿using SMD.Security.Authorization.Client;
+﻿using CA.Common.Authorization.Client;
 using System.Security.Claims;
 
 namespace CA.Authorization.Endpoints

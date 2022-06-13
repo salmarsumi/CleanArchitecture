@@ -1,7 +1,7 @@
 ﻿using CA.Api.Application.WeatherForcast.Commands.Create;
 using CA.Api.Application.WeatherForcast.Commands.Delete;
 using CA.Api.Application.WeatherForcast.Queries;
-using CA.Common.Permissions;
+using CA.Common.Authorization;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 
