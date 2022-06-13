@@ -45,7 +45,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "IntegrationTests", "Integra
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CA.Api.UnitTests", "test\CA.Api.UnitTests\CA.Api.UnitTests.csproj", "{067029F1-A638-4068-9962-BD13D0A171A3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CA.Api.IntegrationTets", "test\CA.Api.IntegrationTets\CA.Api.IntegrationTets.csproj", "{2B0140F9-16FB-4B4E-9B24-86CCD443B571}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CA.Api.IntegrationTets", "test\CA.Api.IntegrationTets\CA.Api.IntegrationTets.csproj", "{2B0140F9-16FB-4B4E-9B24-86CCD443B571}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docker", "Docker", "{4202EF4F-3C2F-49F0-AEDF-4E8907D2A868}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

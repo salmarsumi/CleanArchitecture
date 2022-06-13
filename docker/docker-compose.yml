@@ -1,0 +1,35 @@
+version: '3.9'
+
+services:
+  identity:
+    image: ca/identity
+    build:
+      context: ../.
+      dockerfile: src/CA.Identity/Dockerfile
+
+  authorization:
+    image: ca/authorization
+    build:
+      context: ../.
+      dockerfile: src/CA.Authorization/Dockerfile
+    depends_on:
+      - identity
+
+  api:
+    image: ca/api
+    build:
+      context: ../.
+      dockerfile: src/CA.Api/Dockerfile
+    depends_on:
+      - identity
+      - authorization
+
+  bff:
+    image: ca/bff
+    build:
+      context: ../.
+      dockerfile: src/CA.BFF/Dockerfile
+    depends_on:
+      - identity
+      - authorization
+      - api
