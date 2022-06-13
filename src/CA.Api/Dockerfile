@@ -23,7 +23,7 @@ RUN dotnet publish "CA.Api.csproj" -c Release -o /app/publish
 
 FROM base AS final
 WORKDIR /app
-RUN groupadd -r wfs && useradd -r -g wfs wfs
+RUN addgroup -S wfs && adduser -S wfs -G wfs
 USER wfs
 COPY --from=publish /app/publish .
 ENTRYPOINT ["dotnet", "CA.Api.dll"]
