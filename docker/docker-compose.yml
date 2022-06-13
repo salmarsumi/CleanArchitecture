@@ -1,5 +1,7 @@
 version: '3.9'
 
+name: ca
+
 services:
   identity:
     image: ca/identity

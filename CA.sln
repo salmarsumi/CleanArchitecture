@@ -48,6 +48,10 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CA.Api.IntegrationTets", "test\CA.Api.IntegrationTets\CA.Api.IntegrationTets.csproj", "{2B0140F9-16FB-4B4E-9B24-86CCD443B571}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docker", "Docker", "{4202EF4F-3C2F-49F0-AEDF-4E8907D2A868}"
+	ProjectSection(SolutionItems) = preProject
+		docker\docker-compose.dev.yml = docker\docker-compose.dev.yml
+		docker\docker-compose.yml = docker\docker-compose.yml
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
