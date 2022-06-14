@@ -14,6 +14,12 @@ namespace CA.Identity
 
             builder.Services.AddIdentityServer(options =>
             {
+                // Have to set issuer uri for docker environments
+                if (!string.IsNullOrWhiteSpace(builder.Configuration["ExternalAddress"]))
+                {
+                    options.IssuerUri = builder.Configuration["ExternalAddress"];
+                }
+
                 options.Authentication.CookieLifetime = TimeSpan.FromMinutes(60);
                 options.Authentication.CookieSlidingExpiration = false;
                 options.Authentication.CookieSameSiteMode = SameSiteMode.Strict;
