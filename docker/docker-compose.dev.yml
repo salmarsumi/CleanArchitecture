@@ -3,6 +3,7 @@ version: '3.9'
 services:
   identity-waf:
     environment:
+      - NGINX_ALWAYS_TLS_REDIRECT=on
       - BACKEND=http://identity
     ports:
       - "8090:80"
@@ -12,6 +13,7 @@ services:
 
   bff-waf:
     environment:
+      - NGINX_ALWAYS_TLS_REDIRECT=on
       - BACKEND=http://bff
     ports:
       - "8080:80"
@@ -57,7 +59,7 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Staging
       - ASPNETCORE_URLS=http://+:80
-      - TokenAuthority=https://identity
+      - TokenAuthority=http://identity
       - Clusters__apicluster__Destinations__api1__Address=http://api
     volumes:
       - bff-dpk:/root/.aspnet/DataProtection-Keys
