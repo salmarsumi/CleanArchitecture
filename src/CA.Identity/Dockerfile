@@ -20,5 +20,5 @@ FROM base AS final
 WORKDIR /app
 RUN addgroup -S wfs && adduser -S wfs -G wfs
 USER wfs
-COPY --from=publish /app/publish .
+COPY --chown=wfs:wfs --from=publish /app/publish .
 ENTRYPOINT ["dotnet", "CA.Identity.dll"]
