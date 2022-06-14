@@ -49,11 +49,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CA.Api.IntegrationTets", "t
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docker", "Docker", "{4202EF4F-3C2F-49F0-AEDF-4E8907D2A868}"
 	ProjectSection(SolutionItems) = preProject
+		docker\build.sh = docker\build.sh
 		docker\docker-compose.dev.yml = docker\docker-compose.dev.yml
 		docker\docker-compose.yml = docker\docker-compose.yml
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CA.Common.Authorization", "src\CA.Common.Authorization\CA.Common.Authorization.csproj", "{D9F83982-E9A2-4268-B541-24780CA4ADD3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CA.Common.Authorization", "src\CA.Common.Authorization\CA.Common.Authorization.csproj", "{D9F83982-E9A2-4268-B541-24780CA4ADD3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
