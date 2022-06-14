@@ -7,7 +7,7 @@ namespace CA.Common.Logging
 {
     public static class ApplicationBuilderExtensions
     {
-        public static IApplicationBuilder UseCASerilog(this IApplicationBuilder app, IEnumerable<string>? execludedPaths = null)
+        public static IApplicationBuilder UseCASerilog(this IApplicationBuilder app, IEnumerable<string> execludedPaths = null)
         {
             app.UseMiddleware<CorrelationIdMiddleware>();
 
