@@ -58,7 +58,6 @@ namespace CA.WebAngular
             app.UseExceptionHandler(ExceptionHandler.Handler);
 
             app
-                .UseHttpsRedirection()
                 .UseStaticFiles()
                 .UseCASerilog()
                 .UseRouting();

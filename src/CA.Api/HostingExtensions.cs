@@ -48,10 +48,7 @@ namespace CA.Api
             app.UseExceptionHandler(ExceptionHandler.Handler);
 
             app
-                .UseHttpsRedirection()
-                .UseCASerilog();
-
-            app
+                .UseCASerilog()
                 .UseAuthentication()
                 .UseAuthorization();
 

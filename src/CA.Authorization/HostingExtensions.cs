@@ -34,10 +34,7 @@ namespace CA.Authorization
             app.UseExceptionHandler(ExceptionHandler.Handler);
 
             app
-                .UseHttpsRedirection()
-                .UseCASerilog();
-
-            app
+                .UseCASerilog()
                 .UseAuthentication()
                 .UseAuthorization();
 

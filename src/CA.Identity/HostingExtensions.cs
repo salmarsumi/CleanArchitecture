@@ -32,7 +32,6 @@ namespace CA.Identity
         public static WebApplication ConfigurePipeline(this WebApplication app)
         {
             app
-                .UseHttpsRedirection()
                 .UseStaticFiles()
                 .UseCASerilog()
                 .UseRouting()
