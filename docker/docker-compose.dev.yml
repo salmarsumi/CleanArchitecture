@@ -8,6 +8,9 @@ services:
     ports:
       - "8090:80"
       - "8091:443"
+    volumes:
+      - ./certs/server.key:/etc/nginx/conf/server.key
+      - ./certs/server.crt:/etc/nginx/conf/server.crt
     networks:
       - ca
 
@@ -28,8 +31,6 @@ services:
       - ExternalAddress=https://${EXTERNAL_HOST_NAME_OR_IP}:8091
       - ClientUri=https://localhost:8081
     volumes:
-      - ./certs/server.key:/etc/nginx/conf/server.key
-      - ./certs/server.crt:/etc/nginx/conf/server.crt
       - identity-dpk:/root/.aspnet/DataProtection-Keys
       - identity-signing:/app/keys
     expose:
