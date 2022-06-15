@@ -5,6 +5,9 @@ services:
     environment:
       - NGINX_ALWAYS_TLS_REDIRECT=on
       - BACKEND=http://identity
+    volumes:
+      - ./certs/server.key:/etc/nginx/conf/server.key
+      - ./certs/server.crt:/etc/nginx/conf/server.crt
     ports:
       - "8090:80"
       - "8091:443"
