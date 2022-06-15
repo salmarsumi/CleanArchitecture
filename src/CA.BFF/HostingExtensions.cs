@@ -67,6 +67,10 @@ namespace CA.WebAngular
                 .UseAuthorization()
                 .Use(async (context, next) =>
                 {
+                    var client = new HttpClient();
+                    HttpResponseMessage response = await client.GetAsync("https://192.168.1.65:8091/.well-known/openid-configuration");
+                    response.EnsureSuccessStatusCode();
+
                     // write the correlation id into the response if its found
                     if (!context.Response.Headers.ContainsKey(Constants.CORRELATION_HEADER))
                     {
@@ -139,9 +143,6 @@ namespace CA.WebAngular
                 .AddOpenIdConnect(OpenIdConnectDefaults.AuthenticationScheme, options =>
                 {
                     options.Authority = builder.Configuration["TokenAuthority"];
-
-                    Serilog.Log.Information($"Enviroment Authority: {builder.Configuration["TokenAuthority"]}");
-                    Serilog.Log.Information($"Options Authority: {options.Authority}");
 
                     options.ClientId = "angular";
                     options.ClientSecret = "secret";

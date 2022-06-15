@@ -3,24 +3,24 @@ version: '3.9'
 services:
   identity-waf:
     environment:
-      - NGINX_ALWAYS_TLS_REDIRECT=on
       - BACKEND=http://identity
+      - PORT=8090
+      - SSL_PORT=8091
     volumes:
       - ./certs/server.key:/etc/nginx/conf/server.key
       - ./certs/server.crt:/etc/nginx/conf/server.crt
     ports:
-      - "8090:80"
-      - "8091:443"
+      - "8091:8091"
     networks:
       - ca
 
   bff-waf:
     environment:
-      - NGINX_ALWAYS_TLS_REDIRECT=on
       - BACKEND=http://bff
+      - PORT=8080
+      - SSL_PORT=8081
     ports:
-      - "8080:80"
-      - "8081:443"
+      - "8081:8081"
     networks:
       - ca
 
@@ -29,7 +29,7 @@ services:
       - ASPNETCORE_ENVIRONMENT=Staging
       - ASPNETCORE_URLS=http://+:80
       - ExternalAddress=https://${EXTERNAL_HOST_NAME_OR_IP}:8091
-      - ClientUri=https://localhost:8081
+      - ClientUri=https://${EXTERNAL_HOST_NAME_OR_IP}:8081
     volumes:
       - identity-dpk:/root/.aspnet/DataProtection-Keys
     expose:
