@@ -8,9 +8,6 @@ services:
     ports:
       - "8090:80"
       - "8091:443"
-    volumes:
-      - ./certs/server.key:/etc/nginx/conf/server.key
-      - ./certs/server.crt:/etc/nginx/conf/server.crt
     networks:
       - ca
 
@@ -32,7 +29,6 @@ services:
       - ClientUri=https://localhost:8081
     volumes:
       - identity-dpk:/root/.aspnet/DataProtection-Keys
-      - identity-signing:/app/keys
     expose:
       - "80"
     networks:
@@ -64,6 +60,7 @@ services:
       - ASPNETCORE_ENVIRONMENT=Staging
       - ASPNETCORE_URLS=http://+:80
       - TokenAuthority=https://${EXTERNAL_HOST_NAME_OR_IP}:8091
+      - TokenAuthorityBackChannel:http://identity
       - Clusters__apicluster__Destinations__api1__Address=http://api
     volumes:
       - bff-dpk:/root/.aspnet/DataProtection-Keys
@@ -78,4 +75,3 @@ networks:
 volumes:
   identity-dpk:
   bff-dpk:
-  identity-signing:

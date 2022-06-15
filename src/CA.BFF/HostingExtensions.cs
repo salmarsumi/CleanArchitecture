@@ -140,6 +140,11 @@ namespace CA.WebAngular
                 {
                     options.Authority = builder.Configuration["TokenAuthority"];
 
+                    if (!string.IsNullOrWhiteSpace(builder.Configuration["TokenAuthorityBackChannel"]))
+                    {
+                        options.Backchannel.BaseAddress = new Uri(builder.Configuration["TokenAuthorityBackChannel"]);
+                    }
+
                     options.ClientId = "angular";
                     options.ClientSecret = "secret";
                     options.ResponseType = "code";
