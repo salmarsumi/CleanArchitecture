@@ -140,10 +140,8 @@ namespace CA.WebAngular
                 {
                     options.Authority = builder.Configuration["TokenAuthority"];
 
-                    if (!string.IsNullOrWhiteSpace(builder.Configuration["TokenAuthorityBackChannel"]))
-                    {
-                        options.Backchannel.BaseAddress = new Uri(builder.Configuration["TokenAuthorityBackChannel"]);
-                    }
+                    Serilog.Log.Information($"Enviroment Authority: {builder.Configuration["TokenAuthority"]}");
+                    Serilog.Log.Information($"Options Authority: {options.Authority}");
 
                     options.ClientId = "angular";
                     options.ClientSecret = "secret";

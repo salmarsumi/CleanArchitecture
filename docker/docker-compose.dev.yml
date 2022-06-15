@@ -63,7 +63,6 @@ services:
       - ASPNETCORE_ENVIRONMENT=Staging
       - ASPNETCORE_URLS=http://+:80
       - TokenAuthority=https://${EXTERNAL_HOST_NAME_OR_IP}:8091
-      - TokenAuthorityBackChannel:http://identity
       - Clusters__apicluster__Destinations__api1__Address=http://api
     volumes:
       - bff-dpk:/root/.aspnet/DataProtection-Keys
