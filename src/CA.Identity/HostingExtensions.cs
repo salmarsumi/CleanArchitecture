@@ -1,5 +1,6 @@
 ﻿using CA.Common.Logging;
 using IdentityServerHost;
+using Microsoft.AspNetCore.HttpOverrides;
 using Serilog;
 
 namespace CA.Identity
@@ -30,6 +31,12 @@ namespace CA.Identity
                 .AddInMemoryApiScopes(Config.Scopes())
                 .AddTestUsers(TestUsers.Users);
 
+            // Forwarder headers when behind a proxy
+            builder.Services.Configure<ForwardedHeadersOptions>(options =>
+            {
+                options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
+            });
+
             builder.Services.AddAuthorization();
 
             return builder;
@@ -38,6 +45,7 @@ namespace CA.Identity
         public static WebApplication ConfigurePipeline(this WebApplication app)
         {
             app
+                .UseForwardedHeaders()
                 .UseStaticFiles()
                 .UseCASerilog()
                 .UseRouting()
