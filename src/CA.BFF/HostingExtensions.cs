@@ -7,8 +7,6 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.Extensions.DependencyInjection.Extensions;
-using Microsoft.Extensions.Http;
 using Serilog;
 using System.IdentityModel.Tokens.Jwt;
 using Yarp.ReverseProxy.Transforms;
@@ -51,9 +49,6 @@ namespace CA.WebAngular
 
             // Authorization
             builder.Services.ConfigureAuthorization();
-
-            builder.Services.RemoveAll<IHttpMessageHandlerBuilderFilter>();
-            builder.Services.AddSingleton<IHttpMessageHandlerBuilderFilter, HttpMessageHandlerBuilderFilter>();
 
             return builder;
         }
