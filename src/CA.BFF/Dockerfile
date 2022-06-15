@@ -25,6 +25,6 @@ RUN cat /usr/local/share/ca-certificates/server.crt >> /etc/ssl/certs/ca-certifi
     && rm -rf /var/cache/apk/* \
 	&& update-ca-certificates \
 	&& addgroup -S wfs && adduser -S wfs -G wfs 
-USER wfs
+#USER wfs
 COPY --from=publish /app/publish .
 ENTRYPOINT ["dotnet", "CA.BFF.dll"]
