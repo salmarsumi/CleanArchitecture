@@ -26,6 +26,7 @@ DNS.2 = host.docker.internal
 DNS.3 = 127.0.0.1
 DNS.4 = localhost 
 DNS.5 = 0.0.0.0
+IP.1 = ${ENV::EXTERNAL_HOST_NAME_OR_IP}
 
 [openssl_init]
 ssl_conf = ssl_config
