@@ -19,7 +19,7 @@ RUN dotnet publish "CA.BFF.csproj" -c Release -o /app/publish
 
 FROM base AS final
 WORKDIR /app
-COPY certs/server.crt /usr/local/share/ca-certificates
+COPY docker/certs/server.crt /usr/local/share/ca-certificates
 RUN cat /usr/local/share/ca-certificates/server.crt >> /etc/ssl/certs/ca-certificates.crt \
 	&& apk --no-cache add ca-certificates \
     && rm -rf /var/cache/apk/* \
