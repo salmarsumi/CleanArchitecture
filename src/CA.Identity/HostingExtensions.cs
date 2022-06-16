@@ -38,21 +38,19 @@ namespace CA.Identity
 
         public static WebApplication ConfigurePipeline(this WebApplication app)
         {
+            var forwardedHeadersOptions = new ForwardedHeadersOptions
+            {
+                ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+            };
+            forwardedHeadersOptions.KnownProxies.Clear();
+            forwardedHeadersOptions.KnownNetworks.Clear();
+
             app
+                .UseForwardedHeaders(forwardedHeadersOptions)
                 .Use(async (context, next) =>
                 {
-                    foreach(var headr in context.Request.Headers)
-                    {
-                        Serilog.Log.Information("###############");
-                        Serilog.Log.Information($"Header: {headr.Key}");
-                        Serilog.Log.Information($"Header: {headr.Value}");
-                        Serilog.Log.Information("###############");
-                    }
+                    Serilog.Log.Information($"Scheme: ${context.Request.Scheme}");
                     await next();
-                })
-                .UseForwardedHeaders(new ForwardedHeadersOptions
-                {
-                    ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
                 })
                 .UseStaticFiles()
                 .UseCASerilog()
