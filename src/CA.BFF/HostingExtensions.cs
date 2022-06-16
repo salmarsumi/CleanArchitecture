@@ -41,6 +41,8 @@ namespace CA.WebAngular
             // Antiforgery
             builder.Services.AddAntiforgery(options =>
              {
+                 options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+                 options.Cookie.Name = "__Host-BFF-Antiforgery";
                  options.HeaderName = Constants.CSRF_HEADER;
                  options.FormFieldName = Constants.CSRF_FORM_FIELD;
              });
@@ -76,6 +78,8 @@ namespace CA.WebAngular
                 .UseAuthorization()
                 .Use(async (context, next) =>
                 {
+
+                    //context.Response.Cookies.
                     // write the correlation id into the response if its found
                     if (!context.Response.Headers.ContainsKey(Constants.CORRELATION_HEADER))
                     {
@@ -83,7 +87,7 @@ namespace CA.WebAngular
                     }
 
                     // Antiforgery
-                    IAntiforgery antiforgery = app.Services.GetRequiredService<IAntiforgery>();
+                    var antiforgery = app.Services.GetRequiredService<IAntiforgery>();
                     if (string.Equals(context.Request.Path.Value, "/account/postlogin", StringComparison.OrdinalIgnoreCase))
                     {
                         // The request token can be sent as a JavaScript-readable cookie, 
