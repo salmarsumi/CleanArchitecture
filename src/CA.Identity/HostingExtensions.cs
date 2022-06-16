@@ -47,11 +47,6 @@ namespace CA.Identity
 
             app
                 .UseForwardedHeaders(forwardedHeadersOptions)
-                .Use(async (context, next) =>
-                {
-                    Serilog.Log.Information($"Scheme: ${context.Request.Scheme}");
-                    await next();
-                })
                 .UseStaticFiles()
                 .UseCASerilog()
                 .UseRouting()
