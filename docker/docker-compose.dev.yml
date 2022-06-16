@@ -9,6 +9,8 @@ services:
       - ./nginx-id.conf:/etc/nginx/nginx.conf:ro
       - ./certs/server.crt:/etc/nginx/conf/server.crt
       - ./certs/server.key:/etc/nginx/conf/server.key
+    networks:
+      - ca
 
   bff-proxy:
     ports:
@@ -18,6 +20,8 @@ services:
       - ./nginx-bff.conf:/etc/nginx/nginx.conf:ro
       - ./certs/server.crt:/etc/nginx/conf/server.crt
       - ./certs/server.key:/etc/nginx/conf/server.key
+    networks:
+      - ca
 
 
   identity:
