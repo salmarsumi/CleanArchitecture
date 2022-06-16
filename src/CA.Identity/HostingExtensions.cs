@@ -39,6 +39,17 @@ namespace CA.Identity
         public static WebApplication ConfigurePipeline(this WebApplication app)
         {
             app
+                .Use(async (context, next) =>
+                {
+                    foreach(var headr in context.Request.Headers)
+                    {
+                        Serilog.Log.Information("###############");
+                        Serilog.Log.Information($"Header: {headr.Key}");
+                        Serilog.Log.Information($"Header: {headr.Value}");
+                        Serilog.Log.Information("###############");
+                    }
+                    await next();
+                })
                 .UseForwardedHeaders(new ForwardedHeadersOptions
                 {
                     ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
