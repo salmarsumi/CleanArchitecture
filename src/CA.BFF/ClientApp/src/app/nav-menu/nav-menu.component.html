@@ -40,7 +40,7 @@
           <li *ngIf="isAuthenticated()" class="nav-item">
             <form #loginForm method="post" action="/account/logout">
               <input id="csrf" type="hidden" name="csrf-token" [value]="token" />
-              <a class="nav-link text-dark" href="#" (click)="loginForm.submit()">Logout</a>
+              <a class="nav-link text-dark" href="javascript:void();" (click)="loginForm.submit()">Logout</a>
             </form>
           </li>
         </ul>
