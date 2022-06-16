@@ -31,7 +31,7 @@ services:
       - ExternalAddress=https://${EXTERNAL_HOST_NAME_OR_IP}:8091
       - ClientUri=https://${EXTERNAL_HOST_NAME_OR_IP}:8081
     volumes:
-      - identity-dpk:/root/.aspnet/DataProtection-Keys
+      - identity-dpk:/home/wfs/.aspnet/DataProtection-Keys
     expose:
       - "80"
     networks:
@@ -65,7 +65,7 @@ services:
       - TokenAuthority=https://${EXTERNAL_HOST_NAME_OR_IP}:8091
       - Clusters__apicluster__Destinations__api1__Address=http://api
     volumes:
-      - bff-dpk:/root/.aspnet/DataProtection-Keys
+      - bff-dpk:/home/wfs/.aspnet/DataProtection-Keys
     expose:
       - "80"
     networks:
