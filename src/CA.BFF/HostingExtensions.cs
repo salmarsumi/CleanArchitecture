@@ -56,13 +56,17 @@ namespace CA.WebAngular
 
         public static WebApplication ConfigurePipeline(this WebApplication app)
         {
+            var forwardedHeadersOptions = new ForwardedHeadersOptions
+            {
+                ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+            };
+            forwardedHeadersOptions.KnownProxies.Clear();
+            forwardedHeadersOptions.KnownNetworks.Clear();
+
             app.UseExceptionHandler(ExceptionHandler.Handler);
 
             app
-                .UseForwardedHeaders(new ForwardedHeadersOptions
-                {
-                    ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
-                })
+                .UseForwardedHeaders(forwardedHeadersOptions)
                 .UseStaticFiles()
                 .UseCASerilog()
                 .UseRouting();
