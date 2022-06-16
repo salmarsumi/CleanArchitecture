@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.HttpOverrides;
 using Serilog;
 using System.IdentityModel.Tokens.Jwt;
 using Yarp.ReverseProxy.Transforms;
@@ -58,6 +59,10 @@ namespace CA.WebAngular
             app.UseExceptionHandler(ExceptionHandler.Handler);
 
             app
+                .UseForwardedHeaders(new ForwardedHeadersOptions
+                {
+                    ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+                })
                 .UseStaticFiles()
                 .UseCASerilog()
                 .UseRouting();
