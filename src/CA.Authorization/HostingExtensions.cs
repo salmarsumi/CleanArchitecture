@@ -1,6 +1,5 @@
 ﻿using CA.Authorization.Endpoints;
 using CA.Authorization.PolicyStore;
-using CA.Common.Authorization.AspNetCore;
 using CA.Common.Authorization.Client;
 using CA.Common.Authorization.PolicyRuntime;
 using CA.Common.Logging;
@@ -31,10 +30,9 @@ namespace CA.Authorization
 
         public static WebApplication ConfigurePipeline(this WebApplication app)
         {
-            app.UseExceptionHandler(ExceptionHandler.Handler);
-
             app
                 .UseCASerilog()
+                .UseExceptionHandler(ExceptionHandler.Handler)
                 .UseAuthentication()
                 .UseAuthorization();
 

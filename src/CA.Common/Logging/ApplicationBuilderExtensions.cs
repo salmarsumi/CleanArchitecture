@@ -23,11 +23,13 @@ namespace CA.Common.Logging
 
                     var requestPath = ctx.Request.Path.Value;
 
-                    if (ex is not null || ctx.Response.StatusCode > 499) // exception exist or response is 5xx indicating an error
+                    // exception exist or response is 5xx indicating an error
+                    if (ex is not null || ctx.Response.StatusCode > 499)
                     {
                         return LogEventLevel.Error;
                     }
-                    else if (execludedPaths.Any(x => requestPath!.StartsWith(x, StringComparison.OrdinalIgnoreCase))) // path is execluded
+                    // path is execluded
+                    else if (execludedPaths.Any(x => requestPath!.StartsWith(x, StringComparison.OrdinalIgnoreCase)))
                     {
                         return LogEventLevel.Verbose;
                     }

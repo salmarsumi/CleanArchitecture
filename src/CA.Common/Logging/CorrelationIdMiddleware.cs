@@ -18,8 +18,12 @@ namespace CA.Common.Logging
                 context.Request.Headers.Add(Constants.CORRELATION_HEADER, Guid.NewGuid().ToString());
             }
 
-            // Call the next delegate/middleware in the pipeline
-            await _next(context);
+            try
+            {
+                // Call the next delegate/middleware in the pipeline
+                await _next(context);
+            }
+            catch { }
         }
     }
 }

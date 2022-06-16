@@ -66,12 +66,11 @@ namespace CA.WebAngular
             forwardedHeadersOptions.KnownProxies.Clear();
             forwardedHeadersOptions.KnownNetworks.Clear();
 
-            app.UseExceptionHandler(ExceptionHandler.Handler);
-
             app
                 .UseForwardedHeaders(forwardedHeadersOptions)
-                .UseStaticFiles()
                 .UseCASerilog()
+                .UseExceptionHandler(ExceptionHandler.Handler)
+                .UseStaticFiles()
                 .UseRouting();
 
             app

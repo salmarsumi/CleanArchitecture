@@ -45,10 +45,9 @@ namespace CA.Api
 
         public static WebApplication ConfigurePipeline(this WebApplication app)
         {
-            app.UseExceptionHandler(ExceptionHandler.Handler);
-
             app
                 .UseCASerilog()
+                .UseExceptionHandler(ExceptionHandler.Handler)
                 .UseAuthentication()
                 .UseAuthorization();
 
