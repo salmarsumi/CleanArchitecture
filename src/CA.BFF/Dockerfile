@@ -24,7 +24,9 @@ RUN cat /usr/local/share/ca-certificates/server.crt >> /etc/ssl/certs/ca-certifi
 	&& apk --no-cache add ca-certificates \
     && rm -rf /var/cache/apk/* \
 	&& update-ca-certificates \
-	&& addgroup -S wfs && adduser -S wfs -G wfs 
+	&& addgroup -S wfs && adduser -S wfs -G wfs \
+	&& mkdir /home/wfs/.aspnet/DataProtection-Keys -p \
+	&& chown -R wfs /home/wfs
 USER wfs
 COPY --from=publish /app/publish .
 ENTRYPOINT ["dotnet", "CA.BFF.dll"]

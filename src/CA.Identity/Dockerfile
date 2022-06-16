@@ -18,7 +18,9 @@ RUN dotnet publish "CA.Identity.csproj" -c Release -o /app/publish
 
 FROM base AS final
 WORKDIR /app
-RUN addgroup -S wfs && adduser -S wfs -G wfs
+RUN addgroup -S wfs && adduser -S wfs -G wfs \
+	&& mkdir /home/wfs/.aspnet/DataProtection-Keys -p \
+	&& chown -R wfs /home/wfs
 USER wfs
 COPY --chown=wfs:wfs --from=publish /app/publish .
 ENTRYPOINT ["dotnet", "CA.Identity.dll"]
