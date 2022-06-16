@@ -17,6 +17,7 @@ namespace CA.WebAngular
     public static class HostingExtensions
     {
         private const string AUTHORIZATION_HEADR = "Authorization";
+        private const string ANTIFORGERY_COOKIE_NAME = "__Host-BFF-Antiforgery";
 
         public static WebApplicationBuilder ConfigureBuilder(this WebApplicationBuilder builder)
         {
@@ -42,7 +43,7 @@ namespace CA.WebAngular
             builder.Services.AddAntiforgery(options =>
              {
                  options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
-                 options.Cookie.Name = "__Host-BFF-Antiforgery";
+                 options.Cookie.Name = ANTIFORGERY_COOKIE_NAME;
                  options.HeaderName = Constants.CSRF_HEADER;
                  options.FormFieldName = Constants.CSRF_FORM_FIELD;
              });
@@ -78,17 +79,21 @@ namespace CA.WebAngular
                 .UseAuthorization()
                 .Use(async (context, next) =>
                 {
-
-                    //context.Response.Cookies.
                     // write the correlation id into the response if its found
                     if (!context.Response.Headers.ContainsKey(Constants.CORRELATION_HEADER))
                     {
                         context.Response.Headers.Add(Constants.CORRELATION_HEADER, context.Request.Headers[Constants.CORRELATION_HEADER].First());
                     }
 
+                    var path = context.Request.Path.Value;
+
                     // Antiforgery
+                    // Generate token on the first request.
+                    // When using the Angular dev server as a proxy the postlogin is needed to set the token.
                     var antiforgery = app.Services.GetRequiredService<IAntiforgery>();
-                    if (string.Equals(context.Request.Path.Value, "/account/postlogin", StringComparison.OrdinalIgnoreCase))
+                    if (path.StartsWith("/", StringComparison.OrdinalIgnoreCase) ||
+                        path.StartsWith("/index.html", StringComparison.OrdinalIgnoreCase) ||
+                        path.StartsWith("/account/postlogin", StringComparison.OrdinalIgnoreCase))
                     {
                         // The request token can be sent as a JavaScript-readable cookie, 
                         // and Angular uses the token as a header in every request.
@@ -106,7 +111,6 @@ namespace CA.WebAngular
                     if (context.User.Identity.IsAuthenticated)
                     {
                         // Validate Antigorgery token
-                        var path = context.Request.Path.Value;
                         if (path.StartsWith("/api", StringComparison.OrdinalIgnoreCase) ||
                             path.StartsWith("/account/session", StringComparison.OrdinalIgnoreCase) ||
                             path.StartsWith("/account/logout", StringComparison.OrdinalIgnoreCase))
