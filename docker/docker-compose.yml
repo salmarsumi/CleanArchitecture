@@ -1,11 +1,15 @@
 version: '3.9'
 
 services:
-  identity-waf:
-    image: owasp/modsecurity-crs:3-nginx-alpine
+  identity-proxy:
+    image: nginx:alpine
+    depends_on:
+      - identity
 
-  bff-waf:
-    image: owasp/modsecurity-crs:3-nginx-alpine
+  bff-proxy:
+    image: nginx:alpine
+    depends_on:
+      - bff
 
   identity:
     image: ca/identity
