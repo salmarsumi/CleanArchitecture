@@ -3,50 +3,51 @@
 
 HIDE_STEREOTYPE()
 
-title Code diagram for Policy Operations Component - Autorization Service
+title Code diagram for Auhorization Component
 
-Boundary(policy_ops, "Policy Operations Component") {
-
-    namespace Client {
+Boundary(authz, "Authorization") {
+    
+    namespace Authorization.Client {
+        
         interface IPolicyOperations {
             EvaluateAsync(user)
-            HasPermissionAsync(user, permission)
-            IsInGroupAsync(user, group)
+            HasPermissionAsync(user,permission)
+            IsInGroupAsync(user,group)
         }
 
         class PolicyOperations implements IPolicyOperations {
             -_policy
-            +Constructor(policy)
         }
     }
 
-    namespace Runtime {
-        interface IPolicyCacher {
-            GetPolicyAsync()
-            ClearCachedPolicy()
+    namespace Authorization.PolicyRuntime {
+        
+        class Group {
+            +Name
+            +Users
+            +Evaluate(user)
         }
 
-        class PolicyCacher implements IPolicyCacher {
-            -_policyReader
-            -_cache
+        class Permission {
+            +Name
+            +Groups
+            +Evaluate(groups)
         }
 
         class Policy {
-            +UserGroups
+            +Groups
             +Permissions
-            EvaluateAsync(user)
-        }
-    }
-
-    namespace Store {
-        interface IPolicyReader {
-            ReadPolicyAsync()
+            +EvaluateAsync(user)
         }
 
-        class PolicyReader implements IPolicyReader {
-            -_policy
+        class PolicyEvaluationResult {
+            +Groups
+            +Permissions
         }
     }
 }
+
+Lay_U(Authorization.PolicyRuntime.PolicyEvaluationResult, Authorization.PolicyRuntime.Permission)
+
 
 @enduml

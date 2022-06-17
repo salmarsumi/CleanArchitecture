@@ -1,0 +1,89 @@
+@startuml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
+
+HIDE_STEREOTYPE()
+
+title Code diagram for Auhorization Component
+
+Boundary(authz, "Authorization") {
+    class AuthorizationHandler
+    class DefaultAuthorizationPolicyProvider
+    
+    namespace Authorization.Client {
+        
+        interface IPolicyOperations {
+            EvaluateAsync(user)
+            HasPermissionAsync(user,permission)
+            IsInGroupAsync(user,group)
+        }
+
+        class PolicyOperations implements IPolicyOperations {
+            -_policy
+        }
+
+        class RemotePolicyOperations implements IPolicyOperations {
+            -_httpClientFactory
+            -_cache
+            -_userPolicy
+        }
+    }
+
+    namespace Authorization.PolicyRuntime {
+        
+        class Group {
+            +Name
+            +Users
+            +Evaluate(user)
+        }
+
+        class Permission {
+            +Name
+            +Groups
+            +Evaluate(groups)
+        }
+
+        class Policy {
+            +Groups
+            +Permissions
+            +EvaluateAsync(user)
+        }
+
+        class PolicyEvaluationResult {
+            +Groups
+            +Permissions
+        }
+    }
+
+    namespace Authorization.AspNetCore {
+        
+        class PolicyAuthorizationProvider extends .DefaultAuthorizationPolicyProvider {
+            +override GetPolicyAsync()
+        }
+
+        class PermissionRequirement {
+            +Name
+        }
+
+        class PermissionHandler extends .AuthorizationHandler {
+            -_operationsClient
+            -_logger
+            +HandleRequirementAsync()
+        }
+
+        class Extensions {
+            +AddLocalPolicyServices()
+            +AddRemotePolicyServices()
+            +AddAuthorizationPermissionPolicies()
+            +AddRemotePolicyHttpClient()
+        }
+    }
+}
+
+Lay_U(Authorization.AspNetCore.Extensions, Authorization.AspNetCore.PolicyAuthorizationProvider)
+Lay_U(Authorization.AspNetCore.PermissionRequirement, Authorization.AspNetCore.PermissionHandler)
+Lay_U(Authorization.PolicyRuntime.PolicyEvaluationResult, Authorization.PolicyRuntime.Permission)
+Lay_U(Authorization.PolicyRuntime.Group, Authorization.AspNetCore.Extensions)
+Lay_U(Authorization.Client.IPolicyOperations, Authorization.AspNetCore.PermissionHandler)
+
+
+@enduml
