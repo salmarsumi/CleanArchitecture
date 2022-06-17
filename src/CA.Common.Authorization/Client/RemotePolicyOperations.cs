@@ -8,20 +8,15 @@ namespace CA.Common.Authorization.Client
 {
     public class RemotePolicyOperations : IPolicyOperations
     {
-        private readonly IHttpClientFactory _clientFactory;
+        private readonly IHttpClientFactory _httpClientFactory;
         private readonly IDistributedCache _cache;
-        private readonly HttpClient _client;
         private PolicyEvaluationResult _userPolicy;
 
         public RemotePolicyOperations(IHttpClientFactory clientFactory,
             IDistributedCache cache)
         {
-            _clientFactory = clientFactory;
+            _httpClientFactory = clientFactory;
             _cache = cache;
-
-            _client = _clientFactory
-                .CreateClient("authorizationApi") ?? 
-                throw new InvalidOperationException("Create clinet for name authorizationApi returned null");
         }
 
         public async Task<PolicyEvaluationResult> EvaluateAsync(ClaimsPrincipal user)
@@ -50,7 +45,11 @@ namespace CA.Common.Authorization.Client
                     if (_userPolicy is null)
                     {
                         var serialized = string.Empty;
-                        var response = await _client.GetAsync("/policy");
+                        var client = _httpClientFactory
+                            .CreateClient("authorizationApi") ??
+                                throw new InvalidOperationException("Create clinet for name authorizationApi returned null");
+
+                        var response = await client.GetAsync("/policy");
                         if(response.StatusCode == HttpStatusCode.OK)
                         {
                             serialized = await response.Content.ReadAsStringAsync();
@@ -82,10 +81,10 @@ namespace CA.Common.Authorization.Client
             return policy?.Permissions?.Contains(permission) ?? false;
         }
 
-        public async Task<bool> IsInRoleAsync(ClaimsPrincipal user, string role)
+        public async Task<bool> IsInGroupAsync(ClaimsPrincipal user, string group)
         {
             var policy = await EvaluateAsync(user);
-            return policy?.Roles?.Contains(role) ?? false;
+            return policy?.Groups?.Contains(group) ?? false;
         }
     }
 }

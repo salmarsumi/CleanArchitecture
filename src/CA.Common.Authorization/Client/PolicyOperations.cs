@@ -5,12 +5,33 @@ namespace CA.Common.Authorization.Client
 {
     public class PolicyOperations : IPolicyOperations
     {
-        private readonly Policy _policy;
-
-        public PolicyOperations(Policy policy)
-        {
-            _policy = policy;
-        }
+        private static readonly Policy _policy = new(
+            new Group[]
+            {
+                new()
+                {
+                    Name = "Admin",
+                    Users = new[] { "2" }
+                },
+            },
+            new Permission[]
+            {
+                new()
+                {
+                    Name = AppPermissions.ViewWeather,
+                    Groups = new[] { "Admin" }
+                },
+                new()
+                {
+                    Name = AppPermissions.CreateWeather,
+                    Groups = new[] { "Admin" }
+                },
+                new()
+                {
+                    Name = AppPermissions.DeleteWeather,
+                    Groups = new[] { "Admin" }
+                }
+            });
 
         public Task<PolicyEvaluationResult> EvaluateAsync(ClaimsPrincipal user)
         {
@@ -23,10 +44,10 @@ namespace CA.Common.Authorization.Client
             return policy.Permissions.Contains(permission);
         }
 
-        public async Task<bool> IsInRoleAsync(ClaimsPrincipal user, string role)
+        public async Task<bool> IsInGroupAsync(ClaimsPrincipal user, string group)
         {
             var policy = await _policy.EvaluateAsync(user);
-            return policy.Roles.Contains(role);
+            return policy.Groups.Contains(group);
         }
     }
 }

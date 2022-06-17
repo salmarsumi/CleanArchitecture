@@ -2,10 +2,10 @@
 
 namespace CA.Common.Authorization.PolicyRuntime
 {
-    public class Role
+    public class Group
     {
         public string Name { get; set; }
-        public IEnumerable<string> Subjects { get; set; }
+        public IEnumerable<string> Users { get; set; }
 
         internal bool Evaluate(ClaimsPrincipal user)
         {
@@ -18,7 +18,7 @@ namespace CA.Common.Authorization.PolicyRuntime
 
             if (!string.IsNullOrEmpty(sub))
             {
-                if(Subjects.Contains(sub))
+                if(Users.Contains(sub))
                 {
                     return true;
                 }

@@ -35,7 +35,7 @@ namespace CA.Api
             builder.ConfigureAuthorization();
             
             // Permissions
-            builder.Services
+            builder
                 .AddRemotePolicyServices()
                 .AddAuthorizationPermissionPolicies()
                 .AddRemotePolicyHttpClient(builder.Configuration["AuthorizationService"]);

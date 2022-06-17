@@ -7,6 +7,6 @@ namespace CA.Common.Authorization.Client
     {
         Task<PolicyEvaluationResult> EvaluateAsync(ClaimsPrincipal user);
         Task<bool> HasPermissionAsync(ClaimsPrincipal user, string permission);
-        Task<bool> IsInRoleAsync(ClaimsPrincipal user, string role);
+        Task<bool> IsInGroupAsync(ClaimsPrincipal user, string group);
     }
 }

@@ -3,16 +3,16 @@
     public class Permission
     {
         public string Name { get; set; }
-        public IEnumerable<string> Roles { get; set; }
+        public IEnumerable<string> Groups { get; set; }
 
-        internal bool Evaluate(IEnumerable<string> roles)
+        internal bool Evaluate(IEnumerable<string> groups)
         {
-            if(roles is null)
+            if(groups is null)
             {
-                throw new ArgumentNullException(nameof(roles));
+                throw new ArgumentNullException(nameof(groups));
             }
 
-            if(Roles.Any(r => roles.Contains(r)))
+            if(Groups.Any(r => groups.Contains(r)))
             {
                 return true;
             }

@@ -30,24 +30,11 @@ namespace CA.Common.Authorization.AspNetCore
 
             return this;
         }
-    }
 
-    /// <summary>
-    /// Helper class to configure DI
-    /// </summary>
-    public static class ServiceCollectionExtensions
-    {
-        public static ServerBuilder AddRemotePolicyServices(this IServiceCollection services)
-        {
-            services.AddScoped<IPolicyOperations, RemotePolicyOperations>();
-
-            return new ServerBuilder(services);
-        }
-
-        public static ServerBuilder AddRemotePolicyHttpClient(this ServerBuilder builder, string authServiceBaseUrl)
+        public ServerBuilder AddRemotePolicyHttpClient(string authServiceBaseUrl)
         {
             // configure the HttpClient instance that will be injected into the RemotePolicyOperations constructor
-            builder.Services.AddHttpClient(Constants.AUTHORIZATION_API_HTTP_CLIENT_NAME, async (p, c) =>
+            Services.AddHttpClient(Constants.AUTHORIZATION_API_HTTP_CLIENT_NAME, async (p, c) =>
             {
                 var httpContextAccessor = p.GetRequiredService<IHttpContextAccessor>();
 
@@ -78,18 +65,27 @@ namespace CA.Common.Authorization.AspNetCore
             .AddTransientHttpErrorPolicy(p => p
                 .CircuitBreakerAsync(5, TimeSpan.FromSeconds(30)));
 
-            return builder;
+            return this;
         }
     }
 
     /// <summary>
-    /// Extension method for adding the claims middleware to the ASP.NET Core pipeline
+    /// Helper class to configure DI
     /// </summary>
-    public static class ApplicationBuilderExtensions
+    public static class ServiceCollectionExtensions
     {
-        public static IApplicationBuilder UsePolicyClaims(this IApplicationBuilder app)
+        public static ServerBuilder AddLocalPolicyServices(this WebApplicationBuilder builder)
         {
-            return app.UseMiddleware<PermissionClaimsMiddleware>();
+            builder.Services.AddScoped<IPolicyOperations, PolicyOperations>();
+
+            return new ServerBuilder(builder.Services);
+        }
+
+        public static ServerBuilder AddRemotePolicyServices(this WebApplicationBuilder builder)
+        {
+            builder.Services.AddScoped<IPolicyOperations, RemotePolicyOperations>();
+
+            return new ServerBuilder(builder.Services);
         }
     }
 }

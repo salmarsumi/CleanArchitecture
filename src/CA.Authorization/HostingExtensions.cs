@@ -1,7 +1,5 @@
 ﻿using CA.Authorization.Endpoints;
-using CA.Authorization.PolicyStore;
-using CA.Common.Authorization.Client;
-using CA.Common.Authorization.PolicyRuntime;
+using CA.Common.Authorization.AspNetCore;
 using CA.Common.Logging;
 using CA.Common.Middleware;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -66,9 +64,6 @@ namespace CA.Authorization
             // Caching
             builder.Services.AddDistributedMemoryCache();
 
-            // Policy
-            builder.Services.AddTransient<IPolicyReader, PolicyReader>();
-
             return builder;
         }
 
@@ -81,20 +76,6 @@ namespace CA.Authorization
                         .RequireAuthenticatedUser()
                         .Build();
                 });
-
-            return builder;
-        }
-
-        public static WebApplicationBuilder AddLocalPolicyServices(this WebApplicationBuilder builder)
-        {
-            builder.Services.AddScoped<IPolicyOperations, PolicyOperations>();
-            builder.Services.AddScoped<IPolicyReader, PolicyReader>();
-            builder.Services.AddScoped<Policy>(provider =>
-            {
-                var policyReader = provider.GetRequiredService<IPolicyReader>();
-                Policy policy = policyReader.ReadPolicyAsync().GetAwaiter().GetResult();
-                return policy;
-            });
 
             return builder;
         }
