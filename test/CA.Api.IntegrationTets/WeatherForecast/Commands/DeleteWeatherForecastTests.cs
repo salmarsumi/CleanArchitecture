@@ -2,6 +2,8 @@
 using CA.Api.Domain.Entities;
 using CA.Api.Infrastructure.Data;
 using CA.Common.Exceptions;
+using CA.MediatR;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
 
 namespace CA.Api.IntegrationTets.WeatherForecast.Commands
@@ -25,25 +27,30 @@ namespace CA.Api.IntegrationTets.WeatherForecast.Commands
             var command = new DeleteWeatherForcastCommand { Id = newEntity.Id };
 
             // Act
-            await _handler.Handle(command, CancellationToken.None);
+            RequestResult<Unit> result = await _handler.Handle(command, CancellationToken.None);
 
             WeatherForcast deleted = await context.WeatherForcasts
                 .AsNoTracking()
                 .Where(x => x.Id == newEntity.Id).FirstOrDefaultAsync();
 
             // Assert
+            Assert.True(result.Success);
+            Assert.Equal(Unit.Value, result.Result);
             Assert.Null(deleted);
         }
 
         [Fact]
-        public async Task Handle_ThrowsException_WhenWeatherForecastNotFound()
+        public async Task Handle_ReturnsNotFound_WhenWeatherForecastNotFound()
         {
             // Arrange
             var command = new DeleteWeatherForcastCommand { Id = 1000 };
 
             // Act
+            RequestResult<Unit> result = await _handler.Handle(command, CancellationToken.None);
+
             // Assert
-            await Assert.ThrowsAsync<NotFoundException>(() => _handler.Handle(command, CancellationToken.None));
+            Assert.True(result.IsNotFound);
+            Assert.False(result.Success);
         }
     }
 }

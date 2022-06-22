@@ -1,4 +1,5 @@
-﻿using CA.MediatR.Behaviors;
+﻿using CA.MediatR;
+using CA.MediatR.Behaviors;
 using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.Logging;
@@ -14,15 +15,18 @@ namespace CA.Api.UnitTests.Validation
     /// <typeparam name="TValidator">The type of the validator being tested</typeparam>
     public class RequestValidationBase<TRequest, TResponse, TValidator>
         where TRequest : IRequest<TResponse>
+        where TResponse : IRequestResult
         where TValidator : AbstractValidator<TRequest>
     {
         protected readonly ValidatorBehavior<TRequest, TResponse> _validatorBehavior;
-        protected readonly Mock<RequestHandlerDelegate<TResponse>> _next;
+        protected readonly RequestHandlerDelegate<TResponse> _next;
 
         public RequestValidationBase()
         {
-            _next = new Mock<RequestHandlerDelegate<TResponse>>();
-
+            _next = () =>
+            {
+                return Task.FromResult((TResponse)TResponse.Succeeded());
+            };
             var validators = new IValidator<TRequest>[] 
             { 
                 Activator.CreateInstance(typeof(TValidator)) as TValidator

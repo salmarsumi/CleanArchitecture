@@ -2,17 +2,17 @@
 using Entities = CA.Api.Domain.Entities;
 using CA.MediatR;
 using MediatR;
-using CA.Common.Exceptions;
 using Microsoft.EntityFrameworkCore;
+using CA.Common.ResponseTypes;
 
 namespace CA.Api.Application.WeatherForcast.Commands.Delete
 {
-    public class DeleteWeatherForcastCommand : IRequest, ITransactionalRequest
+    public class DeleteWeatherForcastCommand : IRequest<RequestResult<Unit>>, ITransactionalRequest
     {
         public int Id { get; set; }
     }
 
-    public class DeleteWeatherForcastCommandHandler : IRequestHandler<DeleteWeatherForcastCommand>
+    public class DeleteWeatherForcastCommandHandler : IRequestHandler<DeleteWeatherForcastCommand, RequestResult<Unit>>
     {
         private readonly IApiDbContext _context;
 
@@ -21,7 +21,7 @@ namespace CA.Api.Application.WeatherForcast.Commands.Delete
             _context = context;
         }
 
-        public async Task<Unit> Handle(DeleteWeatherForcastCommand request, CancellationToken cancellationToken)
+        public async Task<RequestResult<Unit>> Handle(DeleteWeatherForcastCommand request, CancellationToken cancellationToken)
         {
             var entity = await _context.WeatherForcasts
                 .AsNoTracking()
@@ -30,14 +30,19 @@ namespace CA.Api.Application.WeatherForcast.Commands.Delete
 
             if(entity is null)
             {
-                throw new NotFoundException(nameof(Entities.WeatherForcast), request.Id);
+                return RequestResult<Unit>.NotFound(new JsonErrorResponse
+                {
+                    ExceptionType = "Not Found",
+                    Key = request.Id,
+                    Name = nameof(Entities.WeatherForcast)
+                });
             }
 
             _context.WeatherForcasts.Remove(entity);
 
             await _context.SaveChangesAsync(cancellationToken);
 
-            return Unit.Value;
+            return RequestResult<Unit>.Succeeded(Unit.Value);
         }
     }
 }

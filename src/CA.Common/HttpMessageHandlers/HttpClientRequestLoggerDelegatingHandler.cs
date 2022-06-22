@@ -6,7 +6,7 @@ namespace CA.Common.HttpMessageHandlers
 {
     public interface IHttpClientRequestLoggerExecludedPaths
     {
-        IEnumerable<string> GetExeclidedPaths();
+        IEnumerable<string> GetExecludedPaths();
     }
 
     public class HttpClientRequestLoggerDelegatingHandler : DelegatingHandler
@@ -79,7 +79,7 @@ namespace CA.Common.HttpMessageHandlers
             {
                 if (caught == default)
                 {
-                    var execludedPaths = _execludedPaths?.GetExeclidedPaths();
+                    var execludedPaths = _execludedPaths?.GetExecludedPaths();
                     if(execludedPaths is null)
                     {
                         execludedPaths = new[] { "/live", "/ready" };

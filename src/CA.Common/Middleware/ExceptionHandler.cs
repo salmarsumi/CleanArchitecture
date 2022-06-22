@@ -1,5 +1,5 @@
 ﻿using CA.Common.Exceptions;
-using FluentValidation;
+using CA.Common.ResponseTypes;
 using Microsoft.AspNetCore.Antiforgery;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics;
@@ -39,23 +39,6 @@ namespace CA.Common.Middleware
                         JsonErrorResponse result;
                         switch (exceptionHandlerPathFeature.Error)
                         {
-                            case ValidationException exception:
-                                result = new JsonErrorResponse
-                                {
-                                    ExceptionType = "Validation",
-                                    Data = exception.Errors?.Select(error => error.ErrorMessage)?.ToArray()
-                                };
-                                context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
-                                break;
-                            case NotFoundException notfoundException:
-                                result = new JsonErrorResponse
-                                {
-                                    ExceptionType = "Not Found",
-                                    Key = notfoundException.Key,
-                                    Name = notfoundException.Name
-                                };
-                                context.Response.StatusCode = (int)HttpStatusCode.NotFound;
-                                break;
                             case ConcurrencyException concurrencyException:
                                 result = new JsonErrorResponse
                                 {
@@ -90,14 +73,5 @@ namespace CA.Common.Middleware
 
                 });
             };
-
-        private class JsonErrorResponse
-        {
-            public string ExceptionType { get; set; }
-            public object Key { get; set; }
-            public string Name { get; set; }
-            public string DeveloperMessage { get; set; }
-            public object Data { get; set; }
-        }
     }
 }

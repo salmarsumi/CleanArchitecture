@@ -2,6 +2,7 @@
 using CA.Api.Application.WeatherForcast.Commands.Create;
 using CA.Api.Domain.Entities;
 using CA.Api.Infrastructure.Data;
+using CA.MediatR;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -27,15 +28,16 @@ namespace CA.Api.IntegrationTets.WeatherForecast.Commands
             using ApiDbContext context = CreateApiContext();
 
             // Act
-            int id = await _handler.Handle(command, CancellationToken.None);
+            RequestResult<int> result = await _handler.Handle(command, CancellationToken.None);
 
             WeatherForcast entity = await context.WeatherForcasts
                 .AsNoTracking()
-                .Where(x => x.Id == id).FirstOrDefaultAsync();
+                .Where(x => x.Id == result.Result).FirstOrDefaultAsync();
 
             // Assert
-            Assert.True(id > 0);
+            Assert.True(result.Success);
             Assert.NotNull(entity);
+            Assert.Equal(entity.Id, result.Result);
             Assert.Equal(command.Date, entity.Date);
             Assert.Equal(command.Summary, entity.Summary);
             Assert.Equal(command.TemperatureC, entity.TemperatureC);

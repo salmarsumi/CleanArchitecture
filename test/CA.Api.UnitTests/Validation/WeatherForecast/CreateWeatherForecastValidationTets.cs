@@ -1,9 +1,10 @@
 ﻿using CA.Api.Application.WeatherForcast.Commands.Create;
+using CA.MediatR;
 using FluentValidation;
 
 namespace CA.Api.UnitTests.Validation.WeatherForecast
 {
-    public class CreateWeatherForecastValidationTets : RequestValidationBase<CreateWeatherForcastCommand, int, CreateWeatherForcastValidator>
+    public class CreateWeatherForecastValidationTets : RequestValidationBase<CreateWeatherForcastCommand, RequestResult<int>, CreateWeatherForcastValidator>
     {
         // Test data
         public static IEnumerable<object[]> _emptyCreateForecast = new[]
@@ -15,16 +16,19 @@ namespace CA.Api.UnitTests.Validation.WeatherForecast
 
         [Theory]
         [MemberData(nameof(_emptyCreateForecast))]
-        public async Task Validate_ThrowsException_WhenEmptyAttributes(CreateWeatherForcastCommand command)
+        public async Task Validate_ReturnsNotValid_WhenEmptyAttributes(CreateWeatherForcastCommand command)
         {
             // Arrange
             // Act
+            RequestResult<int> result = await _validatorBehavior.Handle(command, CancellationToken.None, _next);
+
             // Assert
-            var exception = await Assert.ThrowsAsync<ValidationException>(() => _validatorBehavior.Handle(command, CancellationToken.None, _next.Object));
+            Assert.True(result.IsNotValid);
+            Assert.False(result.Success);
         }
 
         [Fact]
-        public async Task Validate_ThrowsException_WhenSummaryIsNotAlphaNumeric()
+        public async Task Validate_ReturnsNotValid_WhenSummaryIsNotAlphaNumeric()
         {
             // Arrange
             var command = new CreateWeatherForcastCommand()
@@ -35,8 +39,11 @@ namespace CA.Api.UnitTests.Validation.WeatherForecast
             };
 
             // Act
+            RequestResult<int> result = await _validatorBehavior.Handle(command, CancellationToken.None, _next);
+
             // Assert
-            var exception = await Assert.ThrowsAsync<ValidationException>(() => _validatorBehavior.Handle(command, CancellationToken.None, _next.Object));
+            Assert.True(result.IsNotValid);
+            Assert.False(result.Success);
         }
 
         [Fact]
@@ -51,8 +58,11 @@ namespace CA.Api.UnitTests.Validation.WeatherForecast
             };
 
             // Act
+            RequestResult<int> result = await _validatorBehavior.Handle(command, CancellationToken.None, _next);
+            
             // Assert
-            await _validatorBehavior.Handle(command, CancellationToken.None, _next.Object);
+            Assert.True(result.Success);
+            Assert.False(result.IsNotValid);
         }
     }
 }
