@@ -10,6 +10,7 @@ namespace CA.MediatR.Behaviors
 {
     public class EFTransactionBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
         where TRequest : IRequest<TResponse>
+        where TResponse : IRequestResult
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
         //private readonly ITransactionalDbContext _context;
@@ -56,9 +57,13 @@ namespace CA.MediatR.Behaviors
 
                             response = await next();
 
-                            _logger.LogInformation("----- Commit transaction {TransactionId} for {CommandName}", transaction.TransactionId, typeName);
+                            if (response.Success)
+                            {
 
-                            await context.CommitTranasctionAsync(transaction);
+                                _logger.LogInformation("----- Commit transaction {TransactionId} for {CommandName}", transaction.TransactionId, typeName);
+
+                                await context.CommitTranasctionAsync(transaction);
+                            }
                         }
                     });
 
