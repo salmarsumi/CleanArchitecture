@@ -25,7 +25,7 @@ Boundary(mediatr, "MediatR") {
         }
     }
     
-    namespace Interfaces {
+    namespace MediatR{
         interface ISecuritySensitive {
             GetSafeCopy()
         }
@@ -36,13 +36,32 @@ Boundary(mediatr, "MediatR") {
         }
     }
 
+    namespace Result{
+        class RequestResult implements IRequestResult {
+        Result
+        }
+
+        interface IRequestResult {
+            Success
+            IsNotFound
+            IsNotValid
+            Data
+            {static} Succeeded()
+            {static} NotFound(object data)
+            {static} NotValid(object data)
+        }
+    }
+
     class Extensions {
         {static} +AddMediatRServices()
     }
 }
 
-Lay_L(Interfaces.IRquestHandler, Interfaces.IRequest)
-Lay_U(Interfaces.IRequest, Interfaces.ITransactionalRequest)
-Lay_U(Extensions, Interfaces.IRequest)
+Lay_L(MediatR.IRquestHandler, MediatR.IRequest)
+Lay_U(MediatR.IRequest, MediatR.ITransactionalRequest)
+Lay_L(Result.RequestResult, Result.IRequestResult)
+Lay_U(Result.IRequestResult, MediatR.IRequest)
+Lay_U(Behaviors.ValidatorBehavior, Behaviors.LoggingBehavior)
+Lay_U(Extensions, Behaviors.ValidatorBehavior)
 
 @enduml
