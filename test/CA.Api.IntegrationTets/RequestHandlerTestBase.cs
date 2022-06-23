@@ -1,11 +1,5 @@
-﻿using CA.Api.Application.Interfaces;
-using CA.Api.Infrastructure.Data;
-using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using CA.Api.Infrastructure.Data;
+using CA.Api.Infrastructure.Repositories;
 
 namespace CA.Api.IntegrationTets
 {
@@ -17,7 +11,8 @@ namespace CA.Api.IntegrationTets
         public RequestHandlerTestBase()
         {
             IApiDbContext context = CreateApiContext();
-            _handler = Activator.CreateInstance(typeof(T), context) as T;
+            var respository = new WeatherForecastRepository(CreateApiContext());
+            _handler = Activator.CreateInstance(typeof(T), respository) as T;
         }
 
         protected ApiDbContext CreateApiContext()

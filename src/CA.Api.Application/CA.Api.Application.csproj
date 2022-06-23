@@ -18,8 +18,4 @@
     <ProjectReference Include="..\CA.MediatR\CA.MediatR.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Exceptions\" />
-  </ItemGroup>
-
 </Project>

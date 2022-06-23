@@ -1,9 +1,8 @@
-﻿using CA.Api.Application.Interfaces;
-using Entities = CA.Api.Domain.Entities;
+﻿using Entities = CA.Api.Domain.Entities;
 using CA.MediatR;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 using CA.Common.ResponseTypes;
+using CA.Api.Domain.Interfaces;
 
 namespace CA.Api.Application.WeatherForcast.Commands.Delete
 {
@@ -14,33 +13,30 @@ namespace CA.Api.Application.WeatherForcast.Commands.Delete
 
     public class DeleteWeatherForcastCommandHandler : IRequestHandler<DeleteWeatherForcastCommand, RequestResult<Unit>>
     {
-        private readonly IApiDbContext _context;
+        private readonly IWeatherForecastRepository _repository;
 
-        public DeleteWeatherForcastCommandHandler(IApiDbContext context)
+        public DeleteWeatherForcastCommandHandler(IWeatherForecastRepository repository)
         {
-            _context = context;
+            _repository = repository;
         }
 
         public async Task<RequestResult<Unit>> Handle(DeleteWeatherForcastCommand request, CancellationToken cancellationToken)
         {
-            var entity = await _context.WeatherForcasts
-                .AsNoTracking()
-                .Where(x => x.Id == request.Id)
-                .SingleOrDefaultAsync(cancellationToken);
+            var entity = await _repository.GetAsync(request.Id);
 
-            if(entity is null)
+            if (entity is null)
             {
                 return RequestResult<Unit>.NotFound(new JsonErrorResponse
                 {
                     ExceptionType = "Not Found",
                     Key = request.Id,
-                    Name = nameof(Entities.WeatherForcast)
+                    Name = nameof(Entities.WeatherForecast)
                 });
             }
 
-            _context.WeatherForcasts.Remove(entity);
+            _repository.Remove(entity);
 
-            await _context.SaveChangesAsync(cancellationToken);
+            await _repository.SaveChangesAsync(cancellationToken);
 
             return RequestResult<Unit>.Succeeded(Unit.Value);
         }

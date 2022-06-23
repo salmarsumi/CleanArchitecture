@@ -1,21 +1,14 @@
-﻿using CA.Api.Application.Interfaces;
-using CA.Api.Application.WeatherForcast.Commands.Create;
-using CA.Api.Domain.Entities;
+﻿using CA.Api.Application.WeatherForcast.Commands.Create;
 using CA.Api.Infrastructure.Data;
 using CA.MediatR;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CA.Api.IntegrationTets.WeatherForecast.Commands
 {
     public class CreateWeatherForecastTests : RequestHandlerTestBase<CreateWeatherForcastCommandHandler>
     {
         [Fact]
-        public async Task Handle_ReturnsId_WhenCommandIsValid()
+        public async Task Handle_CreatesWeatherForecast_WhenCommandIsValid()
         {
             // Arrange
             var currentUser = new FakeCurrentUserService();
@@ -30,7 +23,7 @@ namespace CA.Api.IntegrationTets.WeatherForecast.Commands
             // Act
             RequestResult<int> result = await _handler.Handle(command, CancellationToken.None);
 
-            WeatherForcast entity = await context.WeatherForcasts
+            Domain.Entities.WeatherForecast entity = await context.WeatherForcasts
                 .AsNoTracking()
                 .Where(x => x.Id == result.Result).FirstOrDefaultAsync();
 

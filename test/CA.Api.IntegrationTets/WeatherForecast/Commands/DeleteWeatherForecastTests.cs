@@ -1,7 +1,5 @@
 ﻿using CA.Api.Application.WeatherForcast.Commands.Delete;
-using CA.Api.Domain.Entities;
 using CA.Api.Infrastructure.Data;
-using CA.Common.Exceptions;
 using CA.MediatR;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -15,7 +13,7 @@ namespace CA.Api.IntegrationTets.WeatherForecast.Commands
         {
             // Arrange
             using ApiDbContext context = CreateApiContext();
-            var newEntity = new WeatherForcast
+            var newEntity = new Domain.Entities.WeatherForecast
             {
                 Date = DateTime.Now,
                 Summary = "Delete weather forecast test",
@@ -29,7 +27,7 @@ namespace CA.Api.IntegrationTets.WeatherForecast.Commands
             // Act
             RequestResult<Unit> result = await _handler.Handle(command, CancellationToken.None);
 
-            WeatherForcast deleted = await context.WeatherForcasts
+            Domain.Entities.WeatherForecast deleted = await context.WeatherForcasts
                 .AsNoTracking()
                 .Where(x => x.Id == newEntity.Id).FirstOrDefaultAsync();
 

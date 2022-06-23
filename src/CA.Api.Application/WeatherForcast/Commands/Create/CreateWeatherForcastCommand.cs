@@ -1,4 +1,5 @@
-﻿using CA.Api.Application.Interfaces;
+﻿using CA.Api.Domain.Entities;
+using CA.Api.Domain.Interfaces;
 using CA.MediatR;
 using MediatR;
 
@@ -13,25 +14,25 @@ namespace CA.Api.Application.WeatherForcast.Commands.Create
 
     public class CreateWeatherForcastCommandHandler : IRequestHandler<CreateWeatherForcastCommand, RequestResult<int>>
     {
-        private readonly IApiDbContext _context;
+        private readonly IWeatherForecastRepository _repository;
 
-        public CreateWeatherForcastCommandHandler(IApiDbContext context)
+        public CreateWeatherForcastCommandHandler(IWeatherForecastRepository repository)
         {
-            _context = context;
+            _repository = repository;
         }
 
         public async Task<RequestResult<int>> Handle(CreateWeatherForcastCommand request, CancellationToken cancellationToken)
         {
-            var entity = new CA.Api.Domain.Entities.WeatherForcast
+            var entity = new WeatherForecast
             {
                 Date = request.Date,
                 TemperatureC = request.TemperatureC,
                 Summary = request.Summary
             };
 
-            _context.WeatherForcasts.Add(entity);
+            _repository.Add(entity);
 
-            await _context.SaveChangesAsync(cancellationToken);
+            await _repository.SaveChangesAsync(cancellationToken);
 
             return RequestResult<int>.Succeeded(entity.Id);
         }
