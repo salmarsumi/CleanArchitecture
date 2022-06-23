@@ -1,7 +1,10 @@
-﻿using CA.Api.Application.Interfaces;
-using CA.Api.Application.WeatherForcast.Commands.Create;
+﻿using CA.Api.Application.WeatherForcast.Commands.Create;
+using CA.Api.Application.WeatherForcast.Queries;
+using CA.Api.Domain.Interfaces;
 using CA.Api.Endpoints;
 using CA.Api.Infrastructure.Data;
+using CA.Api.Infrastructure.Queries;
+using CA.Api.Infrastructure.Repositories;
 using CA.Common.Authorization.AspNetCore;
 using CA.Common.EF;
 using CA.Common.Logging;
@@ -107,6 +110,12 @@ namespace CA.Api
             builder.Services.AddHttpContextAccessor();
             builder.Services.AddScoped<ICurrentUserService, CurrentUserService>();
             builder.Services.AddDistributedMemoryCache();
+
+            // Repositories
+            builder.Services.AddScoped<IWeatherForecastRepository, WeatherForecastRepository>();
+
+            // Queries
+            builder.Services.AddScoped<IWeatherForecastQueries, WeatherForecastQueries>();
 
             return builder;
         }
