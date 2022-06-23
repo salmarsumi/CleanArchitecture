@@ -1,6 +1,4 @@
-﻿using CA.Api.Application.Interfaces;
-using MediatR;
-using Microsoft.EntityFrameworkCore;
+﻿using MediatR;
 
 namespace CA.Api.Application.WeatherForcast.Queries
 {
@@ -10,23 +8,16 @@ namespace CA.Api.Application.WeatherForcast.Queries
 
     public class GetAllWeatherForcastQueryHandler : IRequestHandler<GetAllWeatherForcastQuery, IEnumerable<WeatherForecastDto>>
     {
-        private readonly IApiDbContext _context;
+        private readonly IWeatherForecastQueries _query;
 
-        public GetAllWeatherForcastQueryHandler(IApiDbContext context)
+        public GetAllWeatherForcastQueryHandler(IWeatherForecastQueries query)
         {
-            _context = context;
+            _query = query;
         }
 
         public async Task<IEnumerable<WeatherForecastDto>> Handle(GetAllWeatherForcastQuery request, CancellationToken cancellationToken)
         {
-            return await _context.WeatherForcasts.Select(e => new WeatherForecastDto
-            {
-                Id = e.Id,
-                Date = e.Date,
-                Summary = e.Summary,
-                TemperatureC = e.TemperatureC
-            })
-                .ToListAsync(cancellationToken);
+            return await _query.GetAllWeatherForecastAsync(cancellationToken);
         }
     }
 }
