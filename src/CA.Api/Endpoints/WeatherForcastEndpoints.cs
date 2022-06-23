@@ -15,9 +15,14 @@ namespace CA.Api.Endpoints
             // GET /weather
             app.MapGet("/weather", [Authorize(nameof(AppPermissions.ViewWeather))] async (ISender mediator, HttpContext context) =>
             {
-                var result = await mediator.Send(new GetAllWeatherForcastQuery());
+                RequestResult<IEnumerable<WeatherForecastDto>> result = await mediator.Send(new GetAllWeatherForcastQuery());
 
-                return Results.Ok(result);
+                if (result.Success)
+                {
+                    return Results.Ok(result.Result);
+                }
+
+                return result.AsApiResult();
             }).RequireAuthorization();
 
             // POST /weather

@@ -1,12 +1,13 @@
-﻿using MediatR;
+﻿using CA.MediatR;
+using MediatR;
 
 namespace CA.Api.Application.WeatherForcast.Queries
 {
-    public class GetAllWeatherForcastQuery : IRequest<IEnumerable<WeatherForecastDto>>
+    public class GetAllWeatherForcastQuery : IRequest<RequestResult<IEnumerable<WeatherForecastDto>>>
     {
     }
 
-    public class GetAllWeatherForcastQueryHandler : IRequestHandler<GetAllWeatherForcastQuery, IEnumerable<WeatherForecastDto>>
+    public class GetAllWeatherForcastQueryHandler : IRequestHandler<GetAllWeatherForcastQuery, RequestResult<IEnumerable<WeatherForecastDto>>>
     {
         private readonly IWeatherForecastQueries _query;
 
@@ -15,9 +16,10 @@ namespace CA.Api.Application.WeatherForcast.Queries
             _query = query;
         }
 
-        public async Task<IEnumerable<WeatherForecastDto>> Handle(GetAllWeatherForcastQuery request, CancellationToken cancellationToken)
+        public async Task<RequestResult<IEnumerable<WeatherForecastDto>>> Handle(GetAllWeatherForcastQuery request, CancellationToken cancellationToken)
         {
-            return await _query.GetAllWeatherForecastAsync(cancellationToken);
+            IEnumerable<WeatherForecastDto> result = await _query.GetAllWeatherForecastAsync(cancellationToken);
+            return RequestResult<IEnumerable<WeatherForecastDto>>.Succeeded(result);
         }
     }
 }
