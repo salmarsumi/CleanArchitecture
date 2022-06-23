@@ -6,11 +6,24 @@ HIDE_STEREOTYPE()
 title Code diagram for Infrastructure Data Component - API Application
 
 Boundary(queries, "Infrastructure Data Component") {
-    namespace Application {
-        
-        interface IApiDbContext {
-            WeatherForcasts
+
+    namespace Domain {
+        interface IRepository<T> {
+            Add()
+            Remove()
+            GetAsync()
             SaveChangesAsync()
+        }
+
+        interface IWeatherForecastRepository implements IRepository
+
+        interface IAggregate
+    }
+
+    namespace Application {
+
+        interface IWeatherForecastQueries {
+            GetAllWeatherForecastAsync()
         }
     }
 
@@ -44,11 +57,33 @@ Boundary(queries, "Infrastructure Data Component") {
     }
 
     namespace Data {
-        class ApiDbContext extends Common.EF.BaseTransactionalDbContext implements Application.IApiDbContext
+        class ApiDbContext extends Common.EF.BaseTransactionalDbContext implements IApiDbContext
         class WeatherForcastEntityTypeConfiguration {
             +Configure()
         }
+
+        interface IApiDbContext {
+            WeatherForcasts
+            SaveChangesAsync()
+        }
+    }
+
+    namespace Repositories {
+        class WeatherForecastRepository implements Domain.IWeatherForecastRepository {
+            -_context
+        }
+    }
+
+    namespace Queries {
+        class WeatherForecastQueries implements Application.IWeatherForecastQueries {
+            -_context
+        }
     }
 }
+
+Lay_U(Data.IApiDbContext, Common.EF.BaseTransactionalDbContext)
+Lay_R(Data.IApiDbContext, Data.ApiDbContext)
+Lay_U(Data.WeatherForcastEntityTypeConfiguration, Data.IApiDbContext)
+Lay_R(Common.EF.Extensions, Common.EF.BaseTransactionalDbContext)
 
 @enduml

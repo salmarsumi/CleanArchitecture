@@ -6,15 +6,18 @@ HIDE_STEREOTYPE()
 title Code diagram for Queries Component - API Application
 
 Boundary(queries, "Queries Component") {
-    interface IRequest
-    interface IRequestHandler
+    namespace Common.MediatR {
+        interface IRequest
+        interface IRequestHandler
+        class RequestResult
+    }
 
     namespace WeatherForecast {
 
-        class GetAllWeatherForcastQuery implements .IRequest
+        class GetAllWeatherForcastQuery implements Common.MediatR.IRequest
 
-        class GetAllWeatherForcastQueryHandler implements .IRequestHandler {
-            -_context
+        class GetAllWeatherForcastQueryHandler implements Common.MediatR.IRequestHandler {
+            -_query
             +Handle()
         }
 
@@ -27,6 +30,12 @@ Boundary(queries, "Queries Component") {
         }
 
         Lay_U(WeatherForecastDto, GetAllWeatherForcastQuery)
+    }
+
+    namespace Application {
+        interface IWeatherForecastQueries {
+            GetAllWeatherForecastAsync()
+        }
     }
 }
 

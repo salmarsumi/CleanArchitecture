@@ -6,29 +6,32 @@ HIDE_STEREOTYPE()
 title Code diagram for Commands Component - API Application
 
 Boundary(commands, "Commands Component") {
-    interface IRequest
-    interface IRequestHandler
-    interface ITransactionalRequest
+    namespace Common.MediatR {
+        interface IRequest
+        interface IRequestHandler
+        interface ITransactionalRequest
+        class RequestResult
+    }
 
     namespace WeatherForecast {
 
-        class CreateWeatherForcastCommand implements .IRequest, .ITransactionalRequest {
+        class CreateWeatherForcastCommand implements Common.MediatR.IRequest, Common.MediatR.ITransactionalRequest {
             +Date
             +TemperatureC
             +Summary
         }
 
-        class CreateWeatherForcastCommandHandler implements .IRequestHandler {
-            -_context
-            +Handle()
+        class CreateWeatherForcastCommandHandler implements Common.MediatR.IRequestHandler {
+            - _repository
+            + Handle()
         }
 
-        class DeleteWeatherForcastCommand implements .IRequest, .ITransactionalRequest {
+        class DeleteWeatherForcastCommand implements Common.MediatR.IRequest, Common.MediatR.ITransactionalRequest {
             +Id
         }
 
-        class DeleteWeatherForcastCommandHandler implements .IRequestHandler {
-            -_context
+        class DeleteWeatherForcastCommandHandler implements Common.MediatR.IRequestHandler {
+            -_repository
             +Handle()
         }
 
@@ -40,6 +43,17 @@ Boundary(commands, "Commands Component") {
 
         Lay_U(DeleteWeatherForcastCommandHandler, DeleteWeatherForcastCommand)
         Lay_U(DeleteWeatherForcastValidator,DeleteWeatherForcastCommandHandler)
+    }
+
+    namespace Domain {
+        interface IRepository<T> {
+            Add()
+            Remove()
+            GetAsync()
+            SaveChangesAsync()
+        }
+
+        interface IWeatherForecastRepository implements IRepository
     }
 }
 
