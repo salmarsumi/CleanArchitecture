@@ -1,7 +1,6 @@
 ﻿using CA.Common.Authorization.Client;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Polly;
@@ -74,18 +73,18 @@ namespace CA.Common.Authorization.AspNetCore
     /// </summary>
     public static class ServiceCollectionExtensions
     {
-        public static ServerBuilder AddLocalPolicyServices(this WebApplicationBuilder builder)
+        public static ServerBuilder AddLocalPolicyServices(this IServiceCollection services)
         {
-            builder.Services.AddScoped<IPolicyOperations, PolicyOperations>();
+            services.AddScoped<IPolicyOperations, PolicyOperations>();
 
-            return new ServerBuilder(builder.Services);
+            return new ServerBuilder(services);
         }
 
-        public static ServerBuilder AddRemotePolicyServices(this WebApplicationBuilder builder)
+        public static ServerBuilder AddRemotePolicyServices(this IServiceCollection services)
         {
-            builder.Services.AddScoped<IPolicyOperations, RemotePolicyOperations>();
+            services.AddScoped<IPolicyOperations, RemotePolicyOperations>();
 
-            return new ServerBuilder(builder.Services);
+            return new ServerBuilder(services);
         }
     }
 }

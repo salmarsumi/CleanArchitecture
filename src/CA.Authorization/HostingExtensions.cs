@@ -16,7 +16,7 @@ namespace CA.Authorization
             builder.Host.UseSerilog();
 
             // Permissions
-            builder.AddLocalPolicyServices();
+            builder.Services.AddLocalPolicyServices();
 
             builder
                 .ConfigureAuthentication() // Authentication
