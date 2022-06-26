@@ -1,6 +1,6 @@
 ﻿using System.Security.Claims;
 
-namespace SMD.Security.Authorization.UnitTests
+namespace CA.Common.Authorization.UnitTests
 {
     public class TestBase
     {

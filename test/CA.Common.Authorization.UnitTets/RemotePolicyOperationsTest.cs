@@ -3,7 +3,7 @@ using Microsoft.Extensions.Caching.Distributed;
 using Moq;
 using System.Security.Claims;
 
-namespace SMD.Security.Authorization.UnitTests
+namespace CA.Common.Authorization.UnitTests
 {
     public class RemotePolicyOperationsTest : TestBase
     {

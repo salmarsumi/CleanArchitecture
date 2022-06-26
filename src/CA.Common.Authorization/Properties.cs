@@ -1,3 +1,3 @@
 ﻿using System.Runtime.CompilerServices;
 
-[assembly: InternalsVisibleTo("CA.Common.Authorization.UnitTets")]
+[assembly: InternalsVisibleTo("CA.Common.Authorization.UnitTests")]

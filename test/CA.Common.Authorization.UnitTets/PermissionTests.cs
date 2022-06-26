@@ -1,6 +1,6 @@
 ﻿using CA.Common.Authorization.PolicyRuntime;
 
-namespace SMD.Security.Authorization.UnitTests
+namespace CA.Common.Authorization.UnitTests
 {
     public class PermissionTests
     {
