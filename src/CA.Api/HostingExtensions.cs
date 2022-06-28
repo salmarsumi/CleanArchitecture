@@ -7,6 +7,7 @@ using CA.Api.Infrastructure.Queries;
 using CA.Api.Infrastructure.Repositories;
 using CA.Common.Authorization.AspNetCore;
 using CA.Common.EF;
+using CA.Common.HttpMessageHandlers;
 using CA.Common.Logging;
 using CA.Common.Middleware;
 using CA.Common.Services;
@@ -15,6 +16,8 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
+using Microsoft.Extensions.DependencyInjection.Extensions;
+using Microsoft.Extensions.Http;
 using Serilog;
 using System.IdentityModel.Tokens.Jwt;
 
@@ -42,6 +45,9 @@ namespace CA.Api
                 .AddRemotePolicyServices()
                 .AddAuthorizationPermissionPolicies()
                 .AddRemotePolicyHttpClient(builder.Configuration["AuthorizationService"]);
+
+            // HttpClient logging
+            builder.Services.Replace(ServiceDescriptor.Singleton<IHttpMessageHandlerBuilderFilter, CAHttpMessageHandlerBuilderFilter>());
 
             return builder; 
         }

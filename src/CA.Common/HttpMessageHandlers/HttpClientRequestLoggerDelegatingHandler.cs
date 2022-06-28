@@ -4,25 +4,20 @@ using System.Diagnostics;
 
 namespace CA.Common.HttpMessageHandlers
 {
-    public interface IHttpClientRequestLoggerExecludedPaths
-    {
-        IEnumerable<string> GetExecludedPaths();
-    }
-
+    /// <summary>
+    /// Replaces the default chatty HttpClient request logger.
+    /// </summary>
     public class HttpClientRequestLoggerDelegatingHandler : DelegatingHandler
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly ILogger<HttpClientRequestLoggerDelegatingHandler> _logger;
-        private readonly IHttpClientRequestLoggerExecludedPaths _execludedPaths;
 
         public HttpClientRequestLoggerDelegatingHandler(
             IHttpContextAccessor httpContextAccessor,
-            ILogger<HttpClientRequestLoggerDelegatingHandler> logger,
-            IHttpClientRequestLoggerExecludedPaths execludedPaths = null)
+            ILogger<HttpClientRequestLoggerDelegatingHandler> logger)
         {
             _httpContextAccessor = httpContextAccessor;
             _logger = logger;
-            _execludedPaths = execludedPaths;
         }
 
         protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
@@ -42,9 +37,9 @@ namespace CA.Common.HttpMessageHandlers
             }
 
             var correlationId = string.Empty;
-            if (request.Headers.Contains("Request-Id"))
+            if (request.Headers.Contains(Constants.CORRELATION_HEADER))
             {
-                correlationId = request.Headers.First(h => h.Key == "Request-Id").Value.First();
+                correlationId = request.Headers.GetValues(Constants.CORRELATION_HEADER).First();
             }
             else
             {
@@ -79,24 +74,7 @@ namespace CA.Common.HttpMessageHandlers
             {
                 if (caught == default)
                 {
-                    var execludedPaths = _execludedPaths?.GetExecludedPaths();
-                    if(execludedPaths is null)
-                    {
-                        execludedPaths = new[] { "/live", "/ready" };
-                    }
-
-                    LogLevel logLevel;
-                    if(httpContext is not null && execludedPaths.Any(x => httpContext.Request.Path.Value.StartsWith(x, StringComparison.OrdinalIgnoreCase)))
-                    {
-                        logLevel = LogLevel.Trace;
-                    }
-                    else
-                    {
-                        logLevel = LogLevel.Information;
-                    }
-
-                    _logger.Log(
-                        logLevel,
+                    _logger.LogInformation(
                         "HTTPCLIENT request {HttpMethod} {Uri} responded in {elapsed} ms - {StatusCode}",
                         request.Method,
                         request.RequestUri,
