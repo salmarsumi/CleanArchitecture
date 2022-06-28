@@ -1,5 +1,6 @@
 ﻿using CA.Api.Domain.Entities;
 using CA.Common.EF;
+using CA.Common.SeedWork;
 using CA.Common.Services;
 using Microsoft.EntityFrameworkCore;
 
@@ -7,7 +8,8 @@ namespace CA.Api.Infrastructure.Data
 {
     public class ApiDbContext : BaseTransactionalDbContext<ApiDbContext>, IApiDbContext
     {
-        public ApiDbContext(DbContextOptions<ApiDbContext> options, ICurrentUserService currentUserService) : base(options, currentUserService)
+        public ApiDbContext(DbContextOptions<ApiDbContext> options, ICurrentUserService currentUserService, IDomainEventService domainEventService) 
+            : base(options, currentUserService, domainEventService)
         { }
 
         public DbSet<WeatherForecast> WeatherForcasts { get; set; }

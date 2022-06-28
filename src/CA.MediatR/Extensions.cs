@@ -1,4 +1,6 @@
-﻿using CA.MediatR.Behaviors;
+﻿using CA.Common.SeedWork;
+using CA.MediatR.Behaviors;
+using CA.MediatR.Events;
 using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
@@ -15,6 +17,7 @@ namespace CA.MediatR
         /// <returns></returns>
         public static IServiceCollection AddMediatRServices<T>(this IServiceCollection services, bool isTransactional = false)
         {
+            services.AddScoped<IDomainEventService, DomainEventService>();
             services.AddMediatR(typeof(T).Assembly);
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(LoggingBehavior<,>));
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidatorBehavior<,>));

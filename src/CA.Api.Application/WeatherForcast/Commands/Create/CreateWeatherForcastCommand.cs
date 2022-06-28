@@ -1,4 +1,5 @@
 ﻿using CA.Api.Domain.Entities;
+using CA.Api.Domain.Events;
 using CA.Api.Domain.Interfaces;
 using CA.MediatR;
 using MediatR;
@@ -29,6 +30,8 @@ namespace CA.Api.Application.WeatherForcast.Commands.Create
                 TemperatureC = request.TemperatureC,
                 Summary = request.Summary
             };
+
+            entity.AddDomainEvent(new WeatherForecastCreatedEvent(entity));
 
             _repository.Add(entity);
 

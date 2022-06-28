@@ -8,11 +8,13 @@ namespace CA.Common.EF
     public abstract class BaseDbContext<T> : DbContext where T : DbContext
     {
         protected readonly ICurrentUserService _currentUserService;
+        private readonly IDomainEventService _domainEventService;
 
-        protected BaseDbContext(DbContextOptions<T> options, ICurrentUserService currentUserService)
+        protected BaseDbContext(DbContextOptions<T> options, ICurrentUserService currentUserService, IDomainEventService domainEventService)
             : base(options)
         {
             _currentUserService = currentUserService;
+            _domainEventService = domainEventService;
         }
 
         public override int SaveChanges()
@@ -22,7 +24,15 @@ namespace CA.Common.EF
 
             try
             {
-                return base.SaveChanges();
+                var events = ChangeTracker.Entries<IHasDomainEvents>()
+                    .Select(x => x.Entity.Events)
+                    .SelectMany(x => x)
+                    .Where(domainEvent => !domainEvent.IsPublished)
+                    .ToArray();
+
+                int result = base.SaveChanges();
+                PublishEvents(events).GetAwaiter().GetResult();
+                return result;
             }
             catch (DbUpdateConcurrencyException ex)
             {
@@ -30,14 +40,22 @@ namespace CA.Common.EF
             }
         }
 
-        public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+        public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {
             Audit();
             Concurrency();
 
             try
             {
-                return base.SaveChangesAsync(cancellationToken);
+                var events = ChangeTracker.Entries<IHasDomainEvents>()
+                    .Select(x => x.Entity.Events)
+                    .SelectMany(x => x)
+                    .Where(domainEvent => !domainEvent.IsPublished)
+                    .ToArray();
+
+                int result = await base.SaveChangesAsync(cancellationToken);
+                await PublishEvents(events);
+                return result;
             }
             catch (DbUpdateConcurrencyException ex)
             {
@@ -55,30 +73,24 @@ namespace CA.Common.EF
                 // If the entity state is Added let's set
                 // the CreatedAt and CreatedBy properties
                 auditableEntity = (IAuditable)entry.Entity;
-                if (string.IsNullOrEmpty(auditableEntity.CreatedBy))
+                if (entry.State == EntityState.Added)
                 {
-                    if (entry.State == EntityState.Added)
-                    {
-                        auditableEntity.Created = DateTime.UtcNow;
-                        auditableEntity.CreatedBy = username;
-                    }
-                    else
-                    {
-                        // If the state is Modified then we don't want
-                        // to modify the Created At and Created By properties
-                        // so we set their state as IsModified to false
-                        Entry(auditableEntity).Property(p => p.Created).IsModified = false;
-                        Entry(auditableEntity).Property(p => p.CreatedBy).IsModified = false;
-                    }
+                    auditableEntity.Created = DateTime.UtcNow;
+                    auditableEntity.CreatedBy = username;
+                }
+                else
+                {
+                    // If the state is Modified then we don't want
+                    // to modify the Created At and Created By properties
+                    // so we set their state as IsModified to false
+                    Entry(auditableEntity).Property(p => p.Created).IsModified = false;
+                    Entry(auditableEntity).Property(p => p.CreatedBy).IsModified = false;
                 }
 
-                if (string.IsNullOrEmpty(auditableEntity.LastModifiedBy))
-                {
-                    // In any case we always want to set the properties
-                    // Modified At and Modified By
-                    auditableEntity.LastModified = DateTime.UtcNow;
-                    auditableEntity.LastModifiedBy = username;
-                }
+                // In any case we always want to set the properties
+                // Modified At and Modified By
+                auditableEntity.LastModified = DateTime.UtcNow;
+                auditableEntity.LastModifiedBy = username;
             }
         }
 
@@ -87,6 +99,18 @@ namespace CA.Common.EF
             foreach (var entry in ChangeTracker.Entries().Where(e => e.Entity is IConcurrency && e.State == EntityState.Modified))
             {
                 ((IConcurrency)entry.Entity).IncrementVersion();
+            }
+        }
+
+        private async Task PublishEvents(DomainEvent[] events)
+        {
+            foreach (DomainEvent @event in events)
+            {
+                if (!@event.IsPublished)
+                {
+                    await _domainEventService.Publish(@event);
+                    @event.SetPublished();
+                }
             }
         }
     }

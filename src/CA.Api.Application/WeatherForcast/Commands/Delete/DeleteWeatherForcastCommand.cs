@@ -3,6 +3,7 @@ using CA.MediatR;
 using MediatR;
 using CA.Common.ResponseTypes;
 using CA.Api.Domain.Interfaces;
+using CA.Api.Domain.Events;
 
 namespace CA.Api.Application.WeatherForcast.Commands.Delete
 {
@@ -22,7 +23,7 @@ namespace CA.Api.Application.WeatherForcast.Commands.Delete
 
         public async Task<RequestResult<Unit>> Handle(DeleteWeatherForcastCommand request, CancellationToken cancellationToken)
         {
-            var entity = await _repository.GetAsync(request.Id);
+            Entities.WeatherForecast entity = await _repository.GetAsync(request.Id, cancellationToken);
 
             if (entity is null)
             {
@@ -33,6 +34,8 @@ namespace CA.Api.Application.WeatherForcast.Commands.Delete
                     Name = nameof(Entities.WeatherForecast)
                 });
             }
+
+            entity.AddDomainEvent(new WeatherForecastDeletedEvent(entity));
 
             _repository.Remove(entity);
 

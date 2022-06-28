@@ -13,7 +13,6 @@ namespace CA.MediatR.Behaviors
         where TResponse : IRequestResult
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
-        //private readonly ITransactionalDbContext _context;
         private readonly ILogger<EFTransactionBehavior<TRequest, TResponse>> _logger;
 
         public EFTransactionBehavior(
@@ -21,7 +20,6 @@ namespace CA.MediatR.Behaviors
             ILogger<EFTransactionBehavior<TRequest, TResponse>> logger)
         {
             _httpContextAccessor = httpContextAccessor;
-            //_context = context;
             _logger = logger;
         }
 

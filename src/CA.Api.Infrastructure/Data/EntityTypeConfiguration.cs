@@ -10,6 +10,7 @@ namespace CA.Api.Infrastructure.Data
         {
             builder.ToTable("Weather_Forcast");
             builder.HasKey(x => x.Id);
+            builder.Ignore(x => x.Events);
         }
     }
 }

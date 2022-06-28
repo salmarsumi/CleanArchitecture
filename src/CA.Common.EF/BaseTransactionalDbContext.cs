@@ -1,4 +1,5 @@
-﻿using CA.Common.Services;
+﻿using CA.Common.SeedWork;
+using CA.Common.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 using System.Data;
@@ -9,8 +10,8 @@ namespace CA.Common.EF
     {
         private IDbContextTransaction _currentTransaction;
 
-        protected BaseTransactionalDbContext(DbContextOptions<T> options, ICurrentUserService currentUserService)
-            : base(options, currentUserService)
+        protected BaseTransactionalDbContext(DbContextOptions<T> options, ICurrentUserService currentUserService, IDomainEventService domainEventService)
+            : base(options, currentUserService, domainEventService)
         {
         }
 
