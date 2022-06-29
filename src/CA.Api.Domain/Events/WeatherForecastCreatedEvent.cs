@@ -5,11 +5,11 @@ namespace CA.Api.Domain.Events
 {
     public class WeatherForecastCreatedEvent: DomainEvent
     {
-        public WeatherForecastCreatedEvent(WeatherForecast item)
+        public WeatherForecastCreatedEvent(WeatherForecast entity)
         {
-            Item = item;
+            Entity = entity;
         }
 
-        public WeatherForecast Item { get; }
+        public WeatherForecast Entity { get; }
     }
 }
