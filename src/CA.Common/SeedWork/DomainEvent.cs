@@ -7,7 +7,7 @@
         void AddDomainEvent(DomainEvent domainEvent);
     }
 
-    public class DomainEvent
+    public abstract class DomainEvent
     {
         public bool IsPublished { get; private set; }
 
