@@ -28,7 +28,7 @@ namespace CA.Common.Authorization.AspNetCore
         }
     }
 
-    internal class PermissionRequirement : IAuthorizationRequirement
+    public class PermissionRequirement : IAuthorizationRequirement
     {
         public PermissionRequirement(string name)
         {
@@ -38,7 +38,7 @@ namespace CA.Common.Authorization.AspNetCore
         public string Name { get; set; }
     }
 
-    internal class PermissionHandler : AuthorizationHandler<PermissionRequirement>
+    public class PermissionHandler : AuthorizationHandler<PermissionRequirement>
     {
         private readonly IPolicyOperations _client;
         private readonly ILogger<PermissionHandler> _logger;
