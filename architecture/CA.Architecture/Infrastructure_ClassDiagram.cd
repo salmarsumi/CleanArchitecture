@@ -1,0 +1,64 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="NameAndType">
+  <Class Name="CA.Common.EF.BaseDbContext&lt;T&gt;">
+    <Position X="7.75" Y="0.5" Width="3" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="CA.Common.EF.BaseTransactionalDbContext&lt;T&gt;">
+    <Position X="11.5" Y="0.5" Width="3.5" />
+    <TypeIdentifier />
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="CA.Common.EF.DbExtensions">
+    <Position X="11.5" Y="6.5" Width="3.25" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="CA.Api.Infrastructure.Data.ApiDbContext">
+    <Position X="11.5" Y="3.75" Width="2.75" />
+    <InheritanceLine Type="CA.Common.EF.BaseTransactionalDbContext&lt;T&gt;" FixedFromPoint="true">
+      <Path>
+        <Point X="13.375" Y="3.146" />
+        <Point X="13.375" Y="3.45" />
+        <Point X="12.875" Y="3.45" />
+        <Point X="12.875" Y="3.75" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier />
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="CA.Api.Infrastructure.Data.WeatherForcastEntityTypeConfiguration">
+    <Position X="8" Y="6.5" Width="3" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="CA.Api.Infrastructure.Repositories.WeatherForecastRepository">
+    <Position X="19.75" Y="4.75" Width="2.25" />
+    <TypeIdentifier />
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="CA.Api.Infrastructure.Queries.WeatherForecastQueries">
+    <Position X="15.5" Y="5.75" Width="2.75" />
+    <TypeIdentifier />
+    <Lollipop Position="0.2" />
+  </Class>
+  <Interface Name="CA.Common.EF.ITransactionalDbContext">
+    <Position X="15.5" Y="0.5" Width="3.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="CA.Api.Infrastructure.Data.IApiDbContext">
+    <Position X="8" Y="3.25" Width="2.25" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="CA.Api.Domain.Interfaces.IWeatherForecastRepository">
+    <Position X="19.75" Y="3" Width="2.25" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="CA.Api.Domain.Interfaces.IRepository&lt;TEntity, TId&gt;">
+    <Position X="19.75" Y="0.5" Width="2.25" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="CA.Api.Application.WeatherForcast.Queries.IWeatherForecastQueries">
+    <Position X="15.5" Y="4" Width="2.75" />
+    <TypeIdentifier />
+  </Interface>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

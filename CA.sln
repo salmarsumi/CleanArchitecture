@@ -63,7 +63,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CA.Common.Authorization", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CA.Common.Authorization.UnitTests", "test\CA.Common.Authorization.UnitTets\CA.Common.Authorization.UnitTests.csproj", "{124C1AB5-1B11-4E91-A324-DDED5759EBCF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CA.Common.Authorization.IntegrationTests", "test\CA.Common.Authorization.IntegrationTests\CA.Common.Authorization.IntegrationTests.csproj", "{BFEE1B4B-73D0-4958-9FA0-CC629DE13A54}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CA.Common.Authorization.IntegrationTests", "test\CA.Common.Authorization.IntegrationTests\CA.Common.Authorization.IntegrationTests.csproj", "{BFEE1B4B-73D0-4958-9FA0-CC629DE13A54}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "architecture", "architecture", "{2F28C50D-6CB2-4535-A7E9-58F0388E0B73}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CA.Architecture", "architecture\CA.Architecture\CA.Architecture.csproj", "{CD391D1C-D00F-49D5-A58D-0F3A090ABDAC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -131,6 +135,10 @@ Global
 		{BFEE1B4B-73D0-4958-9FA0-CC629DE13A54}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BFEE1B4B-73D0-4958-9FA0-CC629DE13A54}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BFEE1B4B-73D0-4958-9FA0-CC629DE13A54}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CD391D1C-D00F-49D5-A58D-0F3A090ABDAC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CD391D1C-D00F-49D5-A58D-0F3A090ABDAC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CD391D1C-D00F-49D5-A58D-0F3A090ABDAC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CD391D1C-D00F-49D5-A58D-0F3A090ABDAC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -159,6 +167,7 @@ Global
 		{D9F83982-E9A2-4268-B541-24780CA4ADD3} = {5714FB82-EB71-4018-A105-43C316D4E74C}
 		{124C1AB5-1B11-4E91-A324-DDED5759EBCF} = {567BD833-3603-4BB9-9B5C-0C0CC957AD31}
 		{BFEE1B4B-73D0-4958-9FA0-CC629DE13A54} = {1D5ECB4B-FD71-4B5C-8114-08B16EB91098}
+		{CD391D1C-D00F-49D5-A58D-0F3A090ABDAC} = {2F28C50D-6CB2-4535-A7E9-58F0388E0B73}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {7F681EAC-5657-40B1-A631-BC50EF5787CA}

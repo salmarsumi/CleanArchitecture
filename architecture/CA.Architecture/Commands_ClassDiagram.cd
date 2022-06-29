@@ -1,0 +1,67 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="NameAndType">
+  <Class Name="CA.Api.Application.WeatherForcast.Commands.Create.CreateWeatherForcastCommand" BaseTypeListCollapsed="true">
+    <Position X="6" Y="1" Width="2.5" />
+    <TypeIdentifier />
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="CA.Api.Application.WeatherForcast.Commands.Create.CreateWeatherForcastCommandHandler">
+    <Position X="8.75" Y="1" Width="3" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="CA.Api.Application.WeatherForcast.Commands.Create.CreateWeatherForcastValidator">
+    <Position X="12" Y="1" Width="2.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="CA.Api.Application.WeatherForcast.Commands.Delete.DeleteWeatherForcastCommand" BaseTypeListCollapsed="true">
+    <Position X="6" Y="3.75" Width="2.5" />
+    <TypeIdentifier />
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="CA.Api.Application.WeatherForcast.Commands.Delete.DeleteWeatherForcastCommandHandler">
+    <Position X="8.75" Y="3.75" Width="3" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="CA.Api.Application.WeatherForcast.Commands.Delete.DeleteWeatherForcastValidator">
+    <Position X="12" Y="3.75" Width="2.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="CA.Api.Application.WeatherForcast.EventHandlers.WeatherForecastCreatedEventHandler">
+    <Position X="11.75" Y="8" Width="2.75" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="CA.Api.Application.WeatherForcast.EventHandlers.WeatherForecastDeletedEventHandler">
+    <Position X="11.75" Y="6.25" Width="2.75" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="CA.Common.SeedWork.DomainEvent">
+    <Position X="7.75" Y="9.25" Width="1.75" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="CA.Api.Domain.Entities.WeatherForecast">
+    <Position X="3.25" Y="5.25" Width="2" />
+    <TypeIdentifier />
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="CA.Api.Domain.Events.WeatherForecastCreatedEvent">
+    <Position X="6" Y="6.25" Width="2.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="CA.Api.Domain.Events.WeatherForecastDeletedEvent">
+    <Position X="9" Y="6.25" Width="2.5" />
+    <TypeIdentifier />
+  </Class>
+  <Interface Name="CA.Api.Domain.Interfaces.IRepository&lt;TEntity, TId&gt;">
+    <Position X="3.25" Y="1" Width="2.25" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="CA.Api.Domain.Interfaces.IWeatherForecastRepository">
+    <Position X="3.25" Y="3.5" Width="2.25" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="CA.Common.SeedWork.IHasDomainEvents">
+    <Position X="3.25" Y="8" Width="2" />
+    <TypeIdentifier />
+  </Interface>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
