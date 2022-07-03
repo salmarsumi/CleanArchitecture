@@ -11,6 +11,7 @@ services:
       - ./certs/server.key:/etc/nginx/conf/server.key
     networks:
       - ca
+    restart: always
 
   bff-proxy:
     ports:
@@ -22,6 +23,7 @@ services:
       - ./certs/server.key:/etc/nginx/conf/server.key
     networks:
       - ca
+    restart: always
 
 
   identity:
@@ -36,6 +38,7 @@ services:
       - "80"
     networks:
       - ca
+    restart: always
   
   authorization:
     environment:
@@ -46,6 +49,7 @@ services:
       - "80"
     networks:
       - ca
+    restart: always
 
   api:
     environment:
@@ -57,6 +61,7 @@ services:
       - "80"
     networks:
       - ca
+    restart: always
 
   bff:
     environment:
@@ -70,6 +75,7 @@ services:
       - "80"
     networks:
       - ca
+    restart: always
     extra_hosts:
       - "${EXTERNAL_HOST_NAME}:host-gateway"
 
