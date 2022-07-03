@@ -15,6 +15,16 @@ namespace CA.Identity
 
             builder.Services.AddIdentityServer(options =>
             {
+                // Have to set issuer uri for docker environments.
+                // This will allow the api application to connect
+                // to the IdenetityServer from inside the docker
+                // network without the need to make the call to the
+                // host gateway.
+                if (!string.IsNullOrWhiteSpace(builder.Configuration["ExternalAddress"]))
+                {
+                    options.IssuerUri = builder.Configuration["ExternalAddress"];
+                }
+
                 options.Authentication.CookieLifetime = TimeSpan.FromMinutes(60);
                 options.Authentication.CookieSlidingExpiration = false;
                 options.Authentication.CookieSameSiteMode = SameSiteMode.Strict;

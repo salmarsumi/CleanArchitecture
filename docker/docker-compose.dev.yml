@@ -28,6 +28,7 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Staging
       - ASPNETCORE_URLS=http://+:80
+      - ExternalAddress=https://${EXTERNAL_HOST_NAME}:8091
       - ClientUri=https://${EXTERNAL_HOST_NAME}:8081
     volumes:
       - identity-dpk:/home/wfs/.aspnet/DataProtection-Keys
