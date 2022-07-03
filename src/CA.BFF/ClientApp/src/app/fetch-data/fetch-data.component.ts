@@ -6,6 +6,7 @@ import { HttpClient } from '@angular/common/http';
   templateUrl: './fetch-data.component.html'
 })
 export class FetchDataComponent {
+  public isProcessing: boolean = false;
   public forecasts: WeatherForecast[] = [];
 
   constructor(private http: HttpClient) {
@@ -13,23 +14,35 @@ export class FetchDataComponent {
   }
 
   addNew() {
+    this.isProcessing = true;
     this.http.post('/api/weather', {}).subscribe(result => {
       this.loadAll();
 
-    }, error => console.error(error));
+    }, error => {
+      this.isProcessing = false;
+      console.error(error);
+    });
   }
 
   loadAll() {
+    this.isProcessing = true;
     this.http.get<WeatherForecast[]>('/api/weather').subscribe(result => {
       this.forecasts = result;
-
-    }, error => console.error(error));
+      this.isProcessing = false;
+    }, error => {
+      this.isProcessing = false;
+      console.error(error);
+    });
   }
 
   delete(id: number) {
+    this.isProcessing = true;
     this.http.delete(`/api/weather/${id}`).subscribe(result => {
       this.loadAll();
-    }, error => console.error(error));
+    }, error => {
+      this.isProcessing = false;
+      console.error(error);
+    });
   }
 }
 
