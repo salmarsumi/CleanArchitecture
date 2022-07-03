@@ -51,7 +51,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docker", "Docker", "{4202EF
 	ProjectSection(SolutionItems) = preProject
 		docker\build.sh = docker\build.sh
 		docker\ca.cnf = docker\ca.cnf
-		docker\create-cert.sh = docker\create-cert.sh
 		docker\docker-compose.dev.yml = docker\docker-compose.dev.yml
 		docker\docker-compose.yml = docker\docker-compose.yml
 		docker\nginx-bff.conf = docker\nginx-bff.conf
@@ -67,7 +66,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CA.Common.Authorization.Int
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "architecture", "architecture", "{2F28C50D-6CB2-4535-A7E9-58F0388E0B73}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CA.Architecture", "architecture\CA.Architecture\CA.Architecture.csproj", "{CD391D1C-D00F-49D5-A58D-0F3A090ABDAC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CA.Architecture", "architecture\CA.Architecture\CA.Architecture.csproj", "{CD391D1C-D00F-49D5-A58D-0F3A090ABDAC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

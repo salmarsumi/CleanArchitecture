@@ -28,8 +28,7 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Staging
       - ASPNETCORE_URLS=http://+:80
-      - ExternalAddress=https://${EXTERNAL_HOST_NAME_OR_IP}:8091
-      - ClientUri=https://${EXTERNAL_HOST_NAME_OR_IP}:8081
+      - ClientUri=https://${EXTERNAL_HOST_NAME}:8081
     volumes:
       - identity-dpk:/home/wfs/.aspnet/DataProtection-Keys
     expose:
@@ -62,7 +61,7 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Staging
       - ASPNETCORE_URLS=http://+:80
-      - TokenAuthority=https://${EXTERNAL_HOST_NAME_OR_IP}:8091
+      - TokenAuthority=https://${EXTERNAL_HOST_NAME}:8091
       - ReverseProxy__Clusters__apicluster__Destinations__api1__Address=http://api
     volumes:
       - bff-dpk:/home/wfs/.aspnet/DataProtection-Keys
@@ -70,6 +69,8 @@ services:
       - "80"
     networks:
       - ca
+    extra_hosts:
+      - "${EXTERNAL_HOST_NAME}:host-gateway"
 
 networks:
   ca:
