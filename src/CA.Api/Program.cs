@@ -1,9 +1,8 @@
 using CA.Api;
 using CA.Common.Logging;
-using CA.Common.Middleware;
 using Serilog;
 
-Log.Logger = LoggingHelper.CASerilogConfiguration("Api").CreateLogger();
+Log.Logger = LoggingHelper.CASerilogBootstrapConfiguration("Api");
 
 try
 {

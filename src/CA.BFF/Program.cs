@@ -2,7 +2,7 @@ using CA.Common.Logging;
 using CA.WebAngular;
 using Serilog;
 
-Log.Logger = LoggingHelper.CASerilogConfiguration("Identity").CreateLogger();
+Log.Logger = LoggingHelper.CASerilogBootstrapConfiguration("BFF");
 
 try
 {

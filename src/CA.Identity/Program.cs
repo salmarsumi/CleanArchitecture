@@ -2,7 +2,7 @@ using CA.Common.Logging;
 using CA.Identity;
 using Serilog;
 
-Log.Logger = LoggingHelper.CASerilogConfiguration("Identity").CreateLogger();
+Log.Logger = LoggingHelper.CASerilogBootstrapConfiguration("Identity");
 
 try
 {

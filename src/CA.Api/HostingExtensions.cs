@@ -27,7 +27,7 @@ namespace CA.Api
     {
         public static WebApplicationBuilder ConfigureBuilder(this WebApplicationBuilder builder)
         {
-            builder.Host.UseSerilog();
+            builder.Host.UseSerilog(LoggingHelper.CASerilogConfiguration("Api"));
 
             // MediatR
             builder.Services.AddMediatRServices<CreateWeatherForcastCommand>();

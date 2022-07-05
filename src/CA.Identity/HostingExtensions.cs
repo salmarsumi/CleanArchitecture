@@ -9,7 +9,7 @@ namespace CA.Identity
     {
         public static WebApplicationBuilder ConfigureBuilder(this WebApplicationBuilder builder)
         {
-            builder.Host.UseSerilog();
+            builder.Host.UseSerilog(LoggingHelper.CASerilogConfiguration("Api"));
 
             builder.Services.AddRazorPages();
 

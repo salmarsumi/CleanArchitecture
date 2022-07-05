@@ -1,9 +1,8 @@
 using CA.Authorization;
 using CA.Common.Logging;
-using CA.Common.Middleware;
 using Serilog;
 
-Log.Logger = LoggingHelper.CASerilogConfiguration("Authorization").CreateLogger();
+Log.Logger = LoggingHelper.CASerilogBootstrapConfiguration("Authorization");
 
 try
 {

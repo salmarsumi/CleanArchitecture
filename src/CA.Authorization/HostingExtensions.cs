@@ -13,7 +13,7 @@ namespace CA.Authorization
     {
         public static WebApplicationBuilder ConfigureBuilder(this WebApplicationBuilder builder)
         {
-            builder.Host.UseSerilog();
+            builder.Host.UseSerilog(LoggingHelper.CASerilogConfiguration("Api"));
 
             // Permissions
             builder.Services.AddLocalPolicyServices();
