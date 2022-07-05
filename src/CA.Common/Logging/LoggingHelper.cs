@@ -49,14 +49,15 @@ namespace CA.Common.Logging
                         "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:w4}]: {Message:lj} {CorrelationId}{NewLine}{Exception}");
 
                 // check if Loki logging is enabled
-                if (string.Equals(context.Configuration["Serilog:Loki:Enable"], "true", StringComparison.OrdinalIgnoreCase))
+                if (string.Equals(context.Configuration["Serilog:Loki:Enable"], bool.TrueString, StringComparison.OrdinalIgnoreCase))
                 {
                     configuration.WriteTo.GrafanaLoki(
                         context.Configuration["Serilog:Loki:Address"],
                         filtrationMode: LokiLabelFiltrationMode.Include,
                         filtrationLabels: new[] { "ApplicationContext", "level" },
-                        createLevelLabel: true,
-                        textFormatter: new LokiWithLevelJsonTextFormatter());
+                        createLevelLabel: true
+                        //textFormatter: new LokiWithLevelJsonTextFormatter()
+                        );
                 }
             };
 

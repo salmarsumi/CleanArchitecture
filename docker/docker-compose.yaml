@@ -11,6 +11,12 @@ services:
     depends_on:
       - bff
 
+  loki:
+    image: grafana/loki:2.5.0
+    
+  grafana:
+    image: grafana/grafana:latest
+
   identity:
     image: ca/identity
     build:
