@@ -56,9 +56,8 @@ namespace CA.Common.Logging
                         context.Configuration["Serilog:Loki:Address"],
                         filtrationMode: LokiLabelFiltrationMode.Include,
                         filtrationLabels: new[] { "ApplicationContext", "level" },
-                        createLevelLabel: true
-                        //textFormatter: new LokiWithLevelJsonTextFormatter()
-                        );
+                        createLevelLabel: true,
+                        textFormatter: new LokiWithLevelJsonTextFormatter());
                 }
             };
 
