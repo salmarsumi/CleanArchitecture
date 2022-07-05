@@ -21,7 +21,7 @@ namespace CA.WebAngular
 
         public static WebApplicationBuilder ConfigureBuilder(this WebApplicationBuilder builder)
         {
-            builder.Host.UseSerilog(LoggingHelper.CASerilogConfiguration("Api"));
+            builder.Host.UseSerilog(LoggingHelper.CASerilogConfiguration("BFF"));
 
             // YARP
             builder.Services.AddReverseProxy()
