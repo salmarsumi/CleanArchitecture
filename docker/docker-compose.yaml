@@ -22,6 +22,8 @@ services:
     build:
       context: ../.
       dockerfile: src/CA.Identity/Dockerfile
+    depends_on:
+      - loki
 
   authorization:
     image: ca/authorization
@@ -30,6 +32,7 @@ services:
       dockerfile: src/CA.Authorization/Dockerfile
     depends_on:
       - identity
+      - loki
 
   api:
     image: ca/api
@@ -39,6 +42,7 @@ services:
     depends_on:
       - identity
       - authorization
+      - loki
 
   bff:
     image: ca/bff
@@ -49,3 +53,4 @@ services:
       - identity
       - authorization
       - api
+      - loki
