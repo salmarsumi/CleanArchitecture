@@ -48,7 +48,7 @@ services:
       - ExternalAddress=https://${EXTERNAL_HOST_NAME}:8091
       - ClientUri=https://${EXTERNAL_HOST_NAME}:8081
       - Serilog__Loki__Enable=true
-      - Serilog__Loki_Address=http://loki:3100
+      - Serilog__Loki__Address=http://loki:3100
     volumes:
       - identity-dpk:/home/wfs/.aspnet/DataProtection-Keys
     expose:
@@ -63,7 +63,7 @@ services:
       - ASPNETCORE_URLS=http://+:80
       - TokenAuthority=http://identity
       - Serilog__Loki__Enable=true
-      - Serilog__Loki_Address=http://loki:3100
+      - Serilog__Loki__Address=http://loki:3100
     expose:
       - "80"
     networks:
@@ -77,7 +77,7 @@ services:
       - TokenAuthority=http://identity
       - AuthorizationService=http://authorization
       - Serilog__Loki__Enable=true
-      - Serilog__Loki_Address=http://loki:3100
+      - Serilog__Loki__Address=http://loki:3100
     expose:
       - "80"
     networks:
@@ -91,7 +91,7 @@ services:
       - TokenAuthority=https://${EXTERNAL_HOST_NAME}:8091
       - ReverseProxy__Clusters__apicluster__Destinations__api1__Address=http://api
       - Serilog__Loki__Enable=true
-      - Serilog__Loki_Address=http://loki:3100
+      - Serilog__Loki__Address=http://loki:3100
     volumes:
       - bff-dpk:/home/wfs/.aspnet/DataProtection-Keys
     expose:
