@@ -13,6 +13,7 @@ Container(api, "API Application", "C#, ASP.NET Core Minimal Api", "Provides WFS 
 Container(authz, "Authorization Service", "ASP.NET Core Minimal Api", "Provides permission authorizations to the API service")
 
 System_Ext(identity, "Duende IdentityServer", "User Auhentication and Token Issuer")
+System_Ext(loki, "Grafana Loki", "Log aggregation system to store and query logs")
 
 Container_Boundary(web_app, "Web Application") {
     Component(log, "Logging Middleware", "Serilog Logging", "Structured logging for all requests using Serilog.")
@@ -38,6 +39,8 @@ Rel_R(api, authz, "Authorize", "JSON/HTTPS")
 Rel_U(api, identity, "Validate Token", "HTTPS")
 Rel_U(authz, identity, "Validate Token", "HTTPS")
 Rel(log, auth_mid, "Forward Request")
+
+Rel(log, loki, "Send Logs", "HTTPS")
 
 Lay_R(auth, yarp)
 Lay_L(user, spa)

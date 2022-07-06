@@ -10,6 +10,7 @@ Container(web_app, "Web Application", "C#, ASP.NET Core Minimal Api, YARP Revers
 Container(authz, "Authorization Service", "ASP.NET Core Minimal Api", "Provides permission authorizations to the API service")
 
 System_Ext(identity, "Duende IdentityServer", "User Auhentication and Token Issuer")
+System_Ext(loki, "Grafana Loki", "Log aggregation system to store and query logs")
 
 Container_Boundary(api, "API Application") {
     Component(log, "Logging Middleware", "Serilog Logging", "Structured logging for all requests using Serilog.")
@@ -34,6 +35,8 @@ Rel_R(authz_com, weather_ep, "/weather")
 Rel(auth, authz_com, "Forward Request")
 Rel_L(web_app, log, "Proxy", "JSON/HTTPS")
 Rel_L(log, auth, "Forward Request")
+
+Rel(log, loki, "Send Logs", "HTTPS")
 
 Lay_R(mediatr, commands)
 Lay_U(mediatr, queries)
