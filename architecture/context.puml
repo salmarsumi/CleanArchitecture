@@ -8,10 +8,15 @@ title System Context diagram for Weather Forecast System
 Person(user, "User", "The end user of the system.")
 
 System(weather_system, "Weather Forecast System", "Allow users to manage weather forecast data.")
-System_Ext(identity, "Duende IdentityServer", "User Auhentication and Token Issuer")
+System_Ext(identity, "Duende IdentityServer", "User Auhentication and Token Issuer.")
+System_Ext(loki, "Grafana Loki", "Log aggregation system to store and query logs.")
+System_Ext(grafana, "Grafana", "Analytics and interactive data visualization application.")
 
 Rel(user, weather_system, "Uses")
-Rel(weather_system, identity, "Request Tokens")
-Rel_Neighbor(weather_system, identity, "Validates tokens")
+Rel(user, identity, "Authenticate")
+Rel_R(weather_system, identity, "Request Tokens")
+Rel_R(weather_system, identity, "Validates tokens")
+Rel(weather_system, loki, "Send Logs")
+Rel(grafana, loki, "Read logs")
 
 @enduml

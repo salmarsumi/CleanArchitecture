@@ -9,12 +9,14 @@ Person(user, "User", "The end user of the system.")
 
 System_Boundary(weather_system, "Weather Forecast System") {
     Container(web_app, "Web Application", "C#, ASP.NET Core Minimal Api, YARP Reverse Proxy", "Delivers the static content, the WFS SPA, and proxy SPA requests back to the api application.")
-    Container(spa, "Single-Page App", "Typescript, Angular", "Provides all the WFS functionality to users via their web browser")
-    Container(api, "API Application", "C#, ASP.NET Core Minimal Api", "Provides WFS functionality via API")
-    Container(authz, "Authorization Service", "ASP.NET Core Minimal Api", "Provides permission authorizations to the API service")
+    Container(spa, "Single-Page App", "Typescript, Angular", "Provides all the WFS functionality to users via their web browser.")
+    Container(api, "API Application", "C#, ASP.NET Core Minimal Api", "Provides WFS functionality via API.")
+    Container(authz, "Authorization Service", "ASP.NET Core Minimal Api", "Provides permission authorizations to the API service.")
 }
 
-System_Ext(identity, "Duende IdentityServer", "User Auhentication and Token Issuer")
+System_Ext(identity, "Duende IdentityServer", "User Auhentication and Token Issuer.")
+System_Ext(loki, "Grafana Loki", "Log aggregation system to store and query logs.")
+'System_Ext(prometheus, "Prometheus", "Log aggregation system to store and query logs.")
 
 Rel(user, spa, "Uses", "HTTPS")
 Rel_L(user, web_app, "Authenticate", "OpenID Connect/HTTPS")
@@ -26,5 +28,11 @@ Rel(api, identity, "Validate Token", "HTTPS")
 Rel_R(authz, identity, "Validate Token", "HTTPS")
 Rel(user, identity, "Authenticate", "HTTPS")
 Rel(web_app, identity, "Request Token")
+
+Rel(spa, loki, "Send Logs", "HTTPS")
+Rel(web_app, loki, "Send Logs", "HTTPS")
+Rel(api, loki, "Send Logs", "HTTPS")
+Rel(authz, loki, "Send Logs", "HTTPS")
+
 
 @enduml
