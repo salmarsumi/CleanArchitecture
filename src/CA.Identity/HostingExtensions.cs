@@ -1,6 +1,9 @@
 ﻿using CA.Common.Logging;
+using CA.Identity.Endpoints;
 using IdentityServerHost;
 using Microsoft.AspNetCore.HttpOverrides;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
+using Prometheus;
 using Serilog;
 
 namespace CA.Identity
@@ -37,6 +40,9 @@ namespace CA.Identity
 
             builder.Services.AddAuthorization();
 
+            // Health Checks
+            builder.ConfigureHealthChecks();
+
             return builder;
         }
 
@@ -54,12 +60,30 @@ namespace CA.Identity
                 .UseStaticFiles()
                 .UseCASerilog()
                 .UseRouting()
+                .UseHttpMetrics(options => options.ReduceStatusCodeCardinality())
                 .UseIdentityServer()
                 .UseAuthorization();
 
             app.MapRazorPages().RequireAuthorization();
 
+            // Endpoints
+            app
+                .MapHealthCheckEndpoits()
+                .MapMetrics();
+
             return app;
+        }
+
+        public static WebApplicationBuilder ConfigureHealthChecks(this WebApplicationBuilder builder)
+        {
+            builder.Services
+                .AddHealthChecks()
+                .AddCheck("self", () => HealthCheckResult.Healthy())
+                // ready checks should use actual checks of external dependancies.
+                .AddCheck("ready", () => HealthCheckResult.Healthy())
+                .ForwardToPrometheus();
+
+            return builder;
         }
     }
 }

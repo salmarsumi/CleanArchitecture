@@ -1,4 +1,5 @@
-﻿using CA.Common;
+﻿using CA.BFF.Endpoints;
+using CA.Common;
 using CA.Common.Logging;
 using CA.Common.Middleware;
 using CA.WebAngular.Endpoints;
@@ -8,6 +9,8 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.HttpOverrides;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
+using Prometheus;
 using Serilog;
 using System.IdentityModel.Tokens.Jwt;
 using Yarp.ReverseProxy.Transforms;
@@ -52,7 +55,10 @@ namespace CA.WebAngular
             builder.ConfigureAuthentication();
 
             // Authorization
-            builder.Services.ConfigureAuthorization();
+            builder.ConfigureAuthorization();
+
+            // Health Checks
+            builder.ConfigureHealthChecks();
 
             return builder;
         }
@@ -70,6 +76,7 @@ namespace CA.WebAngular
                 .UseForwardedHeaders(forwardedHeadersOptions)
                 .UseCASerilog()
                 .UseExceptionHandler(ExceptionHandler.Handler)
+                .UseHttpMetrics(options => options.ReduceStatusCodeCardinality())
                 .UseStaticFiles()
                 .UseRouting();
 
@@ -119,6 +126,12 @@ namespace CA.WebAngular
 
                         await next();
                     }
+                    // no need to authenticate health check endpoints
+                    else if (path.StartsWith("/live", StringComparison.OrdinalIgnoreCase) ||
+                             path.StartsWith("/ready", StringComparison.OrdinalIgnoreCase))
+                    {
+                        await next();
+                    }
                     else
                     {
                         await context.ChallengeAsync(OpenIdConnectDefaults.AuthenticationScheme);
@@ -126,7 +139,12 @@ namespace CA.WebAngular
 
                 });
 
-            app.MapAccountEndpoints();
+            // Endpoints
+            app
+                .MapAccountEndpoints()
+                .MapHealthCheckEndpoits()
+                .MapMetrics();
+            
             app.MapFallbackToFile("index.html").RequireAuthorization();
             app.MapReverseProxy();
 
@@ -178,9 +196,9 @@ namespace CA.WebAngular
             return builder;
         }
 
-        public static IServiceCollection ConfigureAuthorization(this IServiceCollection services)
+        public static WebApplicationBuilder ConfigureAuthorization(this WebApplicationBuilder builder)
         {
-            services
+            builder.Services
                 .AddAuthorization(options =>
                 {
                     options.DefaultPolicy = new AuthorizationPolicyBuilder()
@@ -188,7 +206,19 @@ namespace CA.WebAngular
                         .Build();
                 });
 
-            return services;
+            return builder;
+        }
+
+        public static WebApplicationBuilder ConfigureHealthChecks(this WebApplicationBuilder builder)
+        {
+            builder.Services
+                .AddHealthChecks()
+                .AddCheck("self", () => HealthCheckResult.Healthy())
+                // ready checks should use actual checks of external dependancies.
+                .AddCheck("ready", () => HealthCheckResult.Healthy())
+                .ForwardToPrometheus();
+
+            return builder;
         }
     }
 }

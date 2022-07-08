@@ -17,9 +17,11 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Http;
 using Serilog;
 using System.IdentityModel.Tokens.Jwt;
+using Prometheus;
 
 namespace CA.Api
 {
@@ -39,7 +41,9 @@ namespace CA.Api
             builder.ConfigureAuthentication();
             // Authorization
             builder.ConfigureAuthorization();
-            
+            // Healthchecks
+            builder.ConfigureHealthChecks();
+
             // Permissions
             builder.Services
                 .AddRemotePolicyServices()
@@ -57,17 +61,24 @@ namespace CA.Api
             app
                 .UseCASerilog()
                 .UseExceptionHandler(ExceptionHandler.Handler)
+                .UseHttpMetrics(options => options.ReduceStatusCodeCardinality())
                 .UseAuthentication()
                 .UseAuthorization();
 
-            app.MapWeatherForcastEndpoints();
+            // Endpoints
+            app
+                .MapWeatherForcastEndpoints()
+                .MapHealthCheckEndpoits()
+                .MapMetrics();
 
             return app;
         }
 
         public static WebApplicationBuilder ConfigureAuthentication(this WebApplicationBuilder builder)
         {
-            JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear(); // prevent from mapping "sub" claim to nameidentifier.
+            // prevent from mapping "sub" claim to nameidentifier.
+            JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
+
             builder.Services
                 .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
@@ -107,6 +118,18 @@ namespace CA.Api
 
             builder.Services.AddScoped<IApiDbContext>(sp => sp.GetRequiredService<ApiDbContext>());
             builder.Services.AddScoped<ITransactionalDbContext>(sp => sp.GetRequiredService<ApiDbContext>());
+
+            return builder;
+        }
+
+        public static WebApplicationBuilder ConfigureHealthChecks(this WebApplicationBuilder builder)
+        {
+            builder.Services
+                .AddHealthChecks()
+                .AddCheck("self", () => HealthCheckResult.Healthy())
+                // ready checks should use actual checks of external dependancies.
+                .AddCheck("ready", () => HealthCheckResult.Healthy())
+                .ForwardToPrometheus();
 
             return builder;
         }

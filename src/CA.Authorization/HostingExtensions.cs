@@ -4,6 +4,8 @@ using CA.Common.Logging;
 using CA.Common.Middleware;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
+using Prometheus;
 using Serilog;
 using System.IdentityModel.Tokens.Jwt;
 
@@ -19,9 +21,14 @@ namespace CA.Authorization
             builder.Services.AddLocalPolicyServices();
 
             builder
-                .ConfigureAuthentication() // Authentication
-                .ConfigureAuthorization() // Authorization
-                .ConfigureAppServices(); // App Services
+                // Authentication
+                .ConfigureAuthentication()
+                // Authorization
+                .ConfigureAuthorization()
+                // App Services
+                .ConfigureAppServices()
+                // Health Checks
+                .ConfigureHealthChecks();
 
             return builder;
         }
@@ -31,10 +38,15 @@ namespace CA.Authorization
             app
                 .UseCASerilog()
                 .UseExceptionHandler(ExceptionHandler.Handler)
+                .UseHttpMetrics(options => options.ReduceStatusCodeCardinality())
                 .UseAuthentication()
                 .UseAuthorization();
 
-            app.MapPolicyEndpoints();
+            // Endpoints
+            app
+                .MapPolicyEndpoints()
+                .MapHealthCheckEndpoits()
+                .MapMetrics();
 
             return app;
         }
@@ -52,6 +64,18 @@ namespace CA.Authorization
                     options.RequireHttpsMetadata = false;
                     options.Audience = "authz";
                 });
+
+            return builder;
+        }
+
+        public static WebApplicationBuilder ConfigureHealthChecks(this WebApplicationBuilder builder)
+        {
+            builder.Services
+                .AddHealthChecks()
+                .AddCheck("self", () => HealthCheckResult.Healthy())
+                // ready checks should use actual checks of external dependancies.
+                .AddCheck("ready", () => HealthCheckResult.Healthy())
+                .ForwardToPrometheus();
 
             return builder;
         }
