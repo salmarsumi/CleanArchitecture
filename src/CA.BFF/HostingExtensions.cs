@@ -45,7 +45,6 @@ namespace CA.WebAngular
             // Antiforgery
             builder.Services.AddAntiforgery(options =>
              {
-                 options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
                  options.Cookie.Name = ANTIFORGERY_COOKIE_NAME;
                  options.HeaderName = Constants.CSRF_HEADER;
                  options.FormFieldName = Constants.CSRF_FORM_FIELD;
@@ -126,9 +125,10 @@ namespace CA.WebAngular
 
                         await next();
                     }
-                    // no need to authenticate health check endpoints
+                    // no need to authenticate health check and metrics endpoints
                     else if (path.StartsWith("/live", StringComparison.OrdinalIgnoreCase) ||
-                             path.StartsWith("/ready", StringComparison.OrdinalIgnoreCase))
+                             path.StartsWith("/ready", StringComparison.OrdinalIgnoreCase) ||
+                             path.StartsWith("/metrics", StringComparison.OrdinalIgnoreCase))
                     {
                         await next();
                     }
