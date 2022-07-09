@@ -363,3 +363,4 @@ MigrationBackup/
 FodyWeavers.xsd
 
 **/.angular/cache
+**/keys/is-signing-key*.json
