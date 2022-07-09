@@ -1,0 +1,29 @@
+global:
+  scrape_interval:     15s # By default, scrape targets every 15 seconds.
+
+  # Attach these labels to any time series or alerts when communicating with
+  # external systems (federation, remote storage, Alertmanager).
+  external_labels:
+    monitor: 'ca-monitor'
+
+# Scrape configuration
+scrape_configs:
+  - job_name: 'identity'
+    scrape_interval: 10s
+    static_configs:
+      - targets: ['identity']
+
+  - job_name: 'authorization'
+    scrape_interval: 10s
+    static_configs:
+      - targets: ['authorization']
+
+  - job_name: 'api'
+    scrape_interval: 10s
+    static_configs:
+      - targets: ['api']
+
+  - job_name: 'bff'
+    scrape_interval: 10s
+    static_configs:
+      - targets: ['bff']

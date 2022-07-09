@@ -53,10 +53,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docker", "Docker", "{4202EF
 		docker\ca.cnf = docker\ca.cnf
 		docker\create-cert.sh = docker\create-cert.sh
 		docker\docker-compose.dev.yaml = docker\docker-compose.dev.yaml
+		docker\docker-compose.yaml = docker\docker-compose.yaml
 		docker\loki-config.yaml = docker\loki-config.yaml
 		docker\nginx-bff.conf = docker\nginx-bff.conf
-		docker\docker-compose.yaml = docker\docker-compose.yaml
 		docker\nginx-id.conf = docker\nginx-id.conf
+		docker\prometheus.yaml = docker\prometheus.yaml
 		docker\up.sh = docker\up.sh
 	EndProjectSection
 EndProject

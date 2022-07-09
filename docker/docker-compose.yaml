@@ -13,6 +13,9 @@ services:
 
   loki:
     image: grafana/loki:2.5.0
+
+  prometheus:
+    image: prom/prometheus
     
   grafana:
     image: grafana/grafana:latest
