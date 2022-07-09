@@ -45,6 +45,8 @@ namespace CA.WebAngular
             // Antiforgery
             builder.Services.AddAntiforgery(options =>
              {
+                 options.Cookie.HttpOnly = true;
+                 options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
                  options.Cookie.Name = ANTIFORGERY_COOKIE_NAME;
                  options.HeaderName = Constants.CSRF_HEADER;
                  options.FormFieldName = Constants.CSRF_FORM_FIELD;
@@ -96,9 +98,10 @@ namespace CA.WebAngular
                     // Generate token on the first request.
                     // When using the Angular dev server as a proxy the postlogin is needed to set the token.
                     var antiforgery = app.Services.GetRequiredService<IAntiforgery>();
-                    if (path.StartsWith("/", StringComparison.OrdinalIgnoreCase) ||
-                        path.StartsWith("/index.html", StringComparison.OrdinalIgnoreCase) ||
-                        path.StartsWith("/account/postlogin", StringComparison.OrdinalIgnoreCase))
+                    if (
+                        path.Equals("/", StringComparison.OrdinalIgnoreCase) ||
+                        path.Equals("/index.html", StringComparison.OrdinalIgnoreCase) ||
+                        path.Equals("/account/postlogin", StringComparison.OrdinalIgnoreCase))
                     {
                         // The request token can be sent as a JavaScript-readable cookie, 
                         // and Angular uses the token as a header in every request.
@@ -126,9 +129,9 @@ namespace CA.WebAngular
                         await next();
                     }
                     // no need to authenticate health check and metrics endpoints
-                    else if (path.StartsWith("/live", StringComparison.OrdinalIgnoreCase) ||
-                             path.StartsWith("/ready", StringComparison.OrdinalIgnoreCase) ||
-                             path.StartsWith("/metrics", StringComparison.OrdinalIgnoreCase))
+                    else if (path.Equals("/live", StringComparison.OrdinalIgnoreCase) ||
+                             path.Equals("/ready", StringComparison.OrdinalIgnoreCase) ||
+                             path.Equals("/metrics", StringComparison.OrdinalIgnoreCase))
                     {
                         await next();
                     }
