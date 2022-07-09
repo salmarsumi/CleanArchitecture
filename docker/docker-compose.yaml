@@ -5,11 +5,8 @@ services:
     image: nginx:alpine
     depends_on:
       - identity
-
-  bff-proxy:
-    image: nginx:alpine
-    depends_on:
       - bff
+      - grafana
 
   loki:
     image: grafana/loki:2.5.0

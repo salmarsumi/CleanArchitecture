@@ -55,10 +55,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docker", "Docker", "{4202EF
 		docker\docker-compose.dev.yaml = docker\docker-compose.dev.yaml
 		docker\docker-compose.yaml = docker\docker-compose.yaml
 		docker\loki-config.yaml = docker\loki-config.yaml
-		docker\nginx-bff.conf = docker\nginx-bff.conf
-		docker\nginx-id.conf = docker\nginx-id.conf
 		docker\prometheus.yaml = docker\prometheus.yaml
 		docker\up.sh = docker\up.sh
+		docker\nginx.conf = docker\nginx.conf
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CA.Common.Authorization", "src\CA.Common.Authorization\CA.Common.Authorization.csproj", "{D9F83982-E9A2-4268-B541-24780CA4ADD3}"
