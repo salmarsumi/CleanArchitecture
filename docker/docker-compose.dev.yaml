@@ -48,8 +48,8 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Staging
       - ASPNETCORE_URLS=http://+:80
-      - ExternalAddress=https://${EXTERNAL_HOST_NAME}:8091
-      - ClientUri=https://${EXTERNAL_HOST_NAME}:8081
+      - ExternalAddress=https://${EXTERNAL_HOST_NAME}:8090
+      - ClientUri=https://${EXTERNAL_HOST_NAME}:8080
       - Serilog__Loki__Enable=true
       - Serilog__Loki__Address=http://loki:3100
     volumes:
@@ -91,7 +91,7 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Staging
       - ASPNETCORE_URLS=http://+:80
-      - TokenAuthority=https://${EXTERNAL_HOST_NAME}:8091
+      - TokenAuthority=https://${EXTERNAL_HOST_NAME}:8090
       - ReverseProxy__Clusters__apicluster__Destinations__api1__Address=http://api
       - Serilog__Loki__Enable=true
       - Serilog__Loki__Address=http://loki:3100
