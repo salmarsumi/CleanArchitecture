@@ -23,20 +23,26 @@ services:
     command: -config.file=/etc/loki/local-config.yaml
     networks:
       - ca
+    restart: always
 
   prometheus:
     expose:
       - "9090"
     volumes:
       - ./prometheus.yaml:/etc/prometheus/prometheus.yml
+      - prometheus:/prometheus
     networks:
       - ca
+    restart: always
 
   grafana:
     expose:
       - "3000"
+    volumes:
+      - grafana:/var/lib/grafana
     networks:
       - ca
+    restart: always
 
   identity:
     environment:
@@ -106,3 +112,5 @@ volumes:
   identity-dpk:
   bff-dpk:
   loki:
+  grafana:
+  prometheus:
