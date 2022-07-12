@@ -16,3 +16,23 @@ cd docker
 ```
 bash create-cert.sh $(uname -n)
 ```
+
+3. Build the docker images.
+```
+bash build.sh
+```
+
+4. Run the containers using docker compose
+```
+bash up.sh $(uname -n)
+```
+
+5. Access the application through the host name.
+```
+uname -n
+```
+
+6. Ports published
+..* 8080 The BFF web application used to deliver the SPA.
+..* 8090 The IdentityServer application.
+..* 3000 The Grafana portal.
