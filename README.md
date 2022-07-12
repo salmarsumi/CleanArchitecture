@@ -42,3 +42,7 @@ uname -n
 ```
 https://<hostname>:8080
 ```
+
+## Docker Local Deployment
+
+![system overview](./assets/deployment.png)
