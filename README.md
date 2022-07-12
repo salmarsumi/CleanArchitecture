@@ -33,12 +33,12 @@ bash up.sh $(uname -n)
    * 8090 The IdentityServer application.
    * 3000 The Grafana portal.
 
-7. Get the hostname.
+6. Get the hostname.
 ```
 uname -n
 ```
 
-6. Access the application through the host name.
+7. Access the application through the host name.
 ```
 https://<hostname>:8080
 ```
