@@ -1,9 +1,11 @@
 # ASP.NET Core 6.0 Multi-Service Application
 This repository aims to demonstrate the use of ASP.NET Core 6.0 to build a multi-service  application.
 
+
 ## Architecture
 
 ![system overview](./assets/container.png)
+
 
 ## Docker Installation
 The next steps can be followed to run the application. The following was tested on an Ubuntu 20.04.
@@ -42,6 +44,7 @@ uname -n
 ```
 https://<hostname>:8080
 ```
+
 
 ## Docker Local Deployment
 
