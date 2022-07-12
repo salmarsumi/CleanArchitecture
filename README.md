@@ -1,4 +1,4 @@
-# ASP.NET Core 6.0 Multi-Service Application (Wouldn't call it Microservices yet but can be a good start)
-This repository aims to demonstrate the use of Clean Architecture to implement a multi-service ASP.NET Core 6.0 application.
+# ASP.NET Core 6.0 Multi-Service Application
+This repository aims to demonstrate the use of ASP.NET Core 6.0 to build a multi-service  application.
 
 ![system overview](./assets/container.png)
