@@ -6,6 +6,7 @@ This repository aims to demonstrate the use of ASP.NET Core 6.0 to build a multi
 ![system overview](./assets/container.png)
 
 ## Docker Installation
+The next steps can be followed to run the application. The following was tested on an Ubuntu 20.04.
 
 1. While in the repository change directory to docker
 ```
@@ -22,17 +23,22 @@ bash create-cert.sh $(uname -n)
 bash build.sh
 ```
 
-4. Run the containers using docker compose
+4. Run the containers using docker compose.
 ```
 bash up.sh $(uname -n)
 ```
 
-5. Access the application through the host name.
+5. Ports published.
+   * 8080 The BFF web application used to deliver the SPA.
+   * 8090 The IdentityServer application.
+   * 3000 The Grafana portal.
+
+7. Get the hostname.
 ```
 uname -n
 ```
 
-6. Ports published
-   * 8080 The BFF web application used to deliver the SPA.
-   * 8090 The IdentityServer application.
-   * 3000 The Grafana portal.
+6. Access the application through the host name.
+```
+https://<hostname>:8080
+```
