@@ -7,7 +7,7 @@ This repository aims to demonstrate the use of ASP.NET Core 6.0 to build a multi
 ![system overview](./assets/container.png)
 
 
-## Docker Installation
+## Docker Deployment
 The next steps can be followed to run the application. The following was tested on an Ubuntu 20.04.
 
 1. While in the repository change directory to docker
@@ -45,7 +45,5 @@ uname -n
 https://<hostname>:8080
 ```
 
-
-## Docker Local Deployment
 
 ![system overview](./assets/deployment.png)
