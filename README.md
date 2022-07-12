@@ -33,6 +33,6 @@ uname -n
 ```
 
 6. Ports published
-..* 8080 The BFF web application used to deliver the SPA.
-..* 8090 The IdentityServer application.
-..* 3000 The Grafana portal.
+.. * 8080 The BFF web application used to deliver the SPA.
+.. * 8090 The IdentityServer application.
+.. * 3000 The Grafana portal.
