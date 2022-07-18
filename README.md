@@ -50,5 +50,5 @@ uname -n
 https://<hostname>:8080
 ```
 
-
-![system overview](./assets/deployment.png)
+### Deployment View
+![deployment overview](./assets/deployment.png)
