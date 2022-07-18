@@ -5,10 +5,10 @@ This repository aims to demonstrate the use of ASP.NET Core 6.0 to build a multi
 ## Architecture
 An architectur documentation is provided under the architecture directory.
 
-## Context View
+### Context View
 ![system overview](./assets/context.png)
 
-## Container View
+### Container View
 ![system overview](./assets/container.png)
 
 
