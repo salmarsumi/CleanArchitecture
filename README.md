@@ -12,7 +12,7 @@ An architectur documentation is provided under the architecture directory.
 ![system overview](./assets/container.png)
 
 ## Code Usage
-To compile and run the code locally the latest .NET 6 SDK is required. The SDK can be installed as part of the Visual Studio setup or separatlly.
+To compile and run the code locally the latest .NET 6 SDK is required. The SDK can be installed as part of the Visual Studio setup or standalone separate installation.
 The solution was developed and tested using Visual Studio 2022.
 
 ## Docker Deployment
