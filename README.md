@@ -11,6 +11,9 @@ An architectur documentation is provided under the architecture directory.
 ### Container View
 ![system overview](./assets/container.png)
 
+## Code Usage
+To compile and run the code locally the latest .NET 6 SDK is required. The SDK can be installed as part of the Visual Studio setup or separatlly.
+The solution was developed and tested using Visual Studio 2022.
 
 ## Docker Deployment
 The next steps can be followed to run the application. The following was tested on an Ubuntu 20.04.
