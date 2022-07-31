@@ -15,6 +15,12 @@ An architectur documentation is provided under the architecture directory.
 To compile and run the code locally the latest .NET 6 SDK is required. The SDK can be installed as part of the Visual Studio setup or standalone separate installation.
 The solution was developed and tested using Visual Studio 2022.
 
+## Users
+Following are the test users defined in the system:
+1. Username: bob, Password: bob, Privilege: Full Access.
+1. Username: alice, Password: alice, Privilege: No Access.
+
+
 ## Docker Deployment
 The next steps can be followed to run the application. The following was tested on an Ubuntu 20.04.
 
