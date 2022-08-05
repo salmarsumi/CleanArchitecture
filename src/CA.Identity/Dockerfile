@@ -21,6 +21,7 @@ WORKDIR /app
 RUN addgroup -S wfs && adduser -S wfs -G wfs \
 	&& mkdir /home/wfs/.aspnet/DataProtection-Keys -p \
 	&& chown -R wfs /home/wfs
+	&& chown wfs /app
 USER wfs
 COPY --chown=wfs:wfs --from=publish /app/publish .
 ENTRYPOINT ["dotnet", "CA.Identity.dll"]
