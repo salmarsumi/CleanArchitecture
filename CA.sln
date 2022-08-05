@@ -55,9 +55,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docker", "Docker", "{4202EF
 		docker\docker-compose.dev.yaml = docker\docker-compose.dev.yaml
 		docker\docker-compose.yaml = docker\docker-compose.yaml
 		docker\loki-config.yaml = docker\loki-config.yaml
+		docker\nginx.conf = docker\nginx.conf
 		docker\prometheus.yaml = docker\prometheus.yaml
 		docker\up.sh = docker\up.sh
-		docker\nginx.conf = docker\nginx.conf
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CA.Common.Authorization", "src\CA.Common.Authorization\CA.Common.Authorization.csproj", "{D9F83982-E9A2-4268-B541-24780CA4ADD3}"
@@ -69,6 +69,12 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "architecture", "architecture", "{2F28C50D-6CB2-4535-A7E9-58F0388E0B73}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CA.Architecture", "architecture\CA.Architecture\CA.Architecture.csproj", "{CD391D1C-D00F-49D5-A58D-0F3A090ABDAC}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Audit", "Audit", "{785CD6B1-8796-47F5-8654-4732E22240C1}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CA.Audit", "src\CA.Audit\CA.Audit.csproj", "{3ED80193-4593-4C0D-B82F-DB8F77B5956E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CA.Common.Contracts", "src\CA.Common.Contracts\CA.Common.Contracts.csproj", "{FB98C670-5865-492F-AF8F-60B330431DAA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -140,6 +146,14 @@ Global
 		{CD391D1C-D00F-49D5-A58D-0F3A090ABDAC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CD391D1C-D00F-49D5-A58D-0F3A090ABDAC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CD391D1C-D00F-49D5-A58D-0F3A090ABDAC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3ED80193-4593-4C0D-B82F-DB8F77B5956E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3ED80193-4593-4C0D-B82F-DB8F77B5956E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3ED80193-4593-4C0D-B82F-DB8F77B5956E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3ED80193-4593-4C0D-B82F-DB8F77B5956E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FB98C670-5865-492F-AF8F-60B330431DAA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FB98C670-5865-492F-AF8F-60B330431DAA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FB98C670-5865-492F-AF8F-60B330431DAA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FB98C670-5865-492F-AF8F-60B330431DAA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -169,6 +183,9 @@ Global
 		{124C1AB5-1B11-4E91-A324-DDED5759EBCF} = {567BD833-3603-4BB9-9B5C-0C0CC957AD31}
 		{BFEE1B4B-73D0-4958-9FA0-CC629DE13A54} = {1D5ECB4B-FD71-4B5C-8114-08B16EB91098}
 		{CD391D1C-D00F-49D5-A58D-0F3A090ABDAC} = {2F28C50D-6CB2-4535-A7E9-58F0388E0B73}
+		{785CD6B1-8796-47F5-8654-4732E22240C1} = {0DE283A7-9957-469F-9824-53FBF59E5058}
+		{3ED80193-4593-4C0D-B82F-DB8F77B5956E} = {785CD6B1-8796-47F5-8654-4732E22240C1}
+		{FB98C670-5865-492F-AF8F-60B330431DAA} = {5714FB82-EB71-4018-A105-43C316D4E74C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {7F681EAC-5657-40B1-A631-BC50EF5787CA}

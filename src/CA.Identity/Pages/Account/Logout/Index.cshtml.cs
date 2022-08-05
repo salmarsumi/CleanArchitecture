@@ -1,7 +1,10 @@
+using System.Linq;
 using System.Threading.Tasks;
+using CA.Identity.Services;
 using Duende.IdentityServer.Events;
 using Duende.IdentityServer.Extensions;
 using Duende.IdentityServer.Services;
+using Duende.IdentityServer.Test;
 using IdentityModel;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
@@ -16,14 +19,23 @@ public class Index : PageModel
 {
     private readonly IIdentityServerInteractionService _interaction;
     private readonly IEventService _events;
+    private readonly IAccessEventPublisher _accessEventPublisher;
+    private readonly TestUserStore _users;
 
     [BindProperty] 
     public string LogoutId { get; set; }
 
-    public Index(IIdentityServerInteractionService interaction, IEventService events)
+    public Index(
+        IIdentityServerInteractionService interaction, 
+        IEventService events, 
+        IAccessEventPublisher accessEventPublisher,
+        TestUserStore users = null)
     {
+        _users = users ?? throw new Exception("Please call 'AddTestUsers(TestUsers.Users)' on the IIdentityServerBuilder in Startup or remove the TestUserStore from the AccountController.");
         _interaction = interaction;
         _events = events;
+        _accessEventPublisher = accessEventPublisher;
+        _users = users;
     }
 
     public async Task<IActionResult> OnGet(string logoutId)
@@ -68,6 +80,10 @@ public class Index : PageModel
                 
             // delete local authentication cookie
             await HttpContext.SignOutAsync();
+
+            // publish access event
+            var user = _users.FindByUsername(User.Identity.Name);
+            await _accessEventPublisher.PublisheAccessEvent("Logout", "Success", "User logged out.", user.Claims.FirstOrDefault(x => x.Type == "name")?.Value);
 
             // raise the logout event
             await _events.RaiseAsync(new UserLogoutSuccessEvent(User.GetSubjectId(), User.GetDisplayName()));

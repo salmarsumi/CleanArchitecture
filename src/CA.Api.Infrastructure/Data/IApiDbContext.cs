@@ -5,7 +5,7 @@ namespace CA.Api.Infrastructure.Data
 {
     public interface IApiDbContext
     {
-        DbSet<Entities.WeatherForecast> WeatherForcasts { get; set; }
+        DbSet<Entities.WeatherForecast> WeatherForcasts { get; }
 
         Task<int> SaveChangesAsync(CancellationToken cancellationToken);
     }

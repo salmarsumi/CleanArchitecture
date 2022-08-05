@@ -2,11 +2,14 @@
 
 namespace CA.Common.Services
 {
-    public interface ICurrentUserService
+    public interface ICurrentRequestService
     {
         string GetUserId();
         string GetUsername();
         bool IsAuthenticated();
         ClaimsPrincipal GetUser();
+        string GetCorrelationId();
+        string GetClientIPAddress();
+        string GetClientBrowser();
     }
 }

@@ -26,6 +26,11 @@ namespace CA.Identity
                 {
                     Scopes = { "authz.full" },
                     UserClaims = { "name", "email" }
+                },
+                new ApiResource("audit", "Audit Service")
+                {
+                    Scopes = { "audit.full" },
+                    UserClaims= { "name", "email" }
                 }
             };
 
@@ -37,6 +42,9 @@ namespace CA.Identity
 
                 // authorization API scopes
                 new ApiScope(name: "authz.full", displayName: "Reads data from authorization service."),
+
+                // audit Api scopes
+                new ApiScope(name: "audit.full", displayName: "Reads data from audit service" ),
             };
 
         public static IEnumerable<Client> Clients(string clientUri) =>
@@ -66,7 +74,8 @@ namespace CA.Identity
                         IdentityServerConstants.StandardScopes.Profile,
                         IdentityServerConstants.StandardScopes.Email,
                         "api.full",
-                        "authz.full"
+                        "authz.full",
+                        "audit.full",
                     }
                 }
             };

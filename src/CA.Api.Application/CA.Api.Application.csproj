@@ -14,7 +14,13 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="MassTransit" Version="8.0.5" />
+    <PackageReference Include="MassTransit.RabbitMQ" Version="8.0.5" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\CA.Api.Domain\CA.Api.Domain.csproj" />
+    <ProjectReference Include="..\CA.Common.Contracts\CA.Common.Contracts.csproj" />
     <ProjectReference Include="..\CA.MediatR\CA.MediatR.csproj" />
   </ItemGroup>
 

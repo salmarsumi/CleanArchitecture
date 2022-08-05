@@ -22,6 +22,7 @@ using Microsoft.Extensions.Http;
 using Serilog;
 using System.IdentityModel.Tokens.Jwt;
 using Prometheus;
+using MassTransit;
 
 namespace CA.Api
 {
@@ -32,7 +33,7 @@ namespace CA.Api
             builder.Host.UseSerilog(LoggingHelper.CASerilogConfiguration("Api"));
 
             // MediatR
-            builder.Services.AddMediatRServices<CreateWeatherForcastCommand>();
+            builder.Services.AddMediatRServices<CreateWeatherForcastCommand>(isTransactional: true);
             // DbContext
             builder.ConfigureDbContext();
             // App Services
@@ -43,6 +44,8 @@ namespace CA.Api
             builder.ConfigureAuthorization();
             // Healthchecks
             builder.ConfigureHealthChecks();
+            // MassTransit
+            builder.ConfigureMassTransit();
 
             // Permissions
             builder.Services
@@ -88,6 +91,8 @@ namespace CA.Api
                     options.TokenValidationParameters.ValidateAudience = true;
                     options.RequireHttpsMetadata = false;
                     options.Audience = "api";
+
+                    options.TokenValidationParameters.NameClaimType = "name";
                 });
 
             return builder;
@@ -134,10 +139,34 @@ namespace CA.Api
             return builder;
         }
 
+        public static WebApplicationBuilder ConfigureMassTransit(this WebApplicationBuilder builder)
+        {
+            if (string.Equals(builder.Configuration["MassTransit:Enable"], bool.TrueString, StringComparison.OrdinalIgnoreCase))
+            {
+                builder.Services.AddMassTransit(config =>
+                {
+                    config.SetKebabCaseEndpointNameFormatter();
+                    config.UsingRabbitMq((context, cfg) =>
+                    {
+                        cfg.Host(builder.Configuration["MassTransit:Host"], builder.Configuration["MassTransit:VHost"], config =>
+                        {
+                            config.Username(builder.Configuration["MassTransit:Username"]);
+                            config.Password(builder.Configuration["MassTransit:Password"]);
+                            config.PublisherConfirmation = true;
+                        });
+                        cfg.Durable = true;
+                        cfg.ConfigureEndpoints(context);
+                    });
+                });
+            }
+
+            return builder;
+        }
+
         public static WebApplicationBuilder ConfigureAppServices(this WebApplicationBuilder builder)
         {
             builder.Services.AddHttpContextAccessor();
-            builder.Services.AddScoped<ICurrentUserService, CurrentUserService>();
+            builder.Services.AddScoped<ICurrentRequestService, CurrentRequestService>();
             builder.Services.AddDistributedMemoryCache();
 
             // Repositories

@@ -186,6 +186,7 @@ namespace CA.WebAngular
                     options.Scope.Add("profile");
                     options.Scope.Add("api.full");
                     options.Scope.Add("authz.full");
+                    options.Scope.Add("audit.full");
 
                     options.RequireHttpsMetadata = false;
 

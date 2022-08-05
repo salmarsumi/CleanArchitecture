@@ -8,7 +8,7 @@ namespace CA.Api.Infrastructure.Data
 {
     public class ApiDbContext : BaseTransactionalDbContext<ApiDbContext>, IApiDbContext
     {
-        public ApiDbContext(DbContextOptions<ApiDbContext> options, ICurrentUserService currentUserService, IDomainEventService domainEventService) 
+        public ApiDbContext(DbContextOptions<ApiDbContext> options, ICurrentRequestService currentUserService, IDomainEventService domainEventService) 
             : base(options, currentUserService, domainEventService)
         { }
 

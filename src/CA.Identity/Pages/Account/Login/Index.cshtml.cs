@@ -1,15 +1,13 @@
-using System;
-using System.Linq;
-using System.Threading.Tasks;
+using CA.Identity.Services;
 using Duende.IdentityServer;
 using Duende.IdentityServer.Events;
 using Duende.IdentityServer.Models;
 using Duende.IdentityServer.Services;
 using Duende.IdentityServer.Stores;
 using Duende.IdentityServer.Test;
+using MassTransit;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
@@ -23,6 +21,7 @@ public class Index : PageModel
     private readonly IIdentityServerInteractionService _interaction;
     private readonly IClientStore _clientStore;
     private readonly IEventService _events;
+    private readonly IAccessEventPublisher _accessEventPublisher;
     private readonly IAuthenticationSchemeProvider _schemeProvider;
     private readonly IIdentityProviderStore _identityProviderStore;
 
@@ -37,6 +36,7 @@ public class Index : PageModel
         IAuthenticationSchemeProvider schemeProvider,
         IIdentityProviderStore identityProviderStore,
         IEventService events,
+        IAccessEventPublisher accessEventPublisher,
         TestUserStore users = null)
     {
         // this is where you would plug in your own custom identity management library (e.g. ASP.NET Identity)
@@ -47,6 +47,7 @@ public class Index : PageModel
         _schemeProvider = schemeProvider;
         _identityProviderStore = identityProviderStore;
         _events = events;
+        _accessEventPublisher = accessEventPublisher;
     }
         
     public async Task<IActionResult> OnGet(string returnUrl)
@@ -121,6 +122,9 @@ public class Index : PageModel
                 };
 
                 await HttpContext.SignInAsync(isuser, props);
+                
+                // publish a successful access event
+                await _accessEventPublisher.PublisheAccessEvent("Login", "Success", "Password login succeeded", user.Claims.FirstOrDefault(x => x.Type == "name")?.Value);
 
                 if (context != null)
                 {
@@ -150,6 +154,9 @@ public class Index : PageModel
                     throw new Exception("invalid return URL");
                 }
             }
+
+            // publish a failed access event
+            await _accessEventPublisher.PublisheAccessEvent("Login", "Failed", "Login Failed", Input.Username);
 
             await _events.RaiseAsync(new UserLoginFailureEvent(Input.Username, "invalid credentials", clientId:context?.Client.ClientId));
             ModelState.AddModelError(string.Empty, LoginOptions.InvalidCredentialsErrorMessage);

@@ -49,7 +49,6 @@ namespace CA.Common.Authorization.IntegrationTests
         {
             app.UseRouting();
             app.UseMiddleware<AutoAuthorizeMiddleware>();
-            //app.UseAuthentication();
             app.UseAuthorization();
             app.UseEndpoints(endpoints => endpoints.MapControllers());
         }
@@ -59,7 +58,6 @@ namespace CA.Common.Authorization.IntegrationTests
     {
         public void PopulateFeature(IEnumerable<ApplicationPart> parts, ControllerFeature feature)
         {
-            //feature.Controllers.Add(typeof(LocalController).GetTypeInfo());
             feature.Controllers.Remove(typeof(RemoteController).GetTypeInfo());
         }
     }

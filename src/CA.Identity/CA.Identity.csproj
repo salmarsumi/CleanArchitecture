@@ -11,10 +11,12 @@
 
   <ItemGroup>
     <PackageReference Include="Duende.IdentityServer" Version="6.1.1" />
+	<PackageReference Include="MassTransit.RabbitMQ" Version="8.0.5" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.16.1" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\CA.Common.Contracts\CA.Common.Contracts.csproj" />
     <ProjectReference Include="..\CA.Common\CA.Common.csproj" />
   </ItemGroup>
 

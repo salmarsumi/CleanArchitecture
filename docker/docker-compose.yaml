@@ -17,6 +17,9 @@ services:
   grafana:
     image: grafana/grafana:latest
 
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+
   identity:
     image: ca/identity
     build:
@@ -34,6 +37,17 @@ services:
       - identity
       - loki
 
+  audit:
+    image: ca/audit
+    build:
+      context: ../.
+      dockerfile: src/CA.Audit/Dockerfile
+    depends_on:
+      - identity
+      - auhtorization
+      - loki
+      - rabbitmq
+
   api:
     image: ca/api
     build:
@@ -43,6 +57,7 @@ services:
       - identity
       - authorization
       - loki
+      - rabbitmq
 
   bff:
     image: ca/bff

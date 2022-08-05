@@ -3,10 +3,16 @@ using MediatR;
 
 namespace CA.Api.Application.WeatherForcast.Queries
 {
+    /// <summary>
+    /// Query
+    /// </summary>
     public class GetAllWeatherForcastQuery : IRequest<RequestResult<IEnumerable<WeatherForecastDto>>>
     {
     }
 
+    /// <summary>
+    /// Handler
+    /// </summary>
     public class GetAllWeatherForcastQueryHandler : IRequestHandler<GetAllWeatherForcastQuery, RequestResult<IEnumerable<WeatherForecastDto>>>
     {
         private readonly IWeatherForecastQueries _query;

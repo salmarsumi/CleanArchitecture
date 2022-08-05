@@ -6,13 +6,13 @@ services:
       - "8090:8090"
       - "8080:8080"
       - "3000:3000"
+      - "15672:15672"
     volumes:
       - ./nginx.conf:/etc/nginx/nginx.conf:ro
       - ./certs/server.crt:/etc/nginx/conf/server.crt
       - ./certs/server.key:/etc/nginx/conf/server.key
     networks:
       - ca
-    restart: always
 
   loki:
     expose:
@@ -23,7 +23,6 @@ services:
     command: -config.file=/etc/loki/local-config.yaml
     networks:
       - ca
-    restart: always
 
   prometheus:
     expose:
@@ -33,7 +32,6 @@ services:
       - prometheus:/prometheus
     networks:
       - ca
-    restart: always
 
   grafana:
     expose:
@@ -42,7 +40,19 @@ services:
       - grafana:/var/lib/grafana
     networks:
       - ca
-    restart: always
+
+  rabbitmq:
+    environment:
+      - RABBITMQ_DEFAULT_USER=ca
+      - RABBITMQ_DEFAULT_PASS=rabbitsecret
+      - RABBITMQ_DEFAULT_VHOST=ca
+    expose:
+      - "5672"
+      - "15672"
+    volumes:
+      - rabbit:/var/lib/rabbitmq/
+    networks:
+      - ca
 
   identity:
     environment:
@@ -52,13 +62,17 @@ services:
       - ClientUri=https://${EXTERNAL_HOST_NAME}:8080
       - Serilog__Loki__Enable=true
       - Serilog__Loki__Address=http://loki:3100
+      - MassTransit__Enable=true
+      - MassTransit__Host=rabbitmq
+      - MassTransit__VHost=ca
+      - MassTransit__Username=ca
+      - MassTransit__Password=rabbitsecret
     volumes:
       - identity-dpk:/home/wfs/.aspnet/DataProtection-Keys
     expose:
       - "80"
     networks:
       - ca
-    restart: always
   
   authorization:
     environment:
@@ -71,7 +85,24 @@ services:
       - "80"
     networks:
       - ca
-    restart: always
+
+  audit:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Staging
+      - ASPNETCORE_URLS=http://+:80
+      - TokenAuthority=http://identity
+      - AuthorizationService=http://authorization
+      - Serilog__Loki__Enable=true
+      - Serilog__Loki__Address=http://loki:3100
+      - MassTransit__Enable=true
+      - MassTransit__Host=rabbitmq
+      - MassTransit__VHost=ca
+      - MassTransit__Username=ca
+      - MassTransit__Password=rabbitsecret
+    expose:
+      - "80"
+    networks:
+      - ca
 
   api:
     environment:
@@ -81,11 +112,15 @@ services:
       - AuthorizationService=http://authorization
       - Serilog__Loki__Enable=true
       - Serilog__Loki__Address=http://loki:3100
+      - MassTransit__Enable=true
+      - MassTransit__Host=rabbitmq
+      - MassTransit__VHost=ca
+      - MassTransit__Username=ca
+      - MassTransit__Password=rabbitsecret
     expose:
       - "80"
     networks:
       - ca
-    restart: always
 
   bff:
     environment:
@@ -93,6 +128,7 @@ services:
       - ASPNETCORE_URLS=http://+:80
       - TokenAuthority=https://${EXTERNAL_HOST_NAME}:8090
       - ReverseProxy__Clusters__apicluster__Destinations__api1__Address=http://api
+      - ReverseProxy__Clusters__auditcluster__Destinations__audit1__Address=http://audit
       - Serilog__Loki__Enable=true
       - Serilog__Loki__Address=http://loki:3100
     volumes:
@@ -101,7 +137,6 @@ services:
       - "80"
     networks:
       - ca
-    restart: always
     extra_hosts:
       - "${EXTERNAL_HOST_NAME}:host-gateway"
 
@@ -114,3 +149,4 @@ volumes:
   loki:
   grafana:
   prometheus:
+  rabbit:

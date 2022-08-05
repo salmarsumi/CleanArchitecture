@@ -44,6 +44,21 @@ namespace CA.MediatR
         {
             return Succeeded(default);
         }
+
+        public IResult AsApiResult()
+        {
+            if (IsNotFound)
+            {
+                return Results.NotFound(Data);
+            }
+
+            if (IsNotValid)
+            {
+                return Results.BadRequest(Data);
+            }
+
+            return Results.Problem();
+        }
     }
 
     public interface IRequestResult

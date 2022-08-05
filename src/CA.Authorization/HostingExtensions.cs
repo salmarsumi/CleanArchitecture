@@ -63,6 +63,8 @@ namespace CA.Authorization
                     options.TokenValidationParameters.ValidateAudience = true;
                     options.RequireHttpsMetadata = false;
                     options.Audience = "authz";
+
+                    options.TokenValidationParameters.NameClaimType = "name";
                 });
 
             return builder;

@@ -10,7 +10,7 @@ namespace CA.Common.EF
     {
         private IDbContextTransaction _currentTransaction;
 
-        protected BaseTransactionalDbContext(DbContextOptions<T> options, ICurrentUserService currentUserService, IDomainEventService domainEventService)
+        protected BaseTransactionalDbContext(DbContextOptions<T> options, ICurrentRequestService currentUserService, IDomainEventService domainEventService)
             : base(options, currentUserService, domainEventService)
         {
         }

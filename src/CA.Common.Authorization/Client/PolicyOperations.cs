@@ -30,6 +30,16 @@ namespace CA.Common.Authorization.Client
                 {
                     Name = AppPermissions.DeleteWeather,
                     Groups = new[] { "Admin" }
+                },
+                new()
+                {
+                    Name = AppPermissions.ViewAudit,
+                    Groups = new[] { "Admin" }
+                },
+                new()
+                {
+                    Name = AppPermissions.ViewAccess,
+                    Groups = new[] { "Admin" }
                 }
             });
 

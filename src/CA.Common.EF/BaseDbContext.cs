@@ -7,10 +7,10 @@ namespace CA.Common.EF
 {
     public abstract class BaseDbContext<T> : DbContext where T : DbContext
     {
-        protected readonly ICurrentUserService _currentUserService;
+        protected readonly ICurrentRequestService _currentUserService;
         private readonly IDomainEventService _domainEventService;
 
-        protected BaseDbContext(DbContextOptions<T> options, ICurrentUserService currentUserService, IDomainEventService domainEventService)
+        protected BaseDbContext(DbContextOptions<T> options, ICurrentRequestService currentUserService, IDomainEventService domainEventService)
             : base(options)
         {
             _currentUserService = currentUserService;

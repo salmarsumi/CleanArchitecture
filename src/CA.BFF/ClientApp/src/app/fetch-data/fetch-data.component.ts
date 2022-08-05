@@ -6,8 +6,8 @@ import { HttpClient } from '@angular/common/http';
   templateUrl: './fetch-data.component.html'
 })
 export class FetchDataComponent {
-  public isProcessing: boolean = false;
-  public forecasts: WeatherForecast[] = [];
+  isProcessing: boolean = false;
+  forecasts: WeatherForecast[] = [];
 
   constructor(private http: HttpClient) {
     this.loadAll();

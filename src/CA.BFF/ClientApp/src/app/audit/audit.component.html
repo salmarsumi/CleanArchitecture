@@ -1,0 +1,29 @@
+<h1 id="tableLabel">Audit</h1>
+
+<p>This component demonstrates fetching data from the server.</p>
+
+<button [disabled]="isProcessing" class="btn btn-primary" (click)="loadAll()">Reload</button>
+<p *ngIf="!audits"><em>Loading...</em></p>
+
+<table class='table table-striped' aria-labelledby="tableLabel" *ngIf="audits">
+  <thead>
+    <tr>
+      <th>Timestamp</th>
+      <th>Source</th>
+      <th>Object</th>
+      <th>Action</th>
+      <th>Username</th>
+      <th>Correlation Id</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let audit of audits">
+      <td>{{ audit.timeStamp }}</td>
+      <td>{{ audit.source }}</td>
+      <td>{{ audit.object }}</td>
+      <td>{{ audit.action }}</td>
+      <td>{{ audit.username }}</td>
+      <td>{{ audit.correlationId }}</td>
+    </tr>
+  </tbody>
+</table>

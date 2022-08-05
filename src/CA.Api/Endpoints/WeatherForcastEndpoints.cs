@@ -13,7 +13,7 @@ namespace CA.Api.Endpoints
         public static WebApplication MapWeatherForcastEndpoints(this WebApplication app)
         {
             // GET /weather
-            app.MapGet("/weather", [Authorize(nameof(AppPermissions.ViewWeather))] async (ISender mediator, HttpContext context) =>
+            app.MapGet("/weather", [Authorize(nameof(AppPermissions.ViewWeather))] async (ISender mediator) =>
             {
                 RequestResult<IEnumerable<WeatherForecastDto>> result = await mediator.Send(new GetAllWeatherForcastQuery());
 

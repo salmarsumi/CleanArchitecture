@@ -1,6 +1,9 @@
 ﻿using CA.Common.Logging;
+using CA.Common.Services;
 using CA.Identity.Endpoints;
+using CA.Identity.Services;
 using IdentityServerHost;
+using MassTransit;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Prometheus;
@@ -42,6 +45,11 @@ namespace CA.Identity
 
             // Health Checks
             builder.ConfigureHealthChecks();
+            // MassTranssit
+            builder.ConfigureMassTransit();
+
+            builder.Services.AddScoped<IAccessEventPublisher, AccessEventPublisher>();
+            builder.Services.AddScoped<ICurrentRequestService, CurrentRequestService>();
 
             return builder;
         }
@@ -82,6 +90,30 @@ namespace CA.Identity
                 // ready checks should use actual checks of external dependancies.
                 .AddCheck("ready", () => HealthCheckResult.Healthy())
                 .ForwardToPrometheus();
+
+            return builder;
+        }
+
+        public static WebApplicationBuilder ConfigureMassTransit(this WebApplicationBuilder builder)
+        {
+            if (string.Equals(builder.Configuration["MassTransit:Enable"], bool.TrueString, StringComparison.OrdinalIgnoreCase))
+            {
+                builder.Services.AddMassTransit(config =>
+                {
+                    config.SetKebabCaseEndpointNameFormatter();
+                    config.UsingRabbitMq((context, cfg) =>
+                    {
+                        cfg.Host(builder.Configuration["MassTransit:Host"], builder.Configuration["MassTransit:VHost"], config =>
+                        {
+                            config.Username(builder.Configuration["MassTransit:Username"]);
+                            config.Password(builder.Configuration["MassTransit:Password"]);
+                            config.PublisherConfirmation = true;
+                        });
+                        cfg.Durable = true;
+                        cfg.ConfigureEndpoints(context);
+                    });
+                });
+            }
 
             return builder;
         }

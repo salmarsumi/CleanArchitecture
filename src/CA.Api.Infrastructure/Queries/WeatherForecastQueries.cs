@@ -15,13 +15,14 @@ namespace CA.Api.Infrastructure.Queries
 
         public async Task<IEnumerable<WeatherForecastDto>> GetAllWeatherForecastAsync(CancellationToken cancellationToken = default)
         {
-            return await _context.WeatherForcasts.Select(e => new WeatherForecastDto
-            {
-                Id = e.Id,
-                Date = e.Date,
-                Summary = e.Summary,
-                TemperatureC = e.TemperatureC
-            })
+            return
+                await _context.WeatherForcasts.AsNoTracking().Select(e => new WeatherForecastDto
+                {
+                    Id = e.Id,
+                    Date = e.Date,
+                    Summary = e.Summary,
+                    TemperatureC = e.TemperatureC
+                })
                 .ToListAsync(cancellationToken);
         }
     }
