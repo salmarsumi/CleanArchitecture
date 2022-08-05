@@ -68,4 +68,5 @@ services:
       - identity
       - authorization
       - api
+      - audit
       - loki
