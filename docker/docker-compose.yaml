@@ -44,7 +44,7 @@ services:
       dockerfile: src/CA.Audit/Dockerfile
     depends_on:
       - identity
-      - auhtorization
+      - authorization
       - loki
       - rabbitmq
 
