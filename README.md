@@ -48,6 +48,7 @@ bash up.sh $(uname -n)
    * 8080 The BFF web application used to deliver the SPA.
    * 8090 The IdentityServer application.
    * 3000 The Grafana portal.
+   * 15672 RabbitMQ management portal.
 
 6. Get the hostname.
 ```
