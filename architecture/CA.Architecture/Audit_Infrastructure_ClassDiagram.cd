@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="NameAndType">
+  <Class Name="CA.Audit.Infrastructure.AccessQueries">
+    <Position X="7.75" Y="1.25" Width="2.25" />
+    <TypeIdentifier />
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="CA.Audit.Infrastructure.AuditDbContext">
+    <Position X="14" Y="1.25" Width="2" />
+    <TypeIdentifier />
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="CA.Audit.Infrastructure.AuditQueries">
+    <Position X="10.75" Y="1.25" Width="2.25" />
+    <TypeIdentifier />
+    <Lollipop Position="0.2" />
+  </Class>
+  <Interface Name="CA.Audit.Infrastructure.IAuditDbContext">
+    <Position X="14" Y="3.5" Width="2.25" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="CA.Audit.Application.Access.IAccessQueries">
+    <Position X="7.75" Y="3.5" Width="2.25" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="CA.Audit.Application.Audit.IAuditQueries">
+    <Position X="10.75" Y="3.5" Width="2.25" />
+    <TypeIdentifier />
+  </Interface>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

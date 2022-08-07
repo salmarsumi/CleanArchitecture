@@ -12,6 +12,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\CA.Api\CA.Api.csproj" />
+    <ProjectReference Include="..\..\src\CA.Audit\CA.Audit.csproj" />
     <ProjectReference Include="..\..\src\CA.Authorization\CA.Authorization.csproj" />
     <ProjectReference Include="..\..\src\CA.Common.EF\CA.Common.EF.csproj" />
     <ProjectReference Include="..\..\src\CA.Common\CA.Common.csproj" />
