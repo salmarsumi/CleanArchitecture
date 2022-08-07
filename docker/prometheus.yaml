@@ -27,3 +27,8 @@ scrape_configs:
     scrape_interval: 10s
     static_configs:
       - targets: ['bff']
+
+  - job_name: 'audit'
+    scrape_interval: 10s
+    static_configs:
+      - targets: ['audit']
