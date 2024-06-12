@@ -5,8 +5,17 @@ using Serilog.Sinks.Grafana.Loki;
 
 namespace CA.Common.Logging
 {
+    /// <summary>
+    /// Logging configuration helper methods.
+    /// </summary>
     public static class LoggingHelper
     {
+        /// <summary>
+        /// Create and configure the Serilog logger instance outside of the ASP.NET Host initialization.
+        /// This method will make it possible to access the logger outside the ASP.NET Host.
+        /// </summary>
+        /// <param name="appName">The name of the service or applcation creating the instance. This value will be added to evey log entry in the system.</param>
+        /// <returns>The created Serilog logger instance.</returns>
         public static ILogger CASerilogBootstrapConfiguration(string appName)
         {
             var config = new LoggerConfiguration();
@@ -25,6 +34,11 @@ namespace CA.Common.Logging
             return config.CreateBootstrapLogger();
         }
 
+        /// <summary>
+        /// Create a configuration action of the required Serilog logger instance to be used within the ASP.NET Host.
+        /// </summary>
+        /// <param name="appName">The name of the service or applcation creating the instance. This value will be added to evey log entry in the system.</param>
+        /// <returns>The configuration action.</returns>
         public static Action<HostBuilderContext, IServiceProvider, LoggerConfiguration> CASerilogConfiguration(string appName)
         {
             Action<HostBuilderContext, IServiceProvider, LoggerConfiguration> action = (context, services, configuration) =>

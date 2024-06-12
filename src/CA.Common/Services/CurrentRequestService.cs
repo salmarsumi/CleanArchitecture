@@ -3,6 +3,9 @@ using System.Security.Claims;
 
 namespace CA.Common.Services
 {
+    /// <summary>
+    /// Current request information operations implementation.
+    /// </summary>
     public class CurrentRequestService : ICurrentRequestService
     {
         private readonly IHttpContextAccessor _httpContextAccessor;

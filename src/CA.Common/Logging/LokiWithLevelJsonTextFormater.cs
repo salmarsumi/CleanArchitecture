@@ -6,6 +6,9 @@ using Serilog.Sinks.Grafana.Loki;
 
 namespace CA.Common.Logging
 {
+    /// <summary>
+    /// Custom Loki Json formatter.
+    /// </summary>
     public class LokiWithLevelJsonTextFormatter : ITextFormatter, ILabelAwareTextFormatter
     {
         private readonly JsonValueFormatter _valueFormatter;
@@ -22,7 +25,7 @@ namespace CA.Common.Logging
         public bool ExcludeLevelLabel => false;
 
         /// <summary>
-        /// Format the log event into the output.
+        /// Format the log event into the required output.
         /// </summary>
         /// <param name="logEvent">
         /// The event to format.
@@ -55,7 +58,6 @@ namespace CA.Common.Logging
                 .OfType<PropertyToken>()
                 .Where(pt => pt.Format != null);
 
-            // Better not to allocate an array in the 99.9% of cases where this is false
             if (tokensWithFormat.Any())
             {
                 output.Write(",\"Renderings\":[");
@@ -166,8 +168,16 @@ namespace CA.Common.Logging
         }
     }
 
+    /// <summary>
+    /// LogEventLevel mapper.
+    /// </summary>
     internal static class LogEventLevelExtensions
     {
+        /// <summary>
+        /// Serilog to Grafana log level mapper.
+        /// </summary>
+        /// <param name="level">The Serilog log level.</param>
+        /// <returns>The Grafana log level.</returns>
         internal static string ToGrafanaLogLevel(this LogEventLevel level) =>
             level switch
             {

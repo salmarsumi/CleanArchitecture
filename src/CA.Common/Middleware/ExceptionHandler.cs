@@ -12,6 +12,9 @@ using System.Net;
 
 namespace CA.Common.Middleware
 {
+    /// <summary>
+    /// Global exception handler configuration.
+    /// </summary>
     public class ExceptionHandler
     {
         public static Action<IApplicationBuilder> Handler =>
@@ -58,7 +61,6 @@ namespace CA.Common.Middleware
                                 {
                                     ExceptionType = "Generic"
                                 };
-
                                 context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
                                 break;
                         }

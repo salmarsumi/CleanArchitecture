@@ -12,6 +12,11 @@ namespace CA.Common.HttpMessageHandlers
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly ILogger<HttpClientRequestLoggerDelegatingHandler> _logger;
 
+        /// <summary>
+        /// Initialize a new instance of <see cref="HttpClientRequestLoggerDelegatingHandler"/>.
+        /// </summary>
+        /// <param name="httpContextAccessor">Http context accessor instance.</param>
+        /// <param name="logger">Logger instance.</param>
         public HttpClientRequestLoggerDelegatingHandler(
             IHttpContextAccessor httpContextAccessor,
             ILogger<HttpClientRequestLoggerDelegatingHandler> logger)
@@ -50,6 +55,7 @@ namespace CA.Common.HttpMessageHandlers
             string username = "UnAuthenticated";
             var httpContext = _httpContextAccessor.HttpContext;
             
+            // Extract user infromation from the Http context.
             if(httpContext is not null)
             {
                 var isAuthenticated = httpContext.User.Identity.IsAuthenticated;
@@ -70,6 +76,7 @@ namespace CA.Common.HttpMessageHandlers
                 }
             }
 
+            // Start a logger scope to add common properties to the log entries.
             using (_logger.BeginScope("{CorrelationId} {UserId} {Username}", correlationId, userId, username))
             {
                 if (caught == default)

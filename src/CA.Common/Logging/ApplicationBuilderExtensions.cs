@@ -5,8 +5,17 @@ using Serilog.Events;
 
 namespace CA.Common.Logging
 {
+    /// <summary>
+    /// Common extension methods for configuring the application pipeline.
+    /// </summary>
     public static class ApplicationBuilderExtensions
     {
+        /// <summary>
+        /// Enable and configure the Serilog request logging middleware.
+        /// </summary>
+        /// <param name="app">The application builder instance.</param>
+        /// <param name="execludedPaths">The collection of paths that needs to be excluded from the logs.</param>
+        /// <returns>The configured <see cref="IApplicationBuilder"/> instance.</returns>
         public static IApplicationBuilder UseCASerilog(this IApplicationBuilder app, IEnumerable<string> execludedPaths = null)
         {
             app.UseMiddleware<CorrelationIdMiddleware>();
