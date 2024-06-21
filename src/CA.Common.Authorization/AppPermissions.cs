@@ -1,5 +1,8 @@
 ﻿namespace CA.Common.Authorization
 {
+    /// <summary>
+    /// Permission name constants used throughout the system.
+    /// </summary>
     public class AppPermissions
     {
         public const string ViewWeather = "ViewWeather";

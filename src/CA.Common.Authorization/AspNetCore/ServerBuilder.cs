@@ -10,7 +10,7 @@ using System.Net.Http.Headers;
 namespace CA.Common.Authorization.AspNetCore
 {
     /// <summary>
-    /// Helper object to build the PolicyServer DI configuration
+    /// Helper object to build the PolicyServer DI configuration.
     /// </summary>
     public class ServerBuilder
     {
@@ -21,15 +21,23 @@ namespace CA.Common.Authorization.AspNetCore
             Services = services;
         }
 
+        /// <summary>
+        /// Register 
+        /// </summary>
+        /// <returns>Instance of <see cref="ServerBuilder"/> to be used for authorization specific configuration.</returns>
         public ServerBuilder AddAuthorizationPermissionPolicies()
         {
-            //Services.AddAuthorization();
             Services.AddTransient<IAuthorizationPolicyProvider, PolicyAuthorizationProvider>();
             Services.AddTransient<IAuthorizationHandler, PermissionHandler>();
 
             return this;
         }
 
+        /// <summary>
+        /// Add an HTTP Client instance already configured for making requests to the remote authorization service.
+        /// </summary>
+        /// <param name="authServiceBaseUrl">The base URL of the authorization service.</param>
+        /// <returns>Instance of <see cref="ServerBuilder"/> to be used for authorization specific configuration.</returns>
         public ServerBuilder AddRemotePolicyHttpClient(string authServiceBaseUrl)
         {
             // configure the HttpClient instance that will be injected into the RemotePolicyOperations constructor
@@ -69,10 +77,15 @@ namespace CA.Common.Authorization.AspNetCore
     }
 
     /// <summary>
-    /// Helper class to configure DI
+    /// Helper class to configure Policy clients in the DI container.
     /// </summary>
     public static class ServiceCollectionExtensions
     {
+        /// <summary>
+        /// Add a local policy service that will make in process calls to resolve authorization operations.
+        /// </summary>
+        /// <param name="services">The DI container <see cref="IServiceCollection"/.></param>
+        /// <returns>The configured <see cref="IServiceCollection"/>.</returns>
         public static ServerBuilder AddLocalPolicyServices(this IServiceCollection services)
         {
             services.AddScoped<IPolicyOperations, PolicyOperations>();
@@ -80,6 +93,11 @@ namespace CA.Common.Authorization.AspNetCore
             return new ServerBuilder(services);
         }
 
+        /// <summary>
+        /// Add a remote policy service that will make network calls to resolve authorization operations.
+        /// </summary>
+        /// <param name="services">The DI container <see cref="IServiceCollection"/.</param>
+        /// <returns>The configured <see cref="IServiceCollection"/>.</returns>
         public static ServerBuilder AddRemotePolicyServices(this IServiceCollection services)
         {
             services.AddScoped<IPolicyOperations, RemotePolicyOperations>();

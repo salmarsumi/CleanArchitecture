@@ -6,6 +6,10 @@ using System.Text.Json;
 
 namespace CA.Common.Authorization.Client
 {
+    /// <summary>
+    /// Provides an implementation to evaluate users through calling the Authorization Service.
+    /// This class is will be used through the IPolicyOperations interface for remote evaluation operations.
+    /// </summary>
     public class RemotePolicyOperations : IPolicyOperations
     {
         private readonly IHttpClientFactory _httpClientFactory;
@@ -61,7 +65,7 @@ namespace CA.Common.Authorization.Client
                             // cache for 10 seconds total with a sliding timer of 5 seconds
                             // this will cache the policy at the remote client for a short time
                             // avoiding multiple consecutive server request while making changes
-                            // the policy take effect withen 10 seconds at the most
+                            // the policy take effect within 10 seconds at the most
                             await _cache.SetStringAsync($"policy-{sub}", serialized, new DistributedCacheEntryOptions
                             {
                                 AbsoluteExpiration = DateTime.Now.AddSeconds(10),

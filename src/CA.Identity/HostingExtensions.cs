@@ -45,7 +45,7 @@ namespace CA.Identity
 
             // Health Checks
             builder.ConfigureHealthChecks();
-            // MassTranssit
+            // MassTransit
             builder.ConfigureMassTransit();
 
             builder.Services.AddScoped<IAccessEventPublisher, AccessEventPublisher>();

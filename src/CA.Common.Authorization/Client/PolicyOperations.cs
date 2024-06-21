@@ -3,8 +3,14 @@ using System.Security.Claims;
 
 namespace CA.Common.Authorization.Client
 {
+    /// <summary>
+    /// Provides an implementation to evaluate users against a local policy instance.
+    /// This class will be used through the IPolicyOperations interface for local evaluation operations.
+    /// </summary>
     public class PolicyOperations : IPolicyOperations
     {
+        // We are using an in memory instance of policy for simplicity.
+        // This will need to be persisted and retrieved from a database.
         private static readonly Policy _policy = new(
             new Group[]
             {
