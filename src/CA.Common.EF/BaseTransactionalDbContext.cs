@@ -6,6 +6,9 @@ using System.Data;
 
 namespace CA.Common.EF
 {
+    /// <summary>
+    /// Implement transactional functionality for all DbContext classes inheriting the base transactional context.
+    /// </summary>
     public abstract class BaseTransactionalDbContext<T> : BaseDbContext<T>, ITransactionalDbContext where T : DbContext
     {
         private IDbContextTransaction _currentTransaction;
@@ -26,7 +29,7 @@ namespace CA.Common.EF
             return _currentTransaction;
         }
 
-        public async Task CommitTranasctionAsync(IDbContextTransaction transaction)
+        public async Task CommitTransactionAsync(IDbContextTransaction transaction)
         {
             if (transaction == null) throw new ArgumentNullException(nameof(transaction));
             if (transaction != _currentTransaction) throw new InvalidOperationException($"Transaction {transaction.TransactionId} is not current");

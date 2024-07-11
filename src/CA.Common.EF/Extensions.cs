@@ -6,16 +6,19 @@ using Microsoft.Extensions.Logging;
 
 namespace CA.Common.EF
 {
+    /// <summary>
+    /// DbContext related extension methods.
+    /// </summary>
     public static class DbExtensions
     {
         /// <summary>
         /// Extension method to update many to many relationships. Should be called for already tracked entity.
         /// </summary>
         /// <typeparam name="TEntity">Type of the entity being update</typeparam>
-        /// <typeparam name="TDEntity">Type of the dependant entity</typeparam>
+        /// <typeparam name="TDEntity">Type of the dependent entity</typeparam>
         /// <param name="dbContext">Db Context</param>
-        /// <param name="dEntitiesSet">The DbSet property of the dependant type</param>
-        /// <param name="realationName"></param>
+        /// <param name="dEntitiesSet">The DbSet property of the dependent type</param>
+        /// <param name="relationName"></param>
         /// <param name="idProperty"></param>
         /// <param name="entity"></param>
         /// <param name="requested"></param>
@@ -24,7 +27,7 @@ namespace CA.Common.EF
         public static void UpdateManyToMany<TEntity, TDEntity>(
             this DbContext dbContext,
             DbSet<TDEntity> dEntitiesSet,
-            string realationName,
+            string relationName,
             string idProperty,
             ref TEntity entity,
             IEnumerable<int> requested,
@@ -36,7 +39,7 @@ namespace CA.Common.EF
             ICollection<TDEntity> dentities = default;
             if (requested is not null)
             {
-                // cast the ids to the dependant entity objects
+                // cast the ids to the dependent entity objects
                 dentities = requested.Distinct().Select(x => new TDEntity { Id = x }).ToList();
                 foreach (var ent in dentities)
                 {
@@ -47,12 +50,12 @@ namespace CA.Common.EF
                     }
                 }
             }
-            // reset the dependant entity collection after the dbcontext start tracking it
+            // reset the dependent entity collection after the dbcontext start tracking it
             clear(entity);
             // don't remove entries that exists in the request
             var localEntities = dEntitiesSet.Local.Where(o => dentities.Any(x => x.Id == o.Id)).ToList();
             var entries = dbContext.ChangeTracker.Entries()
-                .Where(e => e.Metadata.Name == realationName
+                .Where(e => e.Metadata.Name == relationName
                 && localEntities.Any(x => x.Id.ToString() == e.Property(idProperty).CurrentValue.ToString()))
                 .ToList();
             entries.ForEach(e => e.State = EntityState.Unchanged);
@@ -63,9 +66,9 @@ namespace CA.Common.EF
         /// Extension method to run migrations on the application host
         /// </summary>
         /// <typeparam name="TContext"></typeparam>
-        /// <param name="host"></param>
-        /// <param name="seeder"></param>
-        /// <returns></returns>
+        /// <param name="host">The <see cref="IHost"/> application instance</param>
+        /// <param name="seeder">The Action performing the data seeding.</param>
+        /// <returns>The <see cref="IHost"/> instance.</returns>
         public static IHost MigrateDbContext<TContext>(this IHost host, Action<TContext, IServiceProvider> seeder)
             where TContext : DbContext
         {
@@ -89,7 +92,7 @@ namespace CA.Common.EF
                 }
                 catch (Exception ex)
                 {
-                    logger.LogError(ex, $"An error occured while migrating the database used on context {typeof(TContext).Name}");
+                    logger.LogError(ex, $"An error occurred while migrating the database used on context {typeof(TContext).Name}");
                 }
             }
 

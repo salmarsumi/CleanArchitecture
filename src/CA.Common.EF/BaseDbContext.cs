@@ -5,6 +5,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CA.Common.EF
 {
+    /// <summary>
+    /// Implement optimistic concurrency and audit functionality for all DbContext classes inheriting the base context.
+    /// </summary>
     public abstract class BaseDbContext<T> : DbContext where T : DbContext
     {
         protected readonly ICurrentRequestService _currentUserService;
