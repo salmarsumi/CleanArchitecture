@@ -1,4 +1,5 @@
 ﻿using CA.Common.Authorization.AspNetCore;
+using CA.Common.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -37,6 +38,7 @@ namespace CA.Common.Authorization.IntegrationTests
             services.AddDistributedMemoryCache();
             services.AddControllers();
             services.AddHttpContextAccessor();
+            services.AddScoped<ICurrentRequestService, CurrentRequestService>();
             services.AddRemotePolicyServices()
                 .AddAuthorizationPermissionPolicies()
                 .AddRemotePolicyHttpClient("https://localhost");

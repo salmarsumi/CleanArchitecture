@@ -4,7 +4,8 @@
     <TargetFramework>net6.0</TargetFramework>
     <Nullable>disable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-	<EnablePreviewFeatures>True</EnablePreviewFeatures>
+	<EnablePreviewFeatures>true</EnablePreviewFeatures>
+	<GenerateRequiresPreviewFeaturesAttribute>true</GenerateRequiresPreviewFeaturesAttribute>
     <UserSecretsId>1a208fc3-bc38-4c74-a812-cabbcdcd8615</UserSecretsId>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     <DockerfileContext>..\..</DockerfileContext>

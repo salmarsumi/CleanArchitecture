@@ -8,7 +8,7 @@ namespace CA.Common.Authorization.IntegrationTests.Controllers
     [ApiController]
     public class RemoteController : ControllerBase
     {
-        [HttpGet("seure")]
+        [HttpGet("secure")]
         [Authorize(AppPermissions.ViewWeather)]
         public IActionResult GetSecure()
         {

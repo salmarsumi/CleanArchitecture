@@ -4,10 +4,12 @@
     <TargetFramework>net6.0</TargetFramework>
     <Nullable>disable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-	<EnablePreviewFeatures>True</EnablePreviewFeatures>
+	<EnablePreviewFeatures>true</EnablePreviewFeatures>
 	<UserSecretsId>78719c3e-7dcf-4f3b-a93a-6d2a4a3beec7</UserSecretsId>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     <DockerfileContext>..\..</DockerfileContext>
+	<EnablePreviewFeatures>true</EnablePreviewFeatures>
+	<GenerateRequiresPreviewFeaturesAttribute>true</GenerateRequiresPreviewFeaturesAttribute>
   </PropertyGroup>
 
   <ItemGroup>

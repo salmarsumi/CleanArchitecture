@@ -1,9 +1,8 @@
 ﻿using Microsoft.AspNetCore.TestHost;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Caching.Distributed;
 using Moq;
 using CA.Common.Authorization.Client;
-using Microsoft.AspNetCore.Mvc.Testing;
+using CA.Common.Services;
 
 namespace CA.Common.Authorization.IntegrationTests
 {

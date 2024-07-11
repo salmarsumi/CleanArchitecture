@@ -16,7 +16,7 @@ namespace CA.Common.Authorization.IntegrationTests.Tests
         public async Task Get_ReturnsSuccess_WhenUserHasPermission()
         {
             var client = _factory.RemoteClient;
-            var result = await client.GetAsync("api/remote/seure");
+            var result = await client.GetAsync("api/remote/secure");
 
             result.EnsureSuccessStatusCode();
             Assert.Equal("Secure Content", result.Content.ReadAsStringAsync().Result);

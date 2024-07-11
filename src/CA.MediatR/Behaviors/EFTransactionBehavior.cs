@@ -60,7 +60,7 @@ namespace CA.MediatR.Behaviors
 
                                 _logger.LogInformation("----- Commit transaction {TransactionId} for {CommandName}", transaction.TransactionId, typeName);
 
-                                await context.CommitTranasctionAsync(transaction);
+                                await context.CommitTransactionAsync(transaction);
                             }
                         }
                     });

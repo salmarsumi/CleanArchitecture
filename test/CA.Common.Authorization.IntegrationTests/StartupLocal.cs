@@ -1,5 +1,6 @@
 ﻿using CA.Common.Authorization.AspNetCore;
 using CA.Common.Authorization.IntegrationTests.Controllers;
+using CA.Common.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc.ApplicationParts;
 using Microsoft.AspNetCore.Mvc.Controllers;
@@ -38,6 +39,8 @@ namespace CA.Common.Authorization.IntegrationTests
 
             services.AddLocalPolicyServices()
                 .AddAuthorizationPermissionPolicies();
+            services.AddHttpContextAccessor();
+            services.AddScoped<ICurrentRequestService, CurrentRequestService>();
 
             services.AddMvc();
             services.AddControllers()

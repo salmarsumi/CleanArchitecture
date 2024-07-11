@@ -7,7 +7,7 @@
     {
         /// <summary>
         /// The version of the entity.
-        /// This property will be used for concurency conflict checks.
+        /// This property will be used for concurrency conflict checks.
         /// </summary>
         int RowVersion { get; set; }
 
