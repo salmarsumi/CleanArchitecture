@@ -5,6 +5,11 @@ using Microsoft.Extensions.Logging;
 
 namespace CA.MediatR.Behaviors
 {
+    /// <summary>
+    /// Logs the request object being handled by the MediatR pipeline.
+    /// </summary>
+    /// <typeparam name="TRequest">The type of the request being processed.</typeparam>
+    /// <typeparam name="TResponse">The type of the response generated buy tje current request.</typeparam>
     public class LoggingBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
         where TRequest : IRequest<TResponse>
     {

@@ -5,6 +5,11 @@ using Microsoft.Extensions.Logging;
 
 namespace CA.MediatR.Behaviors
 {
+    /// <summary>
+    /// Apply all registered validation rules for the current request.
+    /// </summary>
+    /// <typeparam name="TRequest">The type of the request being processed.</typeparam>
+    /// <typeparam name="TResponse">The type of the response generated buy tje current request.</typeparam>
     public class ValidatorBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
         where TRequest : IRequest<TResponse>
         where TResponse : IRequestResult

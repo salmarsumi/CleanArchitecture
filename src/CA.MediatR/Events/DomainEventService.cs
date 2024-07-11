@@ -3,6 +3,13 @@ using MediatR;
 
 namespace CA.MediatR.Events
 {
+    /// <summary>
+    /// MediatR implementation of the <see cref="IDomainEventService"/> interface.
+    /// </summary>
+    /// <remarks>
+    /// The service used to convert DomainEvent instances to 
+    /// EventNotification instances and publish them through MediatR.
+    /// </remarks>
     public class DomainEventService : IDomainEventService
     {
         private readonly IPublisher _mediator;

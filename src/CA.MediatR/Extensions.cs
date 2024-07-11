@@ -12,9 +12,9 @@ namespace CA.MediatR
         /// <summary>
         /// Add the MediatR dependencies to the Asp.Net DI container
         /// </summary>
-        /// <typeparam name="T">The type conained in the required lookup assembly</typeparam>
+        /// <typeparam name="T">The type contained in the required lookup assembly</typeparam>
         /// <param name="services">Reference to the service collection</param>
-        /// <returns></returns>
+        /// <returns>An <see cref="IServiceCollection"/> instance.</returns>
         public static IServiceCollection AddMediatRServices<T>(this IServiceCollection services, bool isTransactional = false)
         {
             services.AddScoped<IDomainEventService, DomainEventService>();
